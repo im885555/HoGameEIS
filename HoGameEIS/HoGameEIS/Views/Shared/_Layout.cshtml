@@ -16,15 +16,31 @@
     
     @Html.Partial("_Navbar")
     <div class="container-fluid">
-        <div class="row">
-            <div class="col-sm-3 col-md-2 sidebar">
+        <div class="row row-offcanvas row-offcanvas-left">
+            <div class="col-xs-6 col-sm-3 col-md-2 sidebar-offcanvas" id="sidebar" role="navigation">
                 @Html.Partial("_Sidebar")
             </div>
-            <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <div class="col-xs-12 col-sm-9 col-md-10">
+                <div class="toggle-nav">
+                   
+                        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true" data-toggle="offcanvas"></span>
+                    
+                </div>
                 @RenderBody()
             </div>
         </div>
+        <hr>
+        <footer>
+            <p>© Company 2014</p>
+        </footer>
     </div>
     @RenderSection("scripts", required: false)
+    <script>
+        $(document).ready(function () {
+            $('[data-toggle="offcanvas"]').click(function () {
+                $('.row-offcanvas').toggleClass('active')
+            });
+        });
+    </script>
 </body>
 </html>
