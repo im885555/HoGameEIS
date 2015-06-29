@@ -167,10 +167,14 @@
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\ReactConfig.cs" />
+    <Compile Include="Controllers\GroupBuyController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\HumanResourceController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Employee.cs" />
+    <Compile Include="Models\HoGameEISContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -209,6 +213,11 @@
     <Content Include="Scripts\jquery-2.1.4.js" />
     <Content Include="Scripts\jquery-2.1.4.min.js" />
     <Content Include="Scripts\npm.js" />
+    <Content Include="Scripts\react\JSXTransformer-0.13.1.js" />
+    <Content Include="Scripts\react\react-0.13.1.js" />
+    <Content Include="Scripts\react\react-0.13.1.min.js" />
+    <Content Include="Scripts\react\react-with-addons-0.13.1.js" />
+    <Content Include="Scripts\react\react-with-addons-0.13.1.min.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -220,10 +229,11 @@
     <Content Include="Scripts\jquery-2.1.4.min.map" />
     <Content Include="Views\Shared\_Navbar.cshtml" />
     <Content Include="Views\Shared\_Sidebar.cshtml" />
+    <Content Include="Views\GroupBuy\Index.cshtml" />
+    <Content Include="Views\HumanResource\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
