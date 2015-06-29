@@ -167,13 +167,23 @@
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\ReactConfig.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\GroupBuyController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\HumanResourceController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201506290832597_init.cs" />
+    <Compile Include="Migrations\201506290832597_init.Designer.cs">
+      <DependentUpon>201506290832597_init.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Employee.cs" />
+    <Compile Include="Models\GroupBuyMenuImage.cs" />
+    <Compile Include="Models\GroupBuyMenuItem.cs" />
+    <Compile Include="Models\GroupBuyMenuSubItem.cs" />
+    <Compile Include="Models\GroupBuyStore.cs" />
     <Compile Include="Models\HoGameEISContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -231,6 +241,7 @@
     <Content Include="Views\Shared\_Sidebar.cshtml" />
     <Content Include="Views\GroupBuy\Index.cshtml" />
     <Content Include="Views\HumanResource\Index.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -246,6 +257,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Home\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201506290832597_init.resx">
+      <DependentUpon>201506290832597_init.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
