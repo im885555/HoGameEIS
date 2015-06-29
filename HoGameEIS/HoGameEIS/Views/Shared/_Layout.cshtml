@@ -1,21 +1,30 @@
-﻿<!DOCTYPE html>
-<html>
+﻿<html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
-    <title>@ViewBag.Title</title>
-    @*@Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")*@
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="/Content/AssetsBS3/img/favicon.ico">
+    <title>@ViewBag.Title</title>    
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/site.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-2.1.4.min.js"></script>
+    <script src="~/Scripts/bootstrap.js"></script>
 </head>
 <body>
-
-    @*<script src="@Url.Content("~/Scripts/react/react-0.13.1.js")"></script>*@
-    @*<script src="@Url.Content("~/Scripts/react/react-with-addons-0.13.1.js")"></script>
-
-    @Scripts.Render("~/bundles/jquery")
-    <script src="@Url.Content("~/Scripts/marked.min.js")"></script>
-    @RenderSection("scripts", required: false)*@
     
-    @RenderBody()
+    @Html.Partial("_Navbar")
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-3 col-md-2 sidebar">
+                @Html.Partial("_Sidebar")
+            </div>
+            <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+    @RenderSection("scripts", required: false)
 </body>
 </html>
