@@ -1,0 +1,16 @@
+﻿@{
+    String currentAction = HttpContext.Current.Request.RequestContext.RouteData.Values["action"].ToString();
+    Dictionary<String, String> activeClass = new Dictionary<String, String>()
+    {
+        {currentAction, "class=\"active\""}
+    };
+}
+<div>
+    <div class="col-sm-6">
+        <ul class="nav nav-pills nav-justified">
+            <li role="presentation" @activeClass["CreateGroupBuy"]><a href="CreateGroupBuy">我要開團</a></li>
+            <li role="presentation" @(activeClass["GroupBuyList"] ?? "")><a href="GroupBuyList">當前團購列表</a></li>
+            <li role="presentation" @(activeClass["StoreManagement"] ??"")><a href="StoreManagement">店家管理</a></li>
+        </ul>
+    </div>
+</div>

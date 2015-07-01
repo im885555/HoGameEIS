@@ -4,15 +4,7 @@
 
 <h3>團購系統</h3>
 
-<div >
-    <div class="col-sm-6">
-        <ul class="nav nav-pills nav-justified">
-            <li role="presentation" class="active"><a href="#">我要開團</a></li>
-            <li role="presentation"><a href="#">當前團購列表</a></li>
-            <li role="presentation"><a href="#">店家管理</a></li>
-        </ul>
-    </div>
-</div>
+@Html.Partial("_GroupBuyNav")
 <div>
     <div class="col-sm-12">
         <form class="form-horizontal create-groupbuy-form" role="form">
@@ -51,5 +43,6 @@
 <script>
     $(function () {
         $('#datetimepicker1').datetimepicker();
+        alert('@HttpContext.Current.Request.RequestContext.RouteData.Values["action"].ToString()');
     });
 </script>

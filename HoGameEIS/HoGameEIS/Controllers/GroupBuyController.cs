@@ -12,11 +12,23 @@ namespace HoGameEIS.Controllers
         // GET: /GroupBuy/
         public ActionResult Index()
         {
-            return CreateGroupBuy();
+            return View("CreateGroupBuy");
         }
 
         [Authorize]
         public ActionResult CreateGroupBuy()
+        {
+            return View();
+        }
+
+        [Authorize]
+        public ActionResult GroupBuyList()
+        {
+            return View();
+        }
+
+        [Authorize]
+        public ActionResult StoreManagement()
         {
             return View();
         }

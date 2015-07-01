@@ -325,6 +325,9 @@
     <Content Include="Views\Account\Logout.cshtml" />
     <Content Include="Views\GroupBuy\CreateGroupBuy.cshtml" />
     <Content Include="Scripts\jquery-2.1.4.min.map" />
+    <Content Include="Views\GroupBuy\GroupBuyList.cshtml" />
+    <Content Include="Views\GroupBuy\StoreManagement.cshtml" />
+    <Content Include="Views\GroupBuy\_GroupBuyNav.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
