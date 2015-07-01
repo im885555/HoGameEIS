@@ -65,5 +65,17 @@ footer {
 
    .toggle-nav {
     display:block;
+    position: relative;
+    
+      /* z-index: 101; */
+      left: -15px;
+      top: -20px;
    }
+}
+
+
+/*團購 style*/
+
+.create-groupbuy-form {
+    margin:3% 0 0 0 ;
 }

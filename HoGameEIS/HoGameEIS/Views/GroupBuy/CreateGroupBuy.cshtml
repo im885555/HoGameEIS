@@ -1,0 +1,55 @@
+﻿@{
+    ViewBag.Title = "CreateGroupBuy";
+}
+
+<h3>團購系統</h3>
+
+<div >
+    <div class="col-sm-6">
+        <ul class="nav nav-pills nav-justified">
+            <li role="presentation" class="active"><a href="#">我要開團</a></li>
+            <li role="presentation"><a href="#">當前團購列表</a></li>
+            <li role="presentation"><a href="#">店家管理</a></li>
+        </ul>
+    </div>
+</div>
+<div>
+    <div class="col-sm-12">
+        <form class="form-horizontal create-groupbuy-form" role="form">
+            <div class="form-group">
+                <label for="inputDesc" class="col-sm-3 col-md-2 col-lg-1">描述</label>
+                <div class="col-sm-9 col-md-8 col-lg-6">
+                    <input type="text" class="form-control" id="inputDesc" placeholder="請輸入描述">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputStore" class="col-sm-3 col-md-2 col-lg-1">店家</label>
+                <div class="col-sm-9 col-md-8 col-lg-6">
+                    <button type="button" class="btn btn-primary">選擇商家</button>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputEndTime" class="col-sm-3 col-md-2 col-lg-1">結束時間</label>
+                <div class="col-sm-9 col-md-8 col-lg-6">
+                    <div class='input-group date' id='datetimepicker1'>
+                        <input type='text' class="form-control" />
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-10">
+                    <button type="submit" class="btn btn-default">新增</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('#datetimepicker1').datetimepicker();
+    });
+</script>

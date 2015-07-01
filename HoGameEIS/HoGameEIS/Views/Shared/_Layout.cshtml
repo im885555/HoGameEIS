@@ -7,25 +7,27 @@
     <meta name="author" content="">
     <link rel="icon" href="/Content/AssetsBS3/img/favicon.ico">
     <title>@ViewBag.Title</title>    
-    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />   
+    <link href="~/Content/bootstrap-datetimepicker.css" rel="stylesheet" />
     <link href="~/Content/site.css" rel="stylesheet" />
     <script src="~/Scripts/jquery-2.1.4.min.js"></script>
     <script src="~/Scripts/bootstrap.js"></script>
+    <script src="~/Scripts/moment.js"></script>
+    <script src="~/Scripts/bootstrap-datetimepicker.js"></script>
 </head>
 <body>
     
     @Html.Partial("_Navbar")
     <div class="container-fluid">
+        <div class="toggle-nav">
+            <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
+        </div>
         <div class="row row-offcanvas row-offcanvas-left">
             <div class="col-xs-6 col-sm-3 col-md-2 sidebar-offcanvas" id="sidebar" role="navigation">
                 @Html.Partial("_Sidebar")
             </div>
             <div class="col-xs-12 col-sm-9 col-md-10">
-                <div class="toggle-nav">
-                   
-                        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true" data-toggle="offcanvas"></span>
-                    
-                </div>
+                
                 @RenderBody()
             </div>
         </div>
@@ -37,8 +39,8 @@
     @RenderSection("scripts", required: false)
     <script>
         $(document).ready(function () {
-            $('[data-toggle="offcanvas"]').click(function () {
-                $('.row-offcanvas').toggleClass('active')
+            $("[data-toggle=offcanvas]").click(function () {
+                $('.row-offcanvas').toggleClass('active');
             });
         });
     </script>

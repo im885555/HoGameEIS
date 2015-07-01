@@ -19,30 +19,38 @@ namespace HoGameEIS.Controllers
         }
         public ActionResult Login(FormCollection formCollection, String ReturnUrl)
         {
+
+            if (User.Identity.IsAuthenticated) {
+                return RedirectToAction("Index", "Home");
+            }
+
+
             String account = formCollection["InputEmail"];
+
+         
             if (account == null)
             {
                 return View();
             }
             using (var db = new HoGameEISContext())
             {
+                Boolean isRememberMe = formCollection["RememberMe"].Contains("true");
                 Employee emp = db.Employees.Where(o => o.Email.Contains(account.Trim())).FirstOrDefault();
                 if (emp != null)
                 {
-                    ViewData["result"] = "success";
-                    Session.RemoveAll();
-
+                    DateTime expires = DateTime.Now.AddMonths(1);
+                   
                     FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(1,
                       emp.Email,//你想要存放在 User.Identy.Name 的值，通常是使用者帳號
                       DateTime.Now,
-                      DateTime.Now.AddMinutes(30),
-                      false,//將管理者登入的 Cookie 設定成 Session Cookie
-                      emp.Address,//userdata看你想存放啥
+                      expires,
+                      isRememberMe,//將管理者登入的 Cookie 設定成 Session Cookie
                       FormsAuthentication.FormsCookiePath);
 
                     string encTicket = FormsAuthentication.Encrypt(ticket);
-
-                    Response.Cookies.Add(new HttpCookie(FormsAuthentication.FormsCookieName, encTicket));
+                    HttpCookie authCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encTicket);
+                    authCookie.Expires = expires;
+                    Response.Cookies.Add(authCookie);
 
                     if (String.IsNullOrEmpty(ReturnUrl))
                     {
@@ -60,5 +68,11 @@ namespace HoGameEIS.Controllers
             }
             return View();
         }
+        public ActionResult Logout()
+        {
+            FormsAuthentication.SignOut();
+            return RedirectToAction("Login");          
+        }
+       
     }
 }

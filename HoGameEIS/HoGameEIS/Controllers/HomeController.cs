@@ -10,7 +10,7 @@ namespace HoGameEIS.Controllers
     {
         //
         // GET: /Home/
-
+        [Authorize]
         public ActionResult Index()
         {
             return View();
