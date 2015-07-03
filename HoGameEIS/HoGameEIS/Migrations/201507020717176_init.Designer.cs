@@ -13,7 +13,7 @@ namespace HoGameEIS.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201506290832597_init"; }
+            get { return "201507020717176_init"; }
         }
         
         string IMigrationMetadata.Source
