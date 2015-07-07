@@ -179,14 +179,36 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201507020717176_init.cs" />
-    <Compile Include="Migrations\201507020717176_init.Designer.cs">
-      <DependentUpon>201507020717176_init.cs</DependentUpon>
+    <Compile Include="Migrations\201507070829569_init.cs" />
+    <Compile Include="Migrations\201507070829569_init.Designer.cs">
+      <DependentUpon>201507070829569_init.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Employee.cs" />
-    <Compile Include="Models\GroupBuy.cs" />
+    <Compile Include="Models\GroupBuy.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Models\GroupBuyItem.cs" />
+    <Compile Include="Models\GroupBuyPaid.cs" />
+    <Compile Include="Models\GroupBuyStore.cs" />
+    <Compile Include="Models\GroupBuyStoreItem.cs" />
+    <Compile Include="Models\GroupBuyStoreMenuImage.cs" />
+    <Compile Include="Models\GroupBuyStoreSubItem.cs" />
+    <Compile Include="Models\GroupBuySubItem.cs" />
+    <Compile Include="Models\GroupBuySubscriber.cs" />
     <Compile Include="Models\HoGameEISContext.cs" />
+    <Compile Include="Models\Mapping\EmployeeMap.cs" />
+    <Compile Include="Models\Mapping\GroupBuyItemMap.cs" />
+    <Compile Include="Models\Mapping\GroupBuyMap.cs" />
+    <Compile Include="Models\Mapping\GroupBuyPaidMap.cs" />
+    <Compile Include="Models\Mapping\GroupBuyStoreItemMap.cs" />
+    <Compile Include="Models\Mapping\GroupBuyStoreMap.cs" />
+    <Compile Include="Models\Mapping\GroupBuyStoreMenuImageMap.cs" />
+    <Compile Include="Models\Mapping\GroupBuyStoreSubItemMap.cs" />
+    <Compile Include="Models\Mapping\GroupBuySubItemMap.cs" />
+    <Compile Include="Models\Mapping\GroupBuySubscriberMap.cs" />
+    <Compile Include="Models\Mapping\sysdiagramMap.cs" />
+    <Compile Include="Models\sysdiagram.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -352,8 +374,8 @@
     <Content Include="Views\Home\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201507020717176_init.resx">
-      <DependentUpon>201507020717176_init.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201507070829569_init.resx">
+      <DependentUpon>201507070829569_init.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

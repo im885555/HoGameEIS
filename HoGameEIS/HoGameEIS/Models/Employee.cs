@@ -1,15 +1,21 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 
 namespace HoGameEIS.Models
 {
-    public class Employee
+    public partial class Employee
     {
-        [Key]
+        public Employee()
+        {
+            this.GroupBuyPaids = new List<GroupBuyPaid>();
+            this.GroupBuySubscribers = new List<GroupBuySubscriber>();
+        }
+
         public string Email { get; set; }
         public string Address { get; set; }
+        public int EmployeeId { get; set; }
+        public string FullName { get; set; }
+        public virtual ICollection<GroupBuyPaid> GroupBuyPaids { get; set; }
+        public virtual ICollection<GroupBuySubscriber> GroupBuySubscribers { get; set; }
     }
 }
