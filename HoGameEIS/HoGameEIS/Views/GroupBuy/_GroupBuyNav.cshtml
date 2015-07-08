@@ -2,7 +2,7 @@
     String currentAction = HttpContext.Current.Request.RequestContext.RouteData.Values["action"].ToString();
     String classActiveStr = "class=active";
 }
-<div>
+<div class="row">
     <div class="col-sm-6">
         <ul class="nav nav-pills nav-justified">
             <li role="presentation" @(currentAction == "CreateGroupBuy" ? classActiveStr : "")><a href="CreateGroupBuy">我要開團</a></li>
