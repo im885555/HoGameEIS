@@ -32,5 +32,20 @@ namespace HoGameEIS.Controllers
         {
             return View();
         }
+
+        [Authorize]
+        public ActionResult StoreManagementEdit()
+        {
+            return View();
+        }
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult StoreManagementEdit(FormCollection formCollection)
+        {
+
+
+            return View();
+        }
     }
 }

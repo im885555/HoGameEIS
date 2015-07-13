@@ -180,6 +180,10 @@
     <Compile Include="Migrations\201507070829569_init.Designer.cs">
       <DependentUpon>201507070829569_init.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201507130656379_memo.cs" />
+    <Compile Include="Migrations\201507130656379_memo.Designer.cs">
+      <DependentUpon>201507130656379_memo.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Employee.cs" />
     <Compile Include="Models\GroupBuy.cs">
@@ -327,6 +331,9 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
     <Content Include="Scripts\jquery-2.1.4.min.js" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\moment-with-locales.js" />
     <Content Include="Scripts\moment-with-locales.min.js" />
     <Content Include="Scripts\moment.js" />
@@ -357,6 +364,7 @@
     <Content Include="Views\GroupBuy\GroupBuyList.cshtml" />
     <Content Include="Views\GroupBuy\StoreManagement.cshtml" />
     <Content Include="Views\GroupBuy\_GroupBuyNav.cshtml" />
+    <Content Include="Views\GroupBuy\StoreManagementEdit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -376,6 +384,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201507070829569_init.resx">
       <DependentUpon>201507070829569_init.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201507130656379_memo.resx">
+      <DependentUpon>201507130656379_memo.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
