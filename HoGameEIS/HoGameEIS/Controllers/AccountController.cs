@@ -15,17 +15,8 @@ namespace HoGameEIS.Controllers
 
         public ActionResult Index()
         {
-            return View("Login");
-        }
-        public ActionResult Login() 
-        {
-            if (User.Identity.IsAuthenticated)
-            {
-                return RedirectToAction("Index", "Home");
-            }
             return View();
         }
-        [HttpPost]
         public ActionResult Login(FormCollection formCollection, String ReturnUrl)
         {
 

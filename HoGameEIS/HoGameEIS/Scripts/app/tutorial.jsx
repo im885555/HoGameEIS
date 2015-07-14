@@ -103,10 +103,10 @@
 
 
   //
-  /*React.render(
+  React.render(
     <CommentBox url="/api/comment" pollInterval={2000} />,
     document.getElementById('content')
-  );*/
+  );
   //
 
 })();

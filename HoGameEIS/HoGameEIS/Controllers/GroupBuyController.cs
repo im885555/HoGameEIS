@@ -1,5 +1,4 @@
-﻿using HoGameEIS.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -42,23 +41,11 @@ namespace HoGameEIS.Controllers
 
         [Authorize]
         [HttpPost]
-        public ActionResult StoreManagementEdit(FormCollection formData)
+        public ActionResult StoreManagementEdit(FormCollection formCollection)
         {
-            using (var db = new HoGameEISContext())
-            {
-                GroupBuyStore groupBuyStore = new GroupBuyStore()
-                {
-                    StoreName = formData["StoreName"],
-                    Address = formData["Address"],
-                    Tel = formData["Tel"],
-                    Category = formData["Category"],
-                    Memo = formData["Memo"]
-                };
-                db.GroupBuyStores.Add(groupBuyStore);
-                db.SaveChanges();
-            }
 
-            return View("StoreManagement");
+
+            return View();
         }
     }
 }
