@@ -14,6 +14,7 @@ namespace HoGameEIS.Models
         public HoGameEISContext()
             : base("Name=HoGameEISContext")
         {
+            base.Configuration.ProxyCreationEnabled = false;
         }
 
         public DbSet<Employee> Employees { get; set; }

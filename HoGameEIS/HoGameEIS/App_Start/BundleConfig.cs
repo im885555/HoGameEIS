@@ -22,9 +22,9 @@ namespace HoGameEIS.App_Start
 
             bundles.Add(new JsxBundle("~/bundles/main").Include(
                 "~/Scripts/jquery-{version}.js",
-               // "~/Scripts/react/react-0.13.1.js",
-                "~/Scripts/bootstrap.js",
+                "~/Scripts/react/react-0.13.1.js",
                 "~/Scripts/moment.js",
+                "~/Scripts/bootstrap.js",
                 "~/Scripts/bootstrap-datetimepicker.js"));
 
             bundles.Add(new JsxBundle("~/bundles/app")
