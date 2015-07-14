@@ -5,6 +5,8 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using HoGameEIS.Models.DTO;
+
 
 namespace HoGameEIS.Controllers
 {
@@ -17,16 +19,36 @@ namespace HoGameEIS.Controllers
         }
 
         // GET api/groupbuystoreapi
-        public IEnumerable<GroupBuyStore> Get()
+        public TableDto<GroupBuyStore> Get(int limit=1000, int offset=0, string search=null , string order = "asc")
         {
-            List<GroupBuyStore> stores = new List<GroupBuyStore>();
+            //http://localhost:50908/api/groupbuystoreapi?search=aaa&order=asc&limit=5&offset=0
+            //(from p in playerList
+            //          where p.Length <= 4
+            //          select p)
 
+            List<GroupBuyStore> stores; 
+            TableDto<GroupBuyStore> list; 
             using (var db = new HoGameEISContext())
-            {                
-                stores = db.GroupBuyStores.ToList();                
+            {
+                stores = db.GroupBuyStores.ToList();
+
+                int total = stores.Count();
+
+                stores = stores.Skip(offset).Take(limit).ToList();
+
+                if (search != null) 
+                    stores = stores.Where(o => o.StoreName.Contains("search")).ToList();
+                                          
+
+                list = new TableDto<GroupBuyStore>() 
+                {
+                    total = total,
+                    rows = stores
+                };
+               // Table<List<GroupBuyStore>> a;
             }
 
-            return stores;
+            return list;
         }
 
         // GET api/groupbuystoreapi/5

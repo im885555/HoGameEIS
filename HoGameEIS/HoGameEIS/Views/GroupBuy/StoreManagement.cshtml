@@ -34,47 +34,88 @@
     
 </div>
 <div class="row">
-    <table class="table table-bordered">
+
+    <table data-toggle="table" data-url="/api/groupbuystoreapi" data-height="400" data-side-pagination="server"
+            data-pagination="true" data-page-list="[5, 10, 20, 50, 100, 200]" data-search="true">
         <thead>
             <tr>
-                <th>
-                    店家名稱
-                </th>
-                <th>
-                    備註
-                </th>
-                <th>
-                    修改
-                </th>
+                <th data-field="StoreName">店家名稱</th>
+                <th data-field="Memo">備註</th>
+                <th data-field="operate" data-formatter="operateFormatter" data-events="operateEvents">修改</th>
             </tr>
         </thead>
-        <tbody>
-            <tr>
-                <td>
-                    八方雲集
-                </td>
-                <td>
-                    西屯店
-                </td>
-                <td>
-                    <button type="button" class="btn btn-default">菜單資料管理</button>       
-                    <button type="button" class="btn btn-default">修改店家資料</button>   
-                    <button type="button" class="btn btn-default">刪除</button>              
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    八方雲集
-                </td>
-                <td>
-                    西屯店
-                </td>
-                <td>
-                    <button type="button" class="btn btn-default">菜單資料管理</button>
-                    <button type="button" class="btn btn-default">修改店家資料</button>
-                    <button type="button" class="btn btn-default">刪除</button>
-                </td>
-            </tr>
-        </tbody>
     </table>
+
+   
 </div>
+@section scripts
+{
+<script>
+    function operateFormatter(value, row, index) {
+        return "<button id='menuEdit' type='button' class='btn btn-default'>菜單資料管理</button>" +
+            "<button  id='storeEdit' type='button' class='btn btn-default'>修改店家資料</button>" +
+            "<button id='storeDelete' type='button' class='btn btn-default'>刪除</button>";
+    }
+
+    window.operateEvents = {
+        'click #menuEdit': function (e, value, row, index) {
+            alert('You click menuEdit icon, row: ' + JSON.stringify(row));
+            console.log(value, row, index);
+        },
+        'click #storeEdit': function (e, value, row, index) {
+            alert('You click storeEdit icon, row: ' + JSON.stringify(row));
+            console.log(value, row, index);
+        },
+        'click #storeDelete': function (e, value, row, index) {
+            alert('You click storeDelete icon, row: ' + JSON.stringify(row));
+            console.log(value, row, index);
+        }
+    };
+</script>
+}
+
+
+
+@*<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>
+                店家名稱
+            </th>
+            <th>
+                備註
+            </th>
+            <th>
+                修改
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                八方雲集
+            </td>
+            <td>
+                西屯店
+            </td>
+            <td>
+                <button type="button" class="btn btn-default">菜單資料管理</button>
+                <button type="button" class="btn btn-default">修改店家資料</button>
+                <button type="button" class="btn btn-default">刪除</button>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                八方雲集
+            </td>
+            <td>
+                西屯店
+            </td>
+            <td>
+                <button type="button" class="btn btn-default">菜單資料管理</button>
+                <button type="button" class="btn btn-default">修改店家資料</button>
+                <button type="button" class="btn btn-default">刪除</button>
+            </td>
+        </tr>
+    </tbody>
+</table>*@

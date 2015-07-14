@@ -58,7 +58,7 @@ namespace HoGameEIS.Controllers
                 db.SaveChanges();
             }
 
-            return View("StoreManagement");
+            return RedirectToAction("StoreManagement", "GroupBuy");
         }
     }
 }
