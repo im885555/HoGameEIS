@@ -102,6 +102,9 @@
     <Reference Include="System.Web.Optimization">
       <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
     </Reference>
+    <Reference Include="System.Web.Optimization.React">
+      <HintPath>..\packages\System.Web.Optimization.React.1.5.2\lib\net40\System.Web.Optimization.React.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
@@ -183,6 +186,10 @@
     <Compile Include="Migrations\201507130656379_memo.cs" />
     <Compile Include="Migrations\201507130656379_memo.Designer.cs">
       <DependentUpon>201507130656379_memo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201507140232020_Storename.cs" />
+    <Compile Include="Migrations\201507140232020_Storename.Designer.cs">
+      <DependentUpon>201507140232020_Storename.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Employee.cs" />
@@ -319,6 +326,7 @@
     <Content Include="Content\bootstrap\alerts.less" />
     <Content Include="Content\less\bootstrap-datetimepicker-build.less" />
     <Content Include="Content\less\_bootstrap-datetimepicker.less" />
+    <Content Include="readme.txt" />
     <Content Include="Scripts\app\tutorial.jsx" />
     <None Include="Properties\PublishProfiles\2.pubxml" />
     <None Include="Properties\PublishProfiles\gene.pubxml" />
@@ -387,6 +395,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201507130656379_memo.resx">
       <DependentUpon>201507130656379_memo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201507140232020_Storename.resx">
+      <DependentUpon>201507140232020_Storename.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
