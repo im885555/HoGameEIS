@@ -32,12 +32,14 @@ namespace HoGameEIS.Controllers
             {
                 stores = db.GroupBuyStores.ToList();
 
+                if (search != null)
+                    stores = stores.Where(o => o.StoreName.Contains(search)).ToList();
+
                 int total = stores.Count();
 
                 stores = stores.Skip(offset).Take(limit).ToList();
 
-                if (search != null) 
-                    stores = stores.Where(o => o.StoreName.Contains("search")).ToList();
+               
                                           
 
                 list = new TableDto<GroupBuyStore>() 

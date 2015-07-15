@@ -6,50 +6,36 @@
 @Html.Partial("_GroupBuyNav")
 
 <div class="row">
-<div class="btn-group" role="group" aria-label="...">
-    <button type="button" class="btn btn-default">全部</button>
-    <button type="button" class="btn btn-default">正餐</button>
-    <button type="button" class="btn btn-default">餐飲</button>
-    <button type="button" class="btn btn-default">點心</button>
-    <button type="button" class="btn btn-default">團購</button>
-    <button type="button" class="btn btn-default">活動</button>
+    <div class="btn-group" role="group" aria-label="...">
+        <button type="button" class="btn btn-default active">全部</button>
+        <button type="button" class="btn btn-default">正餐</button>
+        <button type="button" class="btn btn-default">餐飲</button>
+        <button type="button" class="btn btn-default">點心</button>
+        <button type="button" class="btn btn-default">團購</button>
+        <button type="button" class="btn btn-default">活動</button>
+    </div>
 </div>
-</div>
-<div class="row">
-    <div>
-        <form class="form-inline" role="form">
-            <div class="form-group">
-                <div class="input-group">
-                    <label class="sr-only" for="exampleInputEmail2">關鍵字</label>
-                    <div class="input-group-addon">關鍵字</div>
-                    <input type="email" class="form-control" id="exampleInputEmail2" placeholder="欲搜尋的文字">
-                </div>
-            </div>           
-            <button type="submit" class="btn btn-default">搜尋</button>
 
-            <button type="button" class="btn btn-default" onclick="location.href = 'StoreManagementEdit'">新增</button>
-        </form>
+
+<div class="row">
+    <div class="form-inline">
+        <div class="form-group">
+            <div class="input-group  search">
+                <input type="email" class="form-control" id="exampleInputEmail2" placeholder="Search">
+            </div>
+        </div>
+
+        <button type="button" class="btn btn-default" onclick="location.href = 'StoreManagementEdit'">新增</button>
     </div>
 
-    
+
 </div>
+
+
 <div class="row">
-
-    <table data-toggle="table" data-url="/api/groupbuystoreapi" data-height="400" data-side-pagination="server"
-            data-pagination="true" data-page-list="[5, 10, 20, 50, 100, 200]" data-search="true">
-        <thead>
-            <tr>
-                <th data-field="StoreName">店家名稱</th>
-                <th data-field="Memo">備註</th>
-                <th data-field="operate" data-formatter="operateFormatter" data-events="operateEvents">修改</th>
-            </tr>
-        </thead>
-    </table>
-
-   
+    <table id="boot-table"></table>
 </div>
-@section scripts
-{
+
 <script>
     function operateFormatter(value, row, index) {
         return "<button id='menuEdit' type='button' class='btn btn-default'>菜單資料管理</button>" +
@@ -71,51 +57,44 @@
             console.log(value, row, index);
         }
     };
+
+    var $table = $('#boot-table').bootstrapTable({
+        cache: false,
+        height: 500,
+        pagination: true,
+        pageList: [10, 25, 50, 100, 200],
+        sidePagination: "server",
+        columns: [{
+            field: 'StoreName',
+            title: '店家名稱'
+        }, {
+            field: 'Memo',
+            title: '備註'
+        }, {
+            field: 'operate',
+            title: '修改',
+            formatter: operateFormatter,
+            events: operateEvents
+        }]
+    });
+
+
+   // var $table = $('#boot-table').bootstrapTable({ query: {aaa:"aa"}});
+
+    $table.data("bootstrap.table").refresh({ url: "/api/groupbuystoreapi", query: { aaa: "aa" } });
+
+    //this.$toolbar.append(html.join(''));
+    var $search = $("#exampleInputEmail2");
+    var onSearch = false;
+    $search.off('keyup drop').on('keyup drop', function () {
+        if (!onSearch) {
+            onSearch = true;
+            setTimeout((function () {
+                $table.data("bootstrap.table").onSearch({ currentTarget: this });
+                onSearch = false;
+            }).bind(this), 1000);
+        }
+    });
+
+   // $table.data("bootstrap.table").onSearch({ currentTarget: $("#exampleInputEmail2")[0] })
 </script>
-}
-
-
-
-@*<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>
-                店家名稱
-            </th>
-            <th>
-                備註
-            </th>
-            <th>
-                修改
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>
-                八方雲集
-            </td>
-            <td>
-                西屯店
-            </td>
-            <td>
-                <button type="button" class="btn btn-default">菜單資料管理</button>
-                <button type="button" class="btn btn-default">修改店家資料</button>
-                <button type="button" class="btn btn-default">刪除</button>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                八方雲集
-            </td>
-            <td>
-                西屯店
-            </td>
-            <td>
-                <button type="button" class="btn btn-default">菜單資料管理</button>
-                <button type="button" class="btn btn-default">修改店家資料</button>
-                <button type="button" class="btn btn-default">刪除</button>
-            </td>
-        </tr>
-    </tbody>
-</table>*@
