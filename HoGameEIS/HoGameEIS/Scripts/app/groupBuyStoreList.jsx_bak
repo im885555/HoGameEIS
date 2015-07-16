@@ -1,0 +1,143 @@
+var CategoryGroup = React.createClass({
+    getInitialState: function() {
+        return {current:""};
+    },
+    handleSelect: function(value){
+        this.props.onCategoryChange(value);
+        this.setState({current:value});
+    },
+    render: function() {
+        var btnData = [
+            {name:"全部",value:""},
+            {name:"正餐",value:"meal"},
+            {name:"飲料",value:"drink"},
+            {name:"點心",value:"dessert"},
+            {name:"團購",value:"groupbuy"},
+            {name:"活動",value:"party"}
+        ];
+        return (
+            <div className="btn-group" role="group">
+                {
+                    btnData.map(function (data, i) {
+                        var btnClass ="btn btn-default",
+                            handleSelect = this.handleSelect.bind(this, data.value);
+                        data.value == this.state.current && (btnClass +="active");
+                        return (
+                            <button key={i} type="button" className={btnClass}
+                            onClick={handleSelect} >{data.name}</button>
+                        );
+                    }.bind(this))
+                }
+            </div>
+        );
+    }
+});
+
+var GroupBuyStoreList = React.createClass({
+    $table:null,
+    onSearch:false,
+    _category:"",
+    componentDidMount: function() {
+        this.initWenzhixinGrid();
+    },
+    initWenzhixinGrid:function () {
+        var self= this;
+        var operateFormatter = function (value, row, index) {
+            return "<button id='menuEdit' type='button' class='btn btn-default'>菜單資料管理</button>" +
+                "<button  id='storeEdit' type='button' class='btn btn-default'>修改店家資料</button>" +
+                "<button id='storeDelete' type='button' class='btn btn-default'>刪除</button>";
+        },
+        operateEvents = {
+            'click #menuEdit': function (e, value, row, index) {
+                alert('You click menuEdit icon, row: ' + JSON.stringify(row));
+                console.log(value, row, index);
+            },
+            'click #storeEdit': function (e, value, row, index) {
+                alert('You click storeEdit icon, row: ' + JSON.stringify(row));
+                console.log(value, row, index);
+            },
+            'click #storeDelete': function (e, value, row, index) {
+                $.ajax({
+                    url: "/api/groupbuystoreapi/" + row.GroupBuyStoreId,
+                    type: "DELETE",
+                    success: function(result) {
+                        self.WenzhixinGridRefresh();
+                    }
+                });
+            }
+        };
+        this.$table = $(React.findDOMNode(this.refs.Grid)).bootstrapTable({
+            //queryParams: function (params) { params.category = ""; return params; },
+            url: "/api/groupbuystoreapi",
+            cache: false,
+            height: 608,
+            pagination: true,
+            pageList: [10, 25, 50, 100, 200],
+            sidePagination: "server",
+            columns: [{
+                field: 'StoreName',
+                title: '店家名稱'
+            }, {
+                field: 'Memo',
+                title: '備註'
+            }, {
+                field: 'operate',
+                title: '修改',
+                formatter: operateFormatter,
+                events: operateEvents
+            }]
+        });
+    },
+    WenzhixinGridRefresh: function(params) {
+        this.$table.bootstrapTable("refresh", {query:  {category:this._category }});
+    },
+    handleCategroyChange: function(category){
+        this._category = category;
+        this.WenzhixinGridRefresh();
+    },
+    handleSearchChange: function () {
+        if (!this.onSearch) {
+            this.onSearch = true;
+            setTimeout((function () {
+                this.$table.data("bootstrap.table").searchText= React.findDOMNode(this.refs.Search).value;
+                this.WenzhixinGridRefresh();
+                //this.$table.data("bootstrap.table")
+                //.onSearch({currentTarget: $(React.findDOMNode(this.refs.Search))});
+                this.onSearch = false;
+            }).bind(this), 500);
+        }
+    },
+    handleAdd: function () {
+        location.href = 'StoreManagementEdit';
+    },
+    componentWillUnmount: function () {
+        this.$table.find("*").unbind().off();
+        this.$table.bootstrapTable("destroy");
+    },
+    render: function() {
+        return (
+            <div>
+                <div className="row">
+                    <button type="button" className="btn btn-default" onClick={this.handleAdd}> + 新增</button>
+                </div>
+                <div className="row">
+                    <div className="form-inline">
+                        <CategoryGroup onCategoryChange={this.handleCategroyChange}/>
+                        <input type="email" className="form-control pull-right"
+                        placeholder="Search" ref="Search" onChange={this.handleSearchChange}/>
+                    </div>
+                </div>
+                <div className="row">
+                    <table ref="Grid"></table>
+                </div>
+            </div>
+      );
+    }
+});
+
+
+var GroupBuyStoreListInit = function (element) {
+     var Alert = ReactBootstrap.Alert;
+
+    React.render(<GroupBuyStoreList />,element);
+}

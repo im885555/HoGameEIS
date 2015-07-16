@@ -19,7 +19,7 @@ namespace HoGameEIS.Controllers
         }
 
         // GET api/groupbuystoreapi
-        public TableDto<GroupBuyStore> Get(int limit=1000, int offset=0, string search=null , string order = "asc")
+        public TableDto<GroupBuyStore> Get(int limit = 1000, int offset = 0, string search = null, string order = "asc", string category=null)
         {
             //http://localhost:50908/api/groupbuystoreapi?search=aaa&order=asc&limit=5&offset=0
             //(from p in playerList
@@ -35,13 +35,13 @@ namespace HoGameEIS.Controllers
                 if (search != null)
                     stores = stores.Where(o => o.StoreName.Contains(search)).ToList();
 
+                if (!String.IsNullOrEmpty(category))
+                    stores = stores.Where(o => o.Category.Contains(category)).ToList();
+
                 int total = stores.Count();
 
-                stores = stores.Skip(offset).Take(limit).ToList();
-
-               
-                                          
-
+                stores = stores.Skip(offset).Take(limit).ToList();               
+                                       
                 list = new TableDto<GroupBuyStore>() 
                 {
                     total = total,
@@ -72,6 +72,13 @@ namespace HoGameEIS.Controllers
         // DELETE api/groupbuystoreapi/5
         public void Delete(int id)
         {
+            using (var db = new HoGameEISContext())
+            {
+                var store = new GroupBuyStore() { GroupBuyStoreId = id };
+                db.GroupBuyStores.Attach(store);
+                db.GroupBuyStores.Remove(store);     
+                db.SaveChanges();
+            }
         }
     }
 }

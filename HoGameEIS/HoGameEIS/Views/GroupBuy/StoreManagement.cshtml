@@ -5,96 +5,12 @@
 
 @Html.Partial("_GroupBuyNav")
 
-<div class="row">
-    <div class="btn-group" role="group" aria-label="...">
-        <button type="button" class="btn btn-default active">全部</button>
-        <button type="button" class="btn btn-default">正餐</button>
-        <button type="button" class="btn btn-default">餐飲</button>
-        <button type="button" class="btn btn-default">點心</button>
-        <button type="button" class="btn btn-default">團購</button>
-        <button type="button" class="btn btn-default">活動</button>
-    </div>
-</div>
 
 
-<div class="row">
-    <div class="form-inline">
-        <div class="form-group">
-            <div class="input-group  search">
-                <input type="email" class="form-control" id="exampleInputEmail2" placeholder="Search">
-            </div>
-        </div>
-
-        <button type="button" class="btn btn-default" onclick="location.href = 'StoreManagementEdit'">新增</button>
-    </div>
-
-
-</div>
-
-
-<div class="row">
-    <table id="boot-table"></table>
-</div>
+<div id="content"></div>
 
 <script>
-    function operateFormatter(value, row, index) {
-        return "<button id='menuEdit' type='button' class='btn btn-default'>菜單資料管理</button>" +
-            "<button  id='storeEdit' type='button' class='btn btn-default'>修改店家資料</button>" +
-            "<button id='storeDelete' type='button' class='btn btn-default'>刪除</button>";
-    }
-
-    window.operateEvents = {
-        'click #menuEdit': function (e, value, row, index) {
-            alert('You click menuEdit icon, row: ' + JSON.stringify(row));
-            console.log(value, row, index);
-        },
-        'click #storeEdit': function (e, value, row, index) {
-            alert('You click storeEdit icon, row: ' + JSON.stringify(row));
-            console.log(value, row, index);
-        },
-        'click #storeDelete': function (e, value, row, index) {
-            alert('You click storeDelete icon, row: ' + JSON.stringify(row));
-            console.log(value, row, index);
-        }
-    };
-
-    var $table = $('#boot-table').bootstrapTable({
-        cache: false,
-        height: 500,
-        pagination: true,
-        pageList: [10, 25, 50, 100, 200],
-        sidePagination: "server",
-        columns: [{
-            field: 'StoreName',
-            title: '店家名稱'
-        }, {
-            field: 'Memo',
-            title: '備註'
-        }, {
-            field: 'operate',
-            title: '修改',
-            formatter: operateFormatter,
-            events: operateEvents
-        }]
-    });
-
-
-   // var $table = $('#boot-table').bootstrapTable({ query: {aaa:"aa"}});
-
-    $table.data("bootstrap.table").refresh({ url: "/api/groupbuystoreapi", query: { aaa: "aa" } });
-
-    //this.$toolbar.append(html.join(''));
-    var $search = $("#exampleInputEmail2");
-    var onSearch = false;
-    $search.off('keyup drop').on('keyup drop', function () {
-        if (!onSearch) {
-            onSearch = true;
-            setTimeout((function () {
-                $table.data("bootstrap.table").onSearch({ currentTarget: this });
-                onSearch = false;
-            }).bind(this), 1000);
-        }
-    });
-
-   // $table.data("bootstrap.table").onSearch({ currentTarget: $("#exampleInputEmail2")[0] })
+    StoreManagementInit(document.getElementById('content'));
+    //GroupBuyStoreListInit(document.getElementById('content'));
 </script>
+

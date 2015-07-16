@@ -64,13 +64,15 @@ footer {
   }
 
    .toggle-nav {
-    display:block;
-    position: relative;
-    
-      /* z-index: 101; */
-      left: -15px;
-      top: -20px;
+      display: block;
+      position: fixed;
+      z-index: 2000;
+      left: 0;
+      top: 0;
    }
+    .navbar-brand {
+        padding: 15px 15px 15px 100px
+    }
 }
 
 
