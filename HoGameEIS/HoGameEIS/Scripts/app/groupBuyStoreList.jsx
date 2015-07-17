@@ -171,13 +171,16 @@ var Button = ReactBootstrap.Button;
 var ButtonGroup =  ReactBootstrap.ButtonGroup;
 var Table = ReactBootstrap.Table;
 var Pagination =  ReactBootstrap.Pagination;
+var ButtonToolbar = ReactBootstrap.ButtonToolbar;
+var SplitButton = ReactBootstrap.SplitButton;
+var MenuItem = ReactBootstrap.MenuItem;
 
 var CategoryGroup = React.createClass({
     getInitialState: function() {
         return {current:""};
     },
     handleSelect: function(value){
-        //this.props.onCategoryChange(value);
+        this.props.onCategoryChange(value);
         this.setState({current:value});
     },
     render: function() {
@@ -194,11 +197,9 @@ var CategoryGroup = React.createClass({
                 <ButtonGroup>
                     {
                         btnData.map(function (data, i) {
-                            var btnClass ="btn btn-default",
-                                handleSelect = this.handleSelect.bind(this, data.value);
-                            data.value == this.state.current && (btnClass ="active");
+                            var handleSelect = this.handleSelect.bind(this, data.value);
                             return (
-                                <Button
+                                <Button key={i}
                                 className = {data.value == this.state.current ? "active" :""}
                                 onClick = {handleSelect}>{data.name}
                                 </Button>
@@ -211,85 +212,183 @@ var CategoryGroup = React.createClass({
     }
 });
 
-var PaginationAdvanced = React.createClass({
-  getInitialState() {
-    return {
-      activePage: 1
-    };
-  },
+var StoreGrid =  React.createClass({
+    getInitialState: function() {
+        return {
+            data:{
+                total:0,
+                rows:[]
+            }
+        };
+    },
+    componentDidMount: function () {
+        this.getStoreListFromServer();
+    },
+    componentWillReceiveProps: function(nextProps) {
+        this.getStoreListFromServer(nextProps);
+    },
+    getStoreListFromServer: function(nextProps){
+        //http://localhost:50908/api/groupbuystoreapi?search=d&order=asc&limit=10&offset=0&category=meal&_=1437099137914
+        //(new Date().getTime()).toString()
+        var props = nextProps || this.props;
+        var params = {
+            search: props.searchText,
+            limit: props.pageSize,
+            offset: props.pageSize * props.pageNumber - props.pageSize,
+            category:props.category
+        };
+        params[(new Date().getTime()).toString()]=null;
 
-  handleSelect(event, selectedEvent) {
-    this.setState({
-      activePage: selectedEvent.eventKey
-    });
-  },
-
-  render() {
-    return (
-      <Pagination
-        prev={true}
-        next={true}
-        first={true}
-        last={true}
-        ellipsis={true}
-        items={20}
-        maxButtons={5}
-        activePage={this.state.activePage}
-        onSelect={this.handleSelect} />
-    );
-  }
-});
-
-var StoreGrid = React.createClass({
+        $.ajax({
+            url: "/api/groupbuystoreapi/",
+            data: params,
+            type: "GET",
+            success: function(data) {
+                this.setState({data:data});
+                this.props.onFetch(data);
+            }.bind(this)
+        });
+    },
+    handleDelete: function(GroupBuyStoreId){
+        $.ajax({
+            url: "/api/groupbuystoreapi/" + GroupBuyStoreId,
+            type: "DELETE",
+            success: function(result) {
+                this.getStoreListFromServer();
+            }.bind(this)
+        });
+    },
     render: function() {
-        return(
-            <div>
-                <Table bordered condensed hover>
-                    <thead>
-                        <tr>
-                          <th>店家名稱</th>
-                          <th>備註</th>
-                          <th>修改</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                          <td>1</td>
-                          <td>Mark</td>
-                          <td>Otto</td>
-                        </tr>
-                    </tbody>
-                </Table>
-                <div className="form-inline">
-                    Showing 1 to 10 of 13 rows10  records per page
-                </div>
-            </div>
+        var rows = this.state.data.rows;
+        return (
+            <Table bordered condensed hover>
+                <thead>
+                    <tr>
+                      <th>店家名稱</th>
+                      <th>備註</th>
+                      <th>修改</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {
+                        rows.map(function(item,i){
+                            return (
+                                <tr key={item.GroupBuyStoreId}>
+                                    <td>{item.StoreName}</td>
+                                    <td>{item.Memo}</td>
+                                    <td>
+                                        <Button>菜單資料管理</Button>
+                                        <Button>修改店家資料</Button>
+                                        <Button
+                                            onClick={this.handleDelete.bind(this,
+                                                item.GroupBuyStoreId)}>
+                                            刪除
+                                        </Button>
+                                    </td>
+                                </tr>
+                            );
+                        }.bind(this))
+                    }
+                </tbody>
+            </Table>
         );
     }
 });
 
+
 var StoreManagement = React.createClass({
-    componentWillUnmount: function () {
-
+    getInitialState: function() {
+        return {
+            pageSize:5,
+            pageNumber:1,
+            searchText:"",
+            category:"",
+            total:0
+        };
     },
-    getStoreListFromServer: function(){
-
+    handleSelectPage(event, selectedEvent) {
+        this.setState({
+            pageNumber: selectedEvent.eventKey
+        });
+    },
+    handleCategroyChange:function(category){
+        this.setState({category:category});
+    },
+    handleSearchChange:function(){
+        this.setState({searchText:React.findDOMNode(this.refs.Search).value});
+    },
+    handleGridFetch: function(gridData){
+        this.setState({total:gridData.total});
+    },
+    handlePageSizeChange: function(size){
+        this.setState({pageSize:size});
     },
     render: function() {
+        var onAddClick = function(){location.href = "StoreManagementEdit"},
+            to = this.state.pageSize * this.state.pageNumber,
+            from = to - this.state.pageSize + 1,
+            pagingBtn = "";
+        if(this.state.pageSize<this.state.total){
+            var items = parseInt(this.state.total/this.state.pageSize)
+                +  (this.state.total/this.state.pageSize == 0 ? 0 : 1 ),
+                maxButtons = items>=5 ? 5 : items;
+            pagingBtn = <div className="pull-right">
+                <Pagination
+                  prev={true}
+                  next={true}
+                  first={true}
+                  last={true}
+                  ellipsis={true}
+                  items={items}
+                  maxButtons={maxButtons}
+                  activePage={this.state.pageNumber}
+                  onSelect={this.handleSelectPage} />
+            </div>;
+        }
         return(
-            <div>
+            <div className="store-management-content">
                 <div>
-                    <Button> + 新增</Button>
+                    <Button onClick={onAddClick}> + 新增 </Button>
                 </div>
                 <div>
                     <div className="form-inline">
-                        <CategoryGroup/>
+                        <CategoryGroup onCategoryChange={this.handleCategroyChange}/>
                         <input type="email" className="form-control pull-right"
                         placeholder="Search" ref="Search" onChange={this.handleSearchChange}/>
                     </div>
                 </div>
                 <div>
-                    <StoreGrid/>
+                <div>
+                    <StoreGrid
+                     pageSize={this.state.pageSize}
+                     pageNumber={this.state.pageNumber}
+                     searchText={this.state.searchText}
+                     category={this.state.category}
+                     onFetch={this.handleGridFetch}
+                     />
+                    <div>
+                        <div className="pull-left">
+                            Showing {from} to {to} of {this.state.total} rows
+                            <ButtonToolbar>
+                             <SplitButton title={this.state.pageSize} dropup>
+                               {
+                                   [5,10,25,50,100].map(function(size,i){
+                                       return(
+                                           <MenuItem
+                                           key={i}
+                                           onClick={this.handlePageSizeChange.bind(this,size)}>
+                                           {size}
+                                           </MenuItem>
+                                       );
+                                   }.bind(this))
+                               }
+                             </SplitButton>
+                            </ButtonToolbar>
+                            records per page
+                        </div>
+                        {pagingBtn}
+                    </div>
+                </div>
                 </div>
             </div>
         );
