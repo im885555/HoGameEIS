@@ -28,7 +28,7 @@ namespace HoGameEIS.App_Start
                 "~/Scripts/moment.js",
                 "~/Scripts/bootstrap.js",
                 "~/Scripts/bootstrap-datetimepicker.js",
-                "~/Scripts/bootstrap-table.js"));
+                "~/Scripts/app/namespace.js"));
 
             bundles.Add(new JsxBundle("~/bundles/app")
                 .IncludeDirectory("~/Scripts/app", "*.jsx", true));

@@ -35,30 +35,74 @@ namespace HoGameEIS.Controllers
         }
 
         [Authorize]
-        public ActionResult StoreManagementEdit()
+        public ActionResult StoreManagementEdit(int id =-1)
         {
-            return View();
+
+
+            GroupBuyStore store = new GroupBuyStore() 
+            { 
+                Category = "meal"
+            };
+
+            if (id != -1) 
+            {
+                store.GroupBuyStoreId = id;
+
+                using (var db = new HoGameEISContext())
+                {
+                    store = db.GroupBuyStores.Find(store.GroupBuyStoreId);
+                }
+            }
+            return View(store);
         }
 
         [Authorize]
         [HttpPost]
-        public ActionResult StoreManagementEdit(FormCollection formData)
+        public ActionResult StoreManagementEdit(FormCollection formData, int id = -1)
         {
-            using (var db = new HoGameEISContext())
-            {
-                GroupBuyStore groupBuyStore = new GroupBuyStore()
-                {
-                    StoreName = formData["StoreName"],
-                    Address = formData["Address"],
-                    Tel = formData["Tel"],
-                    Category = formData["Category"],
-                    Memo = formData["Memo"]
-                };
-                db.GroupBuyStores.Add(groupBuyStore);
-                db.SaveChanges();
-            }
+            GroupBuyStore groupBuyStore;
 
+            if (id != -1)
+            {
+                using (var db = new HoGameEISContext())
+                {
+                    groupBuyStore = db.GroupBuyStores.Where(o => o.GroupBuyStoreId == id).FirstOrDefault<GroupBuyStore>();
+
+                    if (groupBuyStore != null)
+                    {
+                        groupBuyStore.StoreName = formData["StoreName"];
+                        groupBuyStore.Address = formData["Address"];
+                        groupBuyStore.Tel = formData["Tel"];
+                        groupBuyStore.Category = formData["Category"];
+                        groupBuyStore.Memo = formData["Memo"];
+
+                        db.Entry(groupBuyStore).State = System.Data.Entity.EntityState.Modified;
+
+                        //4. call SaveChanges
+                        db.SaveChanges();
+                    }
+
+                }
+            }
+            else
+            {
+                using (var db = new HoGameEISContext())
+                {
+                    groupBuyStore = new GroupBuyStore()
+                    {
+                        StoreName = formData["StoreName"],
+                        Address = formData["Address"],
+                        Tel = formData["Tel"],
+                        Category = formData["Category"],
+                        Memo = formData["Memo"]
+                    };
+                    db.GroupBuyStores.Add(groupBuyStore);
+                    db.SaveChanges();
+                }
+            }
             return RedirectToAction("StoreManagement", "GroupBuy");
         }
+
+
     }
 }

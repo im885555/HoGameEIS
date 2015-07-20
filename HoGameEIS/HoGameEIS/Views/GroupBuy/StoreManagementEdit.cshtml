@@ -1,6 +1,9 @@
-﻿@{
+﻿@model HoGameEIS.Models.GroupBuyStore
+
+@{
     ViewBag.Title = "StoreManagementEdit";
 }
+
 
 @Html.Partial("_GroupBuyNav")
 
@@ -11,29 +14,29 @@
         <form role="form" method="post">
             <div class="form-group">
                 <label for="exampleInputEmail1">店家名稱</label>
-                <input type="text" class="form-control" name="StoreName" placeholder="輸入店家名稱" required>
+                <input type="text" class="form-control" name="StoreName" placeholder="輸入店家名稱" value=@Model.StoreName required>
                 <label for="exampleInputEmail1">電話</label>
-                <input type="text" class="form-control" name="Tel" placeholder="輸入電話">
+                <input type="text" class="form-control" name="Tel" placeholder="輸入電話" value=@Model.Tel>
                 <label for="exampleInputEmail1">地址</label>
-                <input type="text" class="form-control" name="Address" placeholder="輸入地址">
+                <input type="text" class="form-control" name="Address" placeholder="輸入地址" value=@Model.Address>
                 <label for="exampleInputEmail1">備註</label>
-                <input type="text" class="form-control" name="Memo" placeholder="輸入備註">
+                <input type="text" class="form-control" name="Memo" placeholder="輸入備註" value=@Model.Memo>
                 <label for="exampleInputEmail1">分類</label>
                 <div class="radio">
                     <label>
-                        <input type="radio" name="Category" value="meal" checked>正餐
+                        <input type="radio" name="Category" value="meal" @(Model.Category.Contains("meal") ? "checked" : "")>正餐
                     </label>
                     <label>
-                        <input type="radio" name="Category" value="drink">飲料
+                        <input type="radio" name="Category" value="drink" @(Model.Category.Contains("drink") ? "checked" : "")>飲料
                     </label>
                     <label>
-                        <input type="radio" name="Category" value="dessert">點心
+                        <input type="radio" name="Category" value="dessert" @(Model.Category.Contains("dessert") ? "checked" : "")>點心
                     </label>
                     <label>
-                        <input type="radio" name="Category" value="groupbuy">團購
+                        <input type="radio" name="Category" value="groupbuy" @(Model.Category.Contains("groupbuy") ? "checked" : "")>團購
                     </label>
                     <label>
-                        <input type="radio" name="Category" value="party">活動
+                        <input type="radio" name="Category" value="party" @(Model.Category.Contains("party") ? "checked" : "")>活動
                     </label>
                 </div>
             </div>

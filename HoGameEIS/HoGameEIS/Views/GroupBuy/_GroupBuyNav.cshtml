@@ -6,9 +6,9 @@
 <div class="row">
     <div class="col-sm-6">
         <ul class="nav nav-pills nav-justified">
-            <li role="presentation" @(currentAction.Contains("CreateGroupBuy") ? classActiveStr : "")><a href="CreateGroupBuy">我要開團</a></li>
-            <li role="presentation" @(currentAction.Contains("GroupBuyList") ? classActiveStr : "")><a href="GroupBuyList">當前團購列表</a></li>
-            <li role="presentation" @(currentAction.Contains("StoreManagement") ? classActiveStr : "")><a href="StoreManagement">店家管理</a></li>
+            <li role="presentation" @(currentAction.Contains("CreateGroupBuy") ? classActiveStr : "")><a href="/GroupBuy/CreateGroupBuy">我要開團</a></li>
+            <li role="presentation" @(currentAction.Contains("GroupBuyList") ? classActiveStr : "")><a href="/GroupBuy/GroupBuyList">當前團購列表</a></li>
+            <li role="presentation" @(currentAction.Contains("StoreManagement") ? classActiveStr : "")><a href="/GroupBuy/StoreManagement">店家管理</a></li>
         </ul>
     </div>
 </div>

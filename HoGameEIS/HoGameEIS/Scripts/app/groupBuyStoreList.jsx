@@ -1,4 +1,4 @@
-var StoreManagementInit = function(mountNode){
+App.StoreManagementInit = function(mountNode){
     var Button = ReactBootstrap.Button;
     var ButtonGroup =  ReactBootstrap.ButtonGroup;
     var Table = ReactBootstrap.Table;

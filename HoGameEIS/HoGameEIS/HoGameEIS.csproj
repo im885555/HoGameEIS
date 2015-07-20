@@ -330,14 +330,13 @@
     <Content Include="Content\less\bootstrap-datetimepicker-build.less" />
     <Content Include="Content\less\_bootstrap-datetimepicker.less" />
     <Content Include="readme.txt" />
-    <Content Include="Scripts\app\tutorial.jsx" />
     <None Include="Properties\PublishProfiles\2.pubxml" />
     <None Include="Properties\PublishProfiles\gene.pubxml" />
     <Content Include="Scripts\app\groupBuyStoreList.jsx" />
-    <None Include="Scripts\app\groupBuyStoreList.jsx_bak" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <None Include="Scripts\jquery-2.1.4-vsdoc.js" />
     <Content Include="Icon.png" />
+    <Content Include="Scripts\app\namespace.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
     <Content Include="Scripts\bootstrap-table.js" />
