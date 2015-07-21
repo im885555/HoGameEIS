@@ -19,6 +19,24 @@ namespace HoGameEIS.Controllers
         }
         public ActionResult Login() 
         {
+            /*初始化測試帳號*/
+            Employee emp;
+            using (var db = new HoGameEISContext())
+            {
+                emp = db.Employees.Where(o => o.Email == "gene.chen@hg-asia.com").FirstOrDefault();
+
+                if (emp == null) {
+                    emp = new Employee()
+                    {
+                        Email = "gene.chen@hg-asia.com",
+                        FullName = "Gene Chen"
+                    };
+                    db.Employees.Add(emp);
+                    db.SaveChanges();
+                }
+            }
+            /*初始化測試帳號*/
+
             if (User.Identity.IsAuthenticated)
             {
                 return RedirectToAction("Index", "Home");

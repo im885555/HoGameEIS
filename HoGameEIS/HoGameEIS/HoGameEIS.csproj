@@ -180,18 +180,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201507070829569_init.cs" />
-    <Compile Include="Migrations\201507070829569_init.Designer.cs">
-      <DependentUpon>201507070829569_init.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201507130656379_memo.cs" />
-    <Compile Include="Migrations\201507130656379_memo.Designer.cs">
-      <DependentUpon>201507130656379_memo.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201507140232020_Storename.cs" />
-    <Compile Include="Migrations\201507140232020_Storename.Designer.cs">
-      <DependentUpon>201507140232020_Storename.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\DTO\TableDto.cs" />
     <Compile Include="Models\Employee.cs" />
@@ -395,17 +383,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Home\Index.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201507070829569_init.resx">
-      <DependentUpon>201507070829569_init.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201507130656379_memo.resx">
-      <DependentUpon>201507130656379_memo.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201507140232020_Storename.resx">
-      <DependentUpon>201507140232020_Storename.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
