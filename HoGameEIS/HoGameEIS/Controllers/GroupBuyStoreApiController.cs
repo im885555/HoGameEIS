@@ -18,14 +18,10 @@ namespace HoGameEIS.Controllers
         
         }
 
+        //取得店家清單
         // GET api/groupbuystoreapi
         public TableDto<GroupBuyStore> Get(int limit = 1000, int offset = 0, string search = null, string order = "asc", string category=null)
         {
-            //http://localhost:50908/api/groupbuystoreapi?search=aaa&order=asc&limit=5&offset=0
-            //(from p in playerList
-            //          where p.Length <= 4
-            //          select p)
-
             List<GroupBuyStore> stores; 
             TableDto<GroupBuyStore> list; 
             using (var db = new HoGameEISContext())
@@ -47,7 +43,6 @@ namespace HoGameEIS.Controllers
                     total = total,
                     rows = stores
                 };
-               // Table<List<GroupBuyStore>> a;
             }
 
             return list;
