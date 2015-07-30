@@ -44,7 +44,6 @@ namespace HoGameEIS.App_Start
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/bootstrap-datetimepicker.css",
-                      "~/Content/bootstrap-table.css",
                       "~/Content/site.css"));
         }
     }

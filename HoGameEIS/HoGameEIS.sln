@@ -3,9 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HoGameEIS", "HoGameEIS\HoGameEIS.csproj", "{1AEFF6C0-CA5D-45A1-B8E5-C5886C41DE07}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HoGameEIS.Tests", "HoGameEIS.Tests\HoGameEIS.Tests.csproj", "{72725DDB-C477-42AA-A2D4-62335C7AB67D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HoGameEIS", "HoGameEIS\HoGameEIS.csproj", "{830F4A91-1064-4630-A5D2-AE61380B20F8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,14 +11,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{1AEFF6C0-CA5D-45A1-B8E5-C5886C41DE07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1AEFF6C0-CA5D-45A1-B8E5-C5886C41DE07}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1AEFF6C0-CA5D-45A1-B8E5-C5886C41DE07}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1AEFF6C0-CA5D-45A1-B8E5-C5886C41DE07}.Release|Any CPU.Build.0 = Release|Any CPU
-		{72725DDB-C477-42AA-A2D4-62335C7AB67D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{72725DDB-C477-42AA-A2D4-62335C7AB67D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{72725DDB-C477-42AA-A2D4-62335C7AB67D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{72725DDB-C477-42AA-A2D4-62335C7AB67D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{830F4A91-1064-4630-A5D2-AE61380B20F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{830F4A91-1064-4630-A5D2-AE61380B20F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{830F4A91-1064-4630-A5D2-AE61380B20F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{830F4A91-1064-4630-A5D2-AE61380B20F8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
