@@ -8,15 +8,15 @@ namespace HoGameEIS.Models.Mapping
         public GroupBuySubscriberMap()
         {
             // Primary Key
-            this.HasKey(t => t.GroupBuySubscriberId);
+            this.HasKey(t => t.SubscriberId);
 
             // Properties
             // Table & Column Mappings
             this.ToTable("GroupBuySubscribers");
-            this.Property(t => t.GroupBuySubscriberId).HasColumnName("GroupBuySubscriberId");
+            this.Property(t => t.SubscriberId).HasColumnName("SubscriberId");
             this.Property(t => t.EmployeeId).HasColumnName("EmployeeId");
             this.Property(t => t.Amount).HasColumnName("Amount");
-            this.Property(t => t.GroupBuySubItemId).HasColumnName("GroupBuySubItemId");
+            this.Property(t => t.SubItemId).HasColumnName("SubItemId");
 
             // Relationships
             this.HasRequired(t => t.Employee)
@@ -24,7 +24,7 @@ namespace HoGameEIS.Models.Mapping
                 .HasForeignKey(d => d.EmployeeId);
             this.HasRequired(t => t.GroupBuySubItem)
                 .WithMany(t => t.GroupBuySubscribers)
-                .HasForeignKey(d => d.GroupBuySubItemId);
+                .HasForeignKey(d => d.SubItemId);
 
         }
     }

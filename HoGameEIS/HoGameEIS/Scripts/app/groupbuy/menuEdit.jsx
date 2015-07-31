@@ -1,4 +1,6 @@
-﻿var testData = [];
+﻿var testData = [
+    
+];
 
 App.StoreManagementMenuInit = function (mountNode) {
     var Table = ReactBootstrap.Table;

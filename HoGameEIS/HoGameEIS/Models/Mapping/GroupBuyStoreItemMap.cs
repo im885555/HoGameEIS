@@ -8,12 +8,12 @@ namespace HoGameEIS.Models.Mapping
         public GroupBuyStoreItemMap()
         {
             // Primary Key
-            this.HasKey(t => t.GroupBuyStoreItemId);
+            this.HasKey(t => t.ItemId);
 
             // Properties
             // Table & Column Mappings
             this.ToTable("GroupBuyStoreItems");
-            this.Property(t => t.GroupBuyStoreItemId).HasColumnName("GroupBuyStoreItemId");
+            this.Property(t => t.ItemId).HasColumnName("ItemId");
             this.Property(t => t.ItemName).HasColumnName("ItemName");
             this.Property(t => t.StoreId).HasColumnName("StoreId");
 

@@ -10,7 +10,7 @@ namespace HoGameEIS.Models
             this.GroupBuySubscribers = new List<GroupBuySubscriber>();
         }
 
-        public int GroupBuySubItemId { get; set; }
+        public int SubItemId { get; set; }
         public string SubItemName { get; set; }
         public int Price { get; set; }
         public int ItemId { get; set; }
