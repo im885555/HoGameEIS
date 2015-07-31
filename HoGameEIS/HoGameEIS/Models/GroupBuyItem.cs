@@ -10,7 +10,7 @@ namespace HoGameEIS.Models
             this.GroupBuySubItems = new List<GroupBuySubItem>();
         }
 
-        public int GroupBuyItemId { get; set; }
+        public int ItemId { get; set; }
         public string ItemName { get; set; }
         public int GroupBuyId { get; set; }
         public virtual GroupBuy GroupBuy { get; set; }

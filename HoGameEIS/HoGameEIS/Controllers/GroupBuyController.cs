@@ -59,7 +59,7 @@ namespace HoGameEIS.Controllers
             {
                 using (var db = new HoGameEISContext())
                 {
-                    groupBuyStore = db.GroupBuyStores.Where(o => o.GroupBuyStoreId == id).FirstOrDefault<GroupBuyStore>();
+                    groupBuyStore = db.GroupBuyStores.Where(o => o.StoreId == id).FirstOrDefault<GroupBuyStore>();
 
                     if (groupBuyStore != null)
                     {

@@ -91,7 +91,7 @@ App.StoreManagementInit = function(mountNode){
             this.setState({confirmShow:false});
             if(result){
                 $.ajax({
-                    url: "/api/groupbuystoreapi/" + this.state.selectedData.GroupBuyStoreId,
+                    url: "/api/groupbuystoreapi/" + this.state.selectedData.StoreId,
                     type: "DELETE",
                     success: function(result) {
                         this.props.refresh();
@@ -119,12 +119,12 @@ App.StoreManagementInit = function(mountNode){
                             {
                                 rows.map(function(item,i){
                                     return (
-                                        <tr key={item.GroupBuyStoreId}>
+                                        <tr key={item.StoreId}>
                                             <td>{item.StoreName}</td>
                                             <td>{item.Memo}</td>
                                             <td>
-                                                <Button onClick={()=>location.href = "StoreManagementMenuEdit/"+ item.GroupBuyStoreId}>菜單資料管理</Button>
-                                                <Button onClick={()=>location.href = "StoreManagementEdit/"+ item.GroupBuyStoreId}>
+                                                <Button onClick={()=>location.href = "StoreManagementMenuEdit/"+ item.StoreId}>菜單資料管理</Button>
+                                                <Button onClick={()=>location.href = "StoreManagementEdit/"+ item.StoreId}>
                                                     修改店家資料
                                                 </Button>
                                                 <Button onClick={()=>this.confirmDelete(item)}>

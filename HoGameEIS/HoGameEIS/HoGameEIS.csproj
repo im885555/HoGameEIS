@@ -328,6 +328,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\DTO\TableDto.cs" />
     <Compile Include="Models\Employee.cs" />
     <Compile Include="Models\GroupBuy.cs" />

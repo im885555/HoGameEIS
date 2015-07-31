@@ -13,7 +13,7 @@ namespace HoGameEIS.Models
         }
 
 
-        public int GroupBuyStoreId { get; set; }
+        public int StoreId { get; set; }
         
         [Required]
         public string StoreName { get; set; }

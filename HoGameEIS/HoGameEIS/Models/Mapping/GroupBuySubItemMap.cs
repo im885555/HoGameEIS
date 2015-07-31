@@ -16,12 +16,12 @@ namespace HoGameEIS.Models.Mapping
             this.Property(t => t.GroupBuySubItemId).HasColumnName("GroupBuySubItemId");
             this.Property(t => t.SubItemName).HasColumnName("SubItemName");
             this.Property(t => t.Price).HasColumnName("Price");
-            this.Property(t => t.GroupBuyItemId).HasColumnName("GroupBuyItemId");
+            this.Property(t => t.ItemId).HasColumnName("ItemId");
 
             // Relationships
             this.HasRequired(t => t.GroupBuyItem)
                 .WithMany(t => t.GroupBuySubItems)
-                .HasForeignKey(d => d.GroupBuyItemId);
+                .HasForeignKey(d => d.ItemId);
 
         }
     }

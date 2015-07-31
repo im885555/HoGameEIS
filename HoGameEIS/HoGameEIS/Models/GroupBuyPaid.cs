@@ -5,7 +5,7 @@ namespace HoGameEIS.Models
 {
     public partial class GroupBuyPaid
     {
-        public int GroupBuyPaidId { get; set; }
+        public int PaidId { get; set; }
         public int EmployeeId { get; set; }
         public int Paid { get; set; }
         public int GroupBuyId { get; set; }

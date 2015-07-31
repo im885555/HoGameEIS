@@ -7,7 +7,7 @@ namespace HoGameEIS.Models
     {
         public int GroupBuyStoreMenuImageId { get; set; }
         public string path { get; set; }
-        public int GroupBuyStoreId { get; set; }
+        public int StoreId { get; set; }
         public virtual GroupBuyStore GroupBuyStore { get; set; }
     }
 }

@@ -53,12 +53,12 @@ namespace HoGameEIS.Controllers
         {
             GroupBuyStore store = new GroupBuyStore()
             {
-                GroupBuyStoreId = id
+                StoreId = id
             };
 
             using (var db = new HoGameEISContext())
             {
-                store = db.GroupBuyStores.Find(store.GroupBuyStoreId);
+                store = db.GroupBuyStores.Find(store.StoreId);
             }
             return store;
         }
@@ -78,7 +78,7 @@ namespace HoGameEIS.Controllers
         {
             using (var db = new HoGameEISContext())
             {
-                var store = new GroupBuyStore() { GroupBuyStoreId = id };
+                var store = new GroupBuyStore() { StoreId = id };
                 db.GroupBuyStores.Attach(store);
                 db.GroupBuyStores.Remove(store);     
                 db.SaveChanges();
