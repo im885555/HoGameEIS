@@ -37,8 +37,6 @@ namespace HoGameEIS.Controllers
         [Authorize]
         public ActionResult StoreManagementEdit(int id =-1)
         {
-
-
             GroupBuyStore store = new GroupBuyStore() 
             { 
                 Category = "meal"
@@ -46,12 +44,7 @@ namespace HoGameEIS.Controllers
 
             if (id != -1) 
             {
-                store.GroupBuyStoreId = id;
-
-                using (var db = new HoGameEISContext())
-                {
-                    store = db.GroupBuyStores.Find(store.GroupBuyStoreId);
-                }
+                store = new GroupBuyStoreApiController().Get(id);
             }
             return View(store);
         }

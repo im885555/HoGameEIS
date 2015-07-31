@@ -81,3 +81,10 @@ footer {
 .create-groupbuy-form {
     margin:3% 0 0 0 ;
 }
+
+.upload-image-zone {
+    border: 2px dashed #0087F7;
+    border-radius: 5px;
+    background: white;
+    min-height:300px;
+}

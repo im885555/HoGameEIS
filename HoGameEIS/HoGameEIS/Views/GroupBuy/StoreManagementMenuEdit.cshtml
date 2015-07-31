@@ -2,6 +2,14 @@
 @{
     ViewBag.Title = "StoreManagementMenu";
 }
+@Html.Partial("_GroupBuyNav")
 
-<h2>StoreManagementMenu</h2>
 
+
+<div id="content"></div>
+
+@section scripts{
+    <script>
+        App.StoreManagementMenuInit(document.getElementById("content"));
+    </script>
+}

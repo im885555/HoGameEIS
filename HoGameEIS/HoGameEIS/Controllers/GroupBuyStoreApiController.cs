@@ -49,9 +49,18 @@ namespace HoGameEIS.Controllers
         }
 
         // GET api/groupbuystoreapi/5
-        public string Get(int id)
+        public GroupBuyStore Get(int id)
         {
-            return "value";
+            GroupBuyStore store = new GroupBuyStore()
+            {
+                GroupBuyStoreId = id
+            };
+
+            using (var db = new HoGameEISContext())
+            {
+                store = db.GroupBuyStores.Find(store.GroupBuyStoreId);
+            }
+            return store;
         }
 
         // POST api/groupbuystoreapi
