@@ -6,10 +6,10 @@ namespace HoGameEIS.Models
 {
     public partial class HoGameEISContext : DbContext
     {
-        static HoGameEISContext()
-        {
-            Database.SetInitializer<HoGameEISContext>(null);
-        }
+        //static HoGameEISContext()
+        //{
+        //    Database.SetInitializer<HoGameEISContext>(null);
+        //}
 
         public HoGameEISContext()
             : base("Name=HoGameEISContext")

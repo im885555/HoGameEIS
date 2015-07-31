@@ -1,4 +1,4 @@
-namespace HoGameEIS.Migrations
+﻿namespace HoGameEIS.Migrations
 {
     using System;
     using System.Data.Entity;
@@ -9,7 +9,7 @@ namespace HoGameEIS.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = false;
+            AutomaticMigrationsEnabled = true;
         }
 
         protected override void Seed(HoGameEIS.Models.HoGameEISContext context)
@@ -26,6 +26,40 @@ namespace HoGameEIS.Migrations
             //      new Person { FullName = "Rowan Miller" }
             //    );
             //
+            context.GroupBuyStores.AddOrUpdate(
+               s => s.StoreName,
+                new Models.GroupBuyStore()
+                {
+                    StoreName = "八方雲集",
+                    Category = "meal"
+                },
+                new Models.GroupBuyStore()
+                {
+                    StoreName = "茶湯會",
+                    Category = "drink"
+                },
+                new Models.GroupBuyStore()
+                {
+                    StoreName = "甲味飯包",
+                    Category = "meal"
+                },
+                new Models.GroupBuyStore()
+                {
+                    StoreName = "惡魔雞排",
+                    Category = "dessert"
+                }
+               );
+
+            context.Employees.AddOrUpdate(
+                e =>e.Email,
+                 new Models.Employee()
+                 {
+                     Email = "gene.chen@hg-asia.com",
+                     FullName = "Gene Chen"
+                 }
+                );
+     
+   
         }
     }
 }

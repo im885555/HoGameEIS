@@ -1,5 +1,8 @@
 ﻿var testData = [
-    
+    {
+        ItemId:1,
+        ItemName: "招牌鍋貼"
+    }
 ];
 
 App.StoreManagementMenuInit = function (mountNode) {
@@ -44,49 +47,49 @@ App.StoreManagementMenuInit = function (mountNode) {
                 };
 
             return (
-                  <Table bordered condensed>
-                    <thead>
-                      <tr>
-                        <th colSpan="5">{storeInfo.StoreName} - {category[storeInfo.Category]}</th>
-                      </tr>
-                      <tr>
-                        <th colSpan="5">
-                            <div className="text-danger">
-                                雙擊名稱、價錢、備註可直接修改內容
-                                <Button className="pull-right">新增項目</Button>
-                            </div>
-                        </th>
-                      </tr>
-                      <tr>
-                        <th>功能</th>
-                        <th>名稱</th>
-                        <th>子項</th>
-                        <th>價錢</th>
-                        <th>功能</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td rowSpan="2">
-                            <Button>刪除</Button>
-                            <Button>新增子項</Button>
-                        </td>
-                        <td rowSpan="2">招牌鍋貼</td>
-                        <td>10</td>
-                        <td>50</td>
-                        <td>
-                            <Button>刪除</Button>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>12</td>
-                        <td>60</td>
-                        <td>
-                            <Button>刪除</Button>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </Table>
+                    <div>
+                        <h3>{storeInfo.StoreName} - {category[storeInfo.Category]}</h3>
+                      <Table bordered condensed>
+                        <thead>
+                          <tr>
+                            <th colSpan="5">
+                                <div className="text-danger">
+                                    雙擊名稱、價錢、備註可直接修改內容
+                                    <Button className="pull-right">新增項目</Button>
+                                </div>
+                            </th>
+                          </tr>
+                          <tr>
+                            <th>功能</th>
+                            <th>名稱</th>
+                            <th>子項</th>
+                            <th>價錢</th>
+                            <th>功能</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td rowSpan="2">
+                                <Button>刪除</Button>
+                                <Button>新增子項</Button>
+                            </td>
+                            <td rowSpan="2">招牌鍋貼</td>
+                            <td>10</td>
+                            <td>50</td>
+                            <td>
+                                <Button>刪除</Button>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>12</td>
+                            <td>60</td>
+                            <td>
+                                <Button>刪除</Button>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </Table>
+                  </div>
            );
         }
     });
