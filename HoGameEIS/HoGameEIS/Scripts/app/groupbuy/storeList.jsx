@@ -123,7 +123,7 @@ App.StoreManagementInit = function(mountNode){
                                             <td>{item.StoreName}</td>
                                             <td>{item.Memo}</td>
                                             <td>
-                                                <Button>菜單資料管理</Button>
+                                                <Button onClick={()=>location.href = "StoreManagementMenuEdit/"+ item.GroupBuyStoreId}>菜單資料管理</Button>
                                                 <Button onClick={()=>location.href = "StoreManagementEdit/"+ item.GroupBuyStoreId}>
                                                     修改店家資料
                                                 </Button>

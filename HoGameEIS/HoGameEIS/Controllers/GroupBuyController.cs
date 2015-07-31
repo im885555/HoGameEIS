@@ -103,6 +103,10 @@ namespace HoGameEIS.Controllers
             return RedirectToAction("StoreManagement", "GroupBuy");
         }
 
-
+        [Authorize]
+        public ActionResult StoreManagementMenuEdit(int Id)
+        {
+            return View();
+        }
     }
 }
