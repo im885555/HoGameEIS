@@ -3,6 +3,7 @@
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
+    using System.IO;
     using System.Linq;
 
     internal sealed class Configuration : DbMigrationsConfiguration<HoGameEIS.Models.HoGameEISContext>
@@ -58,7 +59,7 @@
                      FullName = "Gene Chen"
                  }
                 );
-     
+            //context.Database.ExecuteSqlCommand(File.ReadAllText(AppDomain.CurrentDomain.BaseDirectory + "\\Sql\\usp_AddGroupBuyMenuItem.sql"));
    
         }
     }

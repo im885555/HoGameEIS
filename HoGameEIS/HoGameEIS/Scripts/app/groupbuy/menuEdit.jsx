@@ -34,7 +34,16 @@ App.StoreManagementMenuInit = function (mountNode) {
                 }.bind(this)
             });
         },
-
+        handleNewItem: function () {
+            $.ajax({
+                url: "/api/GroupBuyStoreMenuApi",
+                type: "POST",
+                data: { StoreId: this.props.storeId },
+                success: function (data) {
+                   
+                }.bind(this)
+            });
+        },
         render: function () {
             var storeInfo = this.state.storeInfo,
                 category = {
@@ -55,7 +64,7 @@ App.StoreManagementMenuInit = function (mountNode) {
                             <th colSpan="5">
                                 <div className="text-danger">
                                     雙擊名稱、價錢、備註可直接修改內容
-                                    <Button className="pull-right">新增項目</Button>
+                                    <Button className="pull-right" onClick={()=>this.handleNewItem()}>新增項目</Button>
                                 </div>
                             </th>
                           </tr>
