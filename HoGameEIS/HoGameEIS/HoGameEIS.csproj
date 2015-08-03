@@ -327,6 +327,7 @@
     <Compile Include="Controllers\GroupBuyController.cs" />
     <Compile Include="Controllers\GroupBuyStoreApiController.cs" />
     <Compile Include="Controllers\GroupBuyStoreMenuApiController.cs" />
+    <Compile Include="Controllers\GroupBuyStoreMenuSubApiController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\HumanResourceController.cs" />
     <Compile Include="Global.asax.cs">

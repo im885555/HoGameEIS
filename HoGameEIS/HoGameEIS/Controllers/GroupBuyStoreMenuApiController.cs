@@ -23,8 +23,12 @@ namespace HoGameEIS.Controllers
             List<GroupBuyStoreItem> menu = new List<GroupBuyStoreItem>();
             using (var db = new HoGameEISContext())
             {
-                menu =  db.GroupBuyStoreItems.Where(o => o.StoreId == Id).ToList();
+                //menu =  db.GroupBuyStoreItems.Where(o => o.StoreId == Id).ToList();
+
+                List<GroupBuyStoreItem> a = db.Database.SqlQuery<GroupBuyStoreItem>("EXEC [dbo].[usp_GetGroupBuyStoreMenu] @StoreId = 1").ToList();
             }
+           
+          
 
             return "value";
         }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HoGameEIS.Models
 {
@@ -15,5 +16,13 @@ namespace HoGameEIS.Models
         public int StoreId { get; set; }
         public virtual GroupBuyStore GroupBuyStore { get; set; }
         public virtual ICollection<GroupBuyStoreSubItem> SubItems { get; set; }
+
+        [NotMapped]
+        public int SubItemId { get; set; }
+        [NotMapped]
+        public string SubItemName { get; set; }
+        [NotMapped]
+        public int Price { get; set; }
+
     }
 }
