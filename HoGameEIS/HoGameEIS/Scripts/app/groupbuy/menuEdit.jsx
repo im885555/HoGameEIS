@@ -44,23 +44,62 @@
         }
     });
 
-    var EditableTextBox = React.createClass({
-        getInitialState: function () {
-            return {
-
-            };
+    var TdEditable = React.createClass({
+        changeTimeout:null,
+        emitChange: function(){
+            function placeCaretAtEnd(el) {
+                el.focus();
+                if (typeof window.getSelection != "undefined"
+                        && typeof document.createRange != "undefined") {
+                    var range = document.createRange();
+                    range.selectNodeContents(el);
+                    range.collapse(false);
+                    var sel = window.getSelection();
+                    sel.removeAllRanges();
+                    sel.addRange(range);
+                } else if (typeof document.body.createTextRange != "undefined") {
+                    var textRange = document.body.createTextRange();
+                    textRange.moveToElementText(el);
+                    textRange.collapse(false);
+                    textRange.select();
+                }
+            }
+            return;
+            var str=$(this.getDOMNode()).text();
+            if(!!this.props.number){
+                str = $.trim(str);
+                str = !str ? "0" : str;
+                str = str.replace(/[^0-9]/g,"");
+                str = parseInt(str);
+            }
+            $(this.getDOMNode()).text(str);
+            placeCaretAtEnd(this.getDOMNode());
+            !!this.changeTimeout && clearTimeout(this.changeTimeout);
+            this.changeTimeout = setTimeout(function () {
+               // !!this.props.handleChange && this.props.handleChange(this.props.Id, str);
+            }.bind(this), 1000);
+           // this.props.handleChange(this.props.Id,str);
         },
-        componentDidMount: function () {
-
+        handlePaste: function (e) {
+            //event.preventDefault();
+            setTimeout(function () {
+                var str = $(this.getDOMNode()).text();
+                $(this.getDOMNode()).text(str);
+            }.bind(this), 0);
+            
         },
-        render: function () {
-            //contenteditable
+        render: function() {
             return (
-                <div></div>
+              <td
+              {...this.props}
+              onInput={this.emitChange}
+              onPaste={this.handlePaste} 
+              contentEditable
+              dangerouslySetInnerHTML={{__html: this.props.html}}>
+              </td>
             );
         }
     });
-
 
     var MenuList = React.createClass({
         getInitialState: function () {
@@ -94,11 +133,7 @@
             $.ajax({
                 url: "/api/GroupBuyStoreMenuSubApi",
                 type: "POST",
-                data: {
-                    ItemId: itemId,
-                    SubItemName: "子項",
-                    price: 0
-                },
+                data: {ItemId: itemId},
                 success: function (data) {
                     this.getStoreMenuFromServer();
                 }.bind(this)
@@ -122,6 +157,18 @@
                 }.bind(this)
             });
         },
+        handleItemNameEdit: function (itemId, itemName) {
+           
+           //api/GroupBuyStoreMenuApi/5
+           $.ajax({
+               url: "/api/GroupBuyStoreMenuApi/" + itemId,
+               type: "PUT",
+               data:{ ItemName: itemName},
+               success: function (data) {
+                   this.getStoreMenuFromServer();
+               }.bind(this)
+           });
+        },
         render: function () {
             var menuList = this.state.menuList;
 
@@ -132,7 +179,7 @@
                           <tr>
                             <th colSpan="5">
                                 <div className="text-danger">
-                                    雙擊名稱、價錢、備註可直接修改內容
+                                    點擊名稱、價錢、備註可直接修改內容
                                     <Button className="pull-right" onClick={()=>this.handleNewItem()}>新增項目</Button>
                                 </div>
                             </th>
@@ -151,24 +198,29 @@
                                     var _items =[];
                                     item.SubItems.map(function(sub,i){
                                         var subItemElement =[
-                                            <td>{sub.SubItemName}</td>,
-                                            <td>{sub.Price}</td>,
+                                            <TdEditable  html={sub.SubItemName||""} ></TdEditable>,
+                                            <TdEditable  number={true} html={sub.Price}></TdEditable>,
                                             <td><Button onClick={()=>this.handleDeleteSubItem(sub.SubItemId)}>刪除</Button></td>
                                         ];
                                         if(i==0){
                                             _items.push(
-                                                <tr>
+                                                <tr key={sub.SubItemId}>
                                                   <td rowSpan={item.SubItems.length}>
                                                       <Button onClick={()=>this.handleDeleteItem(item.ItemId)}>刪除</Button>
                                                       <Button onClick={()=>this.handleNewSubItem(item.ItemId)}>新增子項</Button>
                                                   </td>
-                                                  <td rowSpan={item.SubItems.length} contentEditable>{item.ItemName}</td>
+                                                  <TdEditable
+                                                    rowSpan={item.SubItems.length}
+                                                    html={item.ItemName||""}
+                                                    handleChange={this.handleItemNameEdit}
+                                                    Id={item.ItemId}>
+                                                  </TdEditable>
                                                   {subItemElement}
                                                 </tr>
                                             );
                                         }else{
                                             _items.push(
-                                                <tr>
+                                                <tr key={sub.SubItemId}>
                                                   {subItemElement}
                                                 </tr>
                                             );

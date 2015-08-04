@@ -18,12 +18,12 @@ namespace HoGameEIS.Controllers
         }
 
         // GET: api/GroupBuyStoreMenuApi/5
-        public List<GroupBuyStoreItem> Get(int Id)
+        public List<GroupBuyStoreItem> Get(int id)
         {
             List<GroupBuyStoreItem> menu = new List<GroupBuyStoreItem>();
             using (var db = new HoGameEISContext())
             {
-                menu =  db.GroupBuyStoreItems.Where(o => o.StoreId == Id).ToList();
+                menu =  db.GroupBuyStoreItems.Where(o => o.StoreId == id).ToList();
 
                 menu.ForEach(m => m.SubItems
                 = db.GroupBuyStoreSubItems.Where(s => s.ItemId == m.ItemId).ToList());
@@ -45,8 +45,15 @@ namespace HoGameEIS.Controllers
         }
 
         // PUT: api/GroupBuyStoreMenuApi/5
-        public void Put(int id, [FromBody]string value)
+        public void Put(int id, [FromBody]GroupBuyStoreItem item)
         {
+            using (var db = new HoGameEISContext())
+            {
+                GroupBuyStoreItem _item =  db.GroupBuyStoreItems.Where(o => o.ItemId == id).FirstOrDefault();
+                _item.ItemName = item.ItemName;
+                db.Entry(_item).State = System.Data.Entity.EntityState.Modified;
+                db.SaveChanges();
+            }
         }
 
         // DELETE: api/GroupBuyStoreMenuApi/5

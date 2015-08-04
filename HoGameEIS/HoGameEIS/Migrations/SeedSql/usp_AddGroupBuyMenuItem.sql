@@ -16,7 +16,7 @@ BEGIN
 			   ([ItemName],
 			   [StoreId])
 		 VALUES
-			   (N'新項目',@StoreId)
+			   (N'',@StoreId)
 
 	SELECT @itemID =SCOPE_IDENTITY() 
 	INSERT INTO [dbo].[GroupBuyStoreSubItems]
@@ -24,7 +24,7 @@ BEGIN
 			   [Price],
 			   [ItemId])
 		 VALUES
-			   (N'子項',
+			   (N'',
 			   0,
 			   @ItemID)
 	COMMIT TRANSACTION
