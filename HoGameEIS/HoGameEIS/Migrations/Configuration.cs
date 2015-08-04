@@ -59,8 +59,18 @@
                      FullName = "Gene Chen"
                  }
                 );
-            //context.Database.ExecuteSqlCommand(File.ReadAllText(AppDomain.CurrentDomain.BaseDirectory + "\\Sql\\usp_AddGroupBuyMenuItem.sql"));
-   
+
+            executeSql(context, "drop_procedure.sql");
+            executeSql(context, "usp_AddGroupBuyMenuItem.sql");
+            executeSql(context, "usp_DeleteGroupBuyMenuSubItem.sql");
+            executeSql(context, "usp_DeleteGroupBuyMenuItem.sql");
+
+            //usp_DeleteGroupBuyMenuItem
+            //[usp_DeleteGroupBuyMenuSubItem]
+        }
+        private void executeSql(HoGameEIS.Models.HoGameEISContext context, string scriptFile)
+        {
+            context.Database.ExecuteSqlCommand(File.ReadAllText(AppDomain.CurrentDomain.BaseDirectory + "\\Migrations\\SeedSql\\" + scriptFile));
         }
     }
 }

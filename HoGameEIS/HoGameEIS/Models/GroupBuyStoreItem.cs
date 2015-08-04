@@ -17,12 +17,12 @@ namespace HoGameEIS.Models
         public virtual GroupBuyStore GroupBuyStore { get; set; }
         public virtual ICollection<GroupBuyStoreSubItem> SubItems { get; set; }
 
-        [NotMapped]
-        public int SubItemId { get; set; }
-        [NotMapped]
-        public string SubItemName { get; set; }
-        [NotMapped]
-        public int Price { get; set; }
+        //[NotMapped]
+        //public int SubItemId { get; set; }
+        //[NotMapped]
+        //public string SubItemName { get; set; }
+        //[NotMapped]
+        //public int Price { get; set; }
 
     }
 }

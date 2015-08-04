@@ -1,11 +1,4 @@
-﻿var testData = [
-    {
-        ItemId:1,
-        ItemName: "招牌鍋貼"
-    }
-];
-
-App.StoreManagementMenuInit = function (mountNode) {
+﻿App.StoreManagementMenuInit = function (mountNode) {
     var Table = ReactBootstrap.Table;
     var Button = ReactBootstrap.Button;
 
@@ -16,7 +9,7 @@ App.StoreManagementMenuInit = function (mountNode) {
     };
     var storeId = getRouterId();
 
-    var MenuList = React.createClass({
+    var StoreInfo = React.createClass({
         getInitialState: function () {
             return {
                 storeInfo: {
@@ -34,30 +27,106 @@ App.StoreManagementMenuInit = function (mountNode) {
                 }.bind(this)
             });
         },
+        render: function () {
+            var storeInfo = this.state.storeInfo,
+               category = {
+                   "": "",
+                   meal: "正餐",
+                   drink: "飲料",
+                   dessert: "點心",
+                   groupbuy: "團購",
+                   party: "活動"
+               };
+
+            return (
+                <h3>{storeInfo.StoreName} - {category[storeInfo.Category]}</h3>
+            );
+        }
+    });
+
+    var EditableTextBox = React.createClass({
+        getInitialState: function () {
+            return {
+
+            };
+        },
+        componentDidMount: function () {
+
+        },
+        render: function () {
+            //contenteditable
+            return (
+                <div></div>
+            );
+        }
+    });
+
+
+    var MenuList = React.createClass({
+        getInitialState: function () {
+            return {
+                menuList:[]
+            };
+        },
+        componentDidMount: function () {
+            this.getStoreMenuFromServer();
+        },
+        getStoreMenuFromServer: function () {
+            $.ajax({
+                url: "/api/GroupBuyStoreMenuApi/" + this.props.storeId,
+                type: "GET",
+                success: function (data) {
+                    this.setState({ menuList: data });
+                }.bind(this)
+            });
+        },
         handleNewItem: function () {
             $.ajax({
                 url: "/api/GroupBuyStoreMenuApi",
                 type: "POST",
                 data: { StoreId: this.props.storeId },
                 success: function (data) {
-                   
+                    this.getStoreMenuFromServer();
+                }.bind(this)
+            });
+        },
+        handleNewSubItem: function (itemId) {
+            $.ajax({
+                url: "/api/GroupBuyStoreMenuSubApi",
+                type: "POST",
+                data: {
+                    ItemId: itemId,
+                    SubItemName: "子項",
+                    price: 0
+                },
+                success: function (data) {
+                    this.getStoreMenuFromServer();
+                }.bind(this)
+            });
+        },
+        handleDeleteItem: function (itemId) {
+            $.ajax({
+                url: "/api/GroupBuyStoreMenuApi/" + itemId,
+                type: "DELETE",
+                success: function (data) {
+                    this.getStoreMenuFromServer();
+                }.bind(this)
+            });
+        },
+        handleDeleteSubItem:function(subItemId){
+            $.ajax({
+                url: "/api/GroupBuyStoreMenuSubApi/" + subItemId,
+                type: "DELETE",
+                success: function (data) {
+                    this.getStoreMenuFromServer();
                 }.bind(this)
             });
         },
         render: function () {
-            var storeInfo = this.state.storeInfo,
-                category = {
-                    "":"",
-                    meal: "正餐",
-                    drink: "飲料",
-                    dessert: "點心",
-                    groupbuy: "團購",
-                    party: "活動"
-                };
+            var menuList = this.state.menuList;
 
             return (
-                    <div>
-                        <h3>{storeInfo.StoreName} - {category[storeInfo.Category]}</h3>
+
                       <Table bordered condensed>
                         <thead>
                           <tr>
@@ -77,28 +146,40 @@ App.StoreManagementMenuInit = function (mountNode) {
                           </tr>
                         </thead>
                         <tbody>
-                          <tr>
-                            <td rowSpan="2">
-                                <Button>刪除</Button>
-                                <Button>新增子項</Button>
-                            </td>
-                            <td rowSpan="2">招牌鍋貼</td>
-                            <td>10</td>
-                            <td>50</td>
-                            <td>
-                                <Button>刪除</Button>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>12</td>
-                            <td>60</td>
-                            <td>
-                                <Button>刪除</Button>
-                            </td>
-                          </tr>
+                            {
+                                menuList.map(function(item,i){
+                                    var _items =[];
+                                    item.SubItems.map(function(sub,i){
+                                        var subItemElement =[
+                                            <td>{sub.SubItemName}</td>,
+                                            <td>{sub.Price}</td>,
+                                            <td><Button onClick={()=>this.handleDeleteSubItem(sub.SubItemId)}>刪除</Button></td>
+                                        ];
+                                        if(i==0){
+                                            _items.push(
+                                                <tr>
+                                                  <td rowSpan={item.SubItems.length}>
+                                                      <Button onClick={()=>this.handleDeleteItem(item.ItemId)}>刪除</Button>
+                                                      <Button onClick={()=>this.handleNewSubItem(item.ItemId)}>新增子項</Button>
+                                                  </td>
+                                                  <td rowSpan={item.SubItems.length} contentEditable>{item.ItemName}</td>
+                                                  {subItemElement}
+                                                </tr>
+                                            );
+                                        }else{
+                                            _items.push(
+                                                <tr>
+                                                  {subItemElement}
+                                                </tr>
+                                            );
+                                        }
+                                    }.bind(this));
+                                    return _items;
+                                }.bind(this))
+                            }
                         </tbody>
                       </Table>
-                  </div>
+
            );
         }
     });
@@ -114,7 +195,8 @@ App.StoreManagementMenuInit = function (mountNode) {
                     </div>
                 </div>
                 <div className="col-sm-8">
-                  <MenuList {...this.props}/>
+                    <StoreInfo {...this.props}/>
+                    <MenuList {...this.props}/>
                 </div>
             </div>
             );

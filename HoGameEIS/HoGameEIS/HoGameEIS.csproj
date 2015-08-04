@@ -294,7 +294,16 @@
     <Content Include="Scripts\react\react-0.13.1.min.js" />
     <Content Include="Scripts\react\react-with-addons-0.13.1.js" />
     <Content Include="Scripts\react\react-with-addons-0.13.1.min.js" />
-    <Content Include="Sql\usp_AddGroupBuyMenuItem.sql">
+    <Content Include="Migrations\SeedSql\drop_procedure.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Migrations\SeedSql\usp_DeleteGroupBuyMenuItem.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Migrations\SeedSql\usp_DeleteGroupBuyMenuSubItem.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Migrations\SeedSql\usp_AddGroupBuyMenuItem.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Web.config">

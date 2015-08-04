@@ -1,6 +1,7 @@
 ﻿using HoGameEIS.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -38,8 +39,15 @@ namespace HoGameEIS.Controllers
         }
 
         // DELETE: api/GroupBuyStoreMenuSubApi/5
-        public void Delete(int id)
+        public Boolean Delete(int id)
         {
+            int result = 0;
+            using (var db = new HoGameEISContext())
+            {
+                var sql = @"exec [dbo].[usp_DeleteGroupBuyMenuSubItem] @SubItemId";
+                result = db.Database.ExecuteSqlCommand(sql, new SqlParameter("@SubItemId", id));
+            }
+            return result != 0;
         }
     }
 }

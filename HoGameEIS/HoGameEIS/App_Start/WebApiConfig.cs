@@ -19,6 +19,11 @@ namespace HoGameEIS
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+
+            //暫時解決巢狀式物件序列化問題
+            config.Formatters.JsonFormatter.SerializerSettings.ReferenceLoopHandling
+= Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+
         }
     }
 }
