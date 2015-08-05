@@ -34,8 +34,24 @@ namespace HoGameEIS.Controllers
         }
 
         // PUT: api/GroupBuyStoreMenuSubApi/5
-        public void Put(int id, [FromBody]string value)
+        public void Put(int id, [FromBody]GroupBuyStoreSubItem item)
         {
+            if (String.IsNullOrEmpty(item.Action)) {
+                return;
+            }
+            using (var db = new HoGameEISContext())
+            {
+                GroupBuyStoreSubItem _item = db.GroupBuyStoreSubItems.Where(o => o.SubItemId == id).FirstOrDefault();
+                if (item.Action == "SubItemName") {
+                    _item.SubItemName = item.SubItemName;
+                }
+                if (item.Action == "Price")
+                {
+                    _item.Price = item.Price;
+                }
+                db.Entry(_item).State = System.Data.Entity.EntityState.Modified;
+                db.SaveChanges();
+            }
         }
 
         // DELETE: api/GroupBuyStoreMenuSubApi/5

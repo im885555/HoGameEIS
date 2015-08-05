@@ -47,24 +47,6 @@
     var TdEditable = React.createClass({
         changeTimeout:null,
         handleEdit: function () {
-            function placeCaretAtEnd(el) {
-                el.focus();
-                if (typeof window.getSelection != "undefined"
-                        && typeof document.createRange != "undefined") {
-                    var range = document.createRange();
-                    range.selectNodeContents(el);
-                    range.collapse(false);
-                    var sel = window.getSelection();
-                    sel.removeAllRanges();
-                    sel.addRange(range);
-                } else if (typeof document.body.createTextRange != "undefined") {
-                    var textRange = document.body.createTextRange();
-                    textRange.moveToElementText(el);
-                    textRange.collapse(false);
-                    textRange.select();
-                }
-            }
-
             setTimeout(function () {
                 var str = $(this.refs.editDom.getDOMNode()).text();
                 if (!!this.props.number) {
@@ -76,7 +58,7 @@
                 !!this.changeTimeout && clearTimeout(this.changeTimeout);
                 this.changeTimeout = setTimeout(function () {
                     !!this.props.handleChange &&
-                    this.props.handleChange(this.props.Id, str);
+                    this.props.handleChange(this.props.uid, str);
                 }.bind(this), 0);
 
                 $(this.refs.editDom.getDOMNode()).text(str);
@@ -94,13 +76,13 @@
         },
         ieTemplate: function () {
             return(
-               <td  {...this.props}>
+                <td  {...this.props}>
                    <div ref="editDom"
                     onBlur={this.handleEdit}
-                onDrop={this.handleEdit}   
-                contentEditable
-                dangerouslySetInnerHTML={{__html: this.props.html}}>
-                                    </div>
+                    onDrop={this.handleEdit}   
+                    contentEditable
+                    dangerouslySetInnerHTML={{__html: this.props.html}}>
+                   </div>
                 </td>
                 )
         },
@@ -108,6 +90,7 @@
             return(
                <td ref="editDom"
                 {...this.props}
+                onFocus={this.handleFocus}
                 onBlur={this.handleEdit}
                 onDrop={this.handleEdit}     
                 contentEditable
@@ -183,11 +166,29 @@
                }.bind(this)
            });
         },
+        handleSubItemPriceEdit: function (subItemId, price) {
+            $.ajax({
+                url: "/api/GroupBuyStoreMenuSubApi/" + subItemId,
+                type: "PUT",
+                data: { Action: "Price", Price: price },
+                success: function (data) {
+                    this.getStoreMenuFromServer();
+                }.bind(this)
+            });
+        },
+        handleSubItemNameEdit: function (subItemId, subItemName) {
+            $.ajax({
+                url: "/api/GroupBuyStoreMenuSubApi/" + subItemId,
+                type: "PUT",
+                data: { Action: "SubItemName", SubItemName: subItemName },
+                success: function (data) {
+                    this.getStoreMenuFromServer();
+                }.bind(this)
+            });
+        },
         render: function () {
             var menuList = this.state.menuList;
-
             return (
-
                       <Table bordered condensed>
                         <thead>
                           <tr>
@@ -212,8 +213,17 @@
                                     var _items =[];
                                     item.SubItems.map(function(sub,i){
                                         var subItemElement =[
-                                            <TdEditable  html={sub.SubItemName||""} ></TdEditable>,
-                                            <TdEditable  number={true} html={sub.Price}></TdEditable>,
+                                            <TdEditable
+                                              uid={sub.SubItemId}                                                           
+                                              html={sub.SubItemName||""} 
+                                              handleChange={this.handleSubItemNameEdit}>
+                                            </TdEditable>,
+                                            <TdEditable
+                                              uid={sub.SubItemId}    
+                                              number={true}
+                                              html={sub.Price}
+                                              handleChange={this.handleSubItemPriceEdit}>
+                                            </TdEditable>,
                                             <td><Button onClick={()=>this.handleDeleteSubItem(sub.SubItemId)}>刪除</Button></td>
                                         ];
                                         if(i==0){
@@ -227,7 +237,7 @@
                                                     rowSpan={item.SubItems.length}
                                                     html={item.ItemName||""}
                                                     handleChange={this.handleItemNameEdit}
-                                                    Id={item.ItemId}>
+                                                    uid={item.ItemId}>
                                                   </TdEditable>
                                                   {subItemElement}
                                                 </tr>
@@ -273,3 +283,25 @@
     React.render(<StoreManagementMenuEdit storeId={storeId} />, mountNode);
 
 };
+
+
+/*
+
+            function placeCaretAtEnd(el) {
+                el.focus();
+                if (typeof window.getSelection != "undefined"
+                        && typeof document.createRange != "undefined") {
+                    var range = document.createRange();
+                    range.selectNodeContents(el);
+                    range.collapse(false);
+                    var sel = window.getSelection();
+                    sel.removeAllRanges();
+                    sel.addRange(range);
+                } else if (typeof document.body.createTextRange != "undefined") {
+                    var textRange = document.body.createTextRange();
+                    textRange.moveToElementText(el);
+                    textRange.collapse(false);
+                    textRange.select();
+                }
+            }
+*/

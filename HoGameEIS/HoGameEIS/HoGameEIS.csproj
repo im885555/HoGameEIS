@@ -273,8 +273,14 @@
     <Content Include="Content\bootstrap\alerts.less" />
     <Content Include="Content\_bootstrap-datetimepicker.less" />
     <Content Include="Content\bootstrap-datetimepicker-build.less" />
+    <Content Include="Migrations\SeedSql\usp_DeleteGroupBuyStore.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\app\groupbuy\storeList.jsx" />
     <Content Include="Scripts\app\groupbuy\menuEdit.jsx" />
+    <None Include="Properties\PublishProfiles\gene.pubxml" />
+    <None Include="Properties\PublishProfiles\genechen - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\genechen - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="readme.txt" />
     <Content Include="Scripts\app\namespace.js" />

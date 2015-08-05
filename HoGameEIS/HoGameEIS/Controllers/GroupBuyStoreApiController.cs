@@ -6,7 +6,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using HoGameEIS.Models.DTO;
-
+using System.Data.SqlClient;
 
 namespace HoGameEIS.Controllers
 {
@@ -78,10 +78,8 @@ namespace HoGameEIS.Controllers
         {
             using (var db = new HoGameEISContext())
             {
-                var store = new GroupBuyStore() { StoreId = id };
-                db.GroupBuyStores.Attach(store);
-                db.GroupBuyStores.Remove(store);     
-                db.SaveChanges();
+                var sql = @"exec [dbo].[usp_DeleteGroupBuyStore] @StoreId";
+                db.Database.ExecuteSqlCommand(sql, new SqlParameter("@StoreId", id));
             }
         }
     }

@@ -10,7 +10,7 @@
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = true;
+            AutomaticMigrationsEnabled = false;
         }
 
         protected override void Seed(HoGameEIS.Models.HoGameEISContext context)
@@ -64,9 +64,10 @@
             executeSql(context, "usp_AddGroupBuyMenuItem.sql");
             executeSql(context, "usp_DeleteGroupBuyMenuSubItem.sql");
             executeSql(context, "usp_DeleteGroupBuyMenuItem.sql");
+            executeSql(context, "usp_DeleteGroupBuyStore.sql");
 
-            //usp_DeleteGroupBuyMenuItem
-            //[usp_DeleteGroupBuyMenuSubItem]
+            base.Seed(context);
+
         }
         private void executeSql(HoGameEIS.Models.HoGameEISContext context, string scriptFile)
         {
