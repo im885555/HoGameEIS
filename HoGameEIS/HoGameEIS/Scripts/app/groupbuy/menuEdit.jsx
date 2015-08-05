@@ -46,7 +46,7 @@
 
     var TdEditable = React.createClass({
         changeTimeout:null,
-        emitChange: function(){
+        handleEdit: function () {
             function placeCaretAtEnd(el) {
                 el.focus();
                 if (typeof window.getSelection != "undefined"
@@ -64,40 +64,56 @@
                     textRange.select();
                 }
             }
-            return;
-            var str=$(this.getDOMNode()).text();
-            if(!!this.props.number){
-                str = $.trim(str);
-                str = !str ? "0" : str;
-                str = str.replace(/[^0-9]/g,"");
-                str = parseInt(str);
-            }
-            $(this.getDOMNode()).text(str);
-            placeCaretAtEnd(this.getDOMNode());
-            !!this.changeTimeout && clearTimeout(this.changeTimeout);
-            this.changeTimeout = setTimeout(function () {
-               // !!this.props.handleChange && this.props.handleChange(this.props.Id, str);
-            }.bind(this), 1000);
-           // this.props.handleChange(this.props.Id,str);
-        },
-        handlePaste: function (e) {
-            //event.preventDefault();
+
             setTimeout(function () {
-                var str = $(this.getDOMNode()).text();
-                $(this.getDOMNode()).text(str);
+                var str = $(this.refs.editDom.getDOMNode()).text();
+                if (!!this.props.number) {
+                    str = $.trim(str);
+                    str = !str ? "0" : str;
+                    str = str.replace(/[^0-9]/g, "");
+                    str = parseInt(str);
+                }
+                !!this.changeTimeout && clearTimeout(this.changeTimeout);
+                this.changeTimeout = setTimeout(function () {
+                    !!this.props.handleChange &&
+                    this.props.handleChange(this.props.Id, str);
+                }.bind(this), 0);
+
+                $(this.refs.editDom.getDOMNode()).text(str);
             }.bind(this), 0);
-            
         },
-        render: function() {
-            return (
-              <td
-              {...this.props}
-              onInput={this.emitChange}
-              onPaste={this.handlePaste} 
-              contentEditable
-              dangerouslySetInnerHTML={{__html: this.props.html}}>
-              </td>
-            );
+        render: function () {
+            var isIE = function () {
+                return navigator.userAgent.indexOf('MSIE') !== -1 || navigator.appVersion.indexOf('Trident/') > 0
+            };
+            if (isIE()) {
+                return this.ieTemplate();
+            } else {
+                return this.template();
+            }
+        },
+        ieTemplate: function () {
+            return(
+               <td  {...this.props}>
+                   <div ref="editDom"
+                    onBlur={this.handleEdit}
+                onDrop={this.handleEdit}   
+                contentEditable
+                dangerouslySetInnerHTML={{__html: this.props.html}}>
+                                    </div>
+                </td>
+                )
+        },
+        template: function () {
+            return(
+               <td ref="editDom"
+                {...this.props}
+                onBlur={this.handleEdit}
+                onDrop={this.handleEdit}     
+                contentEditable
+                dangerouslySetInnerHTML={{__html: this.props.html}}>
+                </td>
+                )
         }
     });
 
@@ -158,8 +174,6 @@
             });
         },
         handleItemNameEdit: function (itemId, itemName) {
-           
-           //api/GroupBuyStoreMenuApi/5
            $.ajax({
                url: "/api/GroupBuyStoreMenuApi/" + itemId,
                type: "PUT",
