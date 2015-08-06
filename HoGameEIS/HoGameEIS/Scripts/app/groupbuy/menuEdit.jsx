@@ -47,18 +47,14 @@
     var TdEditable = React.createClass({
         changeTimeout: null,
         oldValue: null,
-        getInitialState: function () {
-            return {
-                isLoading: false
-            };
-        },
         strParser: function (_str) {
             var str = $("<p>" + _str + "</p>").text();
             if (!!this.props.number) {
                 str = $.trim(str);
                 str = !str ? "0" : str;
                 str = str.replace(/[^0-9]/g, "");
-                str = parseInt(str);
+                str = parseInt(str,10);
+                isNaN(str) && (str=0);
             }
             str = $.trim(str);
             return str;
@@ -71,11 +67,8 @@
                 this.changeTimeout = setTimeout(function () {
                     if (str == this.oldValue) return;
                     this.oldValue = str;
-                    this.setState({ isLoading:true});
                     !!this.props.handleChange &&
-                    this.props.handleChange(this.props.uid, str, function () {
-                        this.setState({ isLoading: false });
-                    }.bind(this));
+                    this.props.handleChange(this.props.uid, str);
                 }.bind(this), 0);
             }.bind(this), 0);
         },
@@ -103,11 +96,6 @@
                 contentEditable: true,
                 dangerouslySetInnerHTML: { __html: this.props.html }
             };
-            if(this.state.isLoading){
-                return(
-                    <td  {...this.props}><LoadingIcon /></td>
-                )
-            }
             if (isIE()) {
                 return(
                     <td  {...this.props}>
@@ -142,25 +130,17 @@
         componentDidMount: function () {
             this.getStoreMenuFromServer();
         },
-        showLoading: function () {
-            this.setState({ isLoading: true });
-        },
-        hideLoading: function () {
-            this.setState({ isLoading: false });
-        },
         getStoreMenuFromServer: function (callback) {
             $.ajax({
                 url: "/api/GroupBuyStoreMenuApi/" + this.props.storeId,
                 type: "GET",
                 success: function (data) {
-                    this.setState({ menuList: data });
-                    this.hideLoading();
+                    this.setState({ menuList: data ,isLoading: false});
                     !!callback && callback();
                 }.bind(this)
             });
         },
         handleNewItem: function () {
-            this.showLoading();
             $.ajax({
                 url: "/api/GroupBuyStoreMenuApi",
                 type: "POST",
@@ -171,7 +151,6 @@
             });
         },
         handleNewSubItem: function (itemId) {
-            this.showLoading();
             $.ajax({
                 url: "/api/GroupBuyStoreMenuSubApi",
                 type: "POST",
@@ -182,7 +161,6 @@
             });
         },
         handleDeleteItem: function (itemId) {
-            this.showLoading();
             $.ajax({
                 url: "/api/GroupBuyStoreMenuApi/" + itemId,
                 type: "DELETE",
@@ -192,7 +170,6 @@
             });
         },
         handleDeleteSubItem: function (subItemId) {
-            this.showLoading();
             $.ajax({
                 url: "/api/GroupBuyStoreMenuSubApi/" + subItemId,
                 type: "DELETE",
@@ -207,7 +184,7 @@
                type: "PUT",
                data:{ ItemName: itemName},
                success: function (data) {
-                   this.getStoreMenuFromServer(callback);
+                   this.getStoreMenuFromServer();
                }.bind(this)
            });
         },
@@ -217,7 +194,7 @@
                 type: "PUT",
                 data: { Action: "Price", Price: price },
                 success: function (data) {
-                    this.getStoreMenuFromServer(callback);
+                    this.getStoreMenuFromServer();
                 }.bind(this)
             });
         },
@@ -227,22 +204,12 @@
                 type: "PUT",
                 data: { Action: "SubItemName", SubItemName: subItemName },
                 success: function (data) {
-                    this.getStoreMenuFromServer(callback);
+                    this.getStoreMenuFromServer();
                 }.bind(this)
             });
         },
         render: function () {
             var menuList = this.state.menuList;
-            /*var list = [];
-            menuList.map(function (item, i) {
-                item.SubItems.map(function (sub, i) {
-                    var _sub = $.extend({}, sub, item);
-                    _sub.subLength=_sub.SubItems.length;
-                    delete _sub.SubItems;
-                    list.push(_sub);
-                });
-            });*/
-            console.log(menuList);
             return (
                       <Table bordered condensed>
                         <thead>
@@ -264,25 +231,23 @@
                         </thead>
                         <tbody>
                             {
-
                                 menuList.map(function(item,i){
 
                                    var _items =[];
                                     item.SubItems.map(function(sub,i){
-                                        var subItemElement =[
-                                            <TdEditable
-                                              uid={sub.SubItemId}
-                                              html={sub.SubItemName||""}
-                                              handleChange={this.handleSubItemNameEdit}>
-                                            </TdEditable>,
-                                            <TdEditable
-                                              uid={sub.SubItemId}
-                                              number={true}
-                                              html={sub.Price}
-                                              handleChange={this.handleSubItemPriceEdit}>
-                                            </TdEditable>,
-                                            <td><Button onClick={()=>this.handleDeleteSubItem(sub.SubItemId)}>刪除</Button></td>
-                                        ];
+                                     var SubItemNameDom = <TdEditable
+                                           uid={sub.SubItemId}
+                                           html={sub.SubItemName||""}
+                                           handleChange={this.handleSubItemNameEdit}>
+                                         </TdEditable>,
+                                         ItemPriceDom=<TdEditable
+                                           uid={sub.SubItemId}
+                                           number={true}
+                                           html={sub.Price}
+                                           handleChange={this.handleSubItemPriceEdit}>
+                                         </TdEditable>,
+                                         DeleteSubItemDom =
+                                         <td><Button onClick={()=>this.handleDeleteSubItem(sub.SubItemId)}>刪除</Button></td>;
                                         if(i==0){
                                             _items.push(
                                                 <tr key={i}>
@@ -296,13 +261,17 @@
                                                     handleChange={this.handleItemNameEdit}
                                                     uid={item.ItemId}>
                                                   </TdEditable>
-                                                  {subItemElement}
+                                                  {SubItemNameDom}
+                                                  {ItemPriceDom}
+                                                  {DeleteSubItemDom}
                                                 </tr>
                                             );
                                         }else{
                                             _items.push(
                                                 <tr key={i}>
-                                                  {subItemElement}
+                                                {SubItemNameDom}
+                                                {ItemPriceDom}
+                                                {DeleteSubItemDom}
                                                 </tr>
                                             );
                                         }
@@ -347,25 +316,3 @@
     React.render(<StoreManagementMenuEdit storeId={storeId} />, mountNode);
 
 };
-
-
-/*
-
-            function placeCaretAtEnd(el) {
-                el.focus();
-                if (typeof window.getSelection != "undefined"
-                        && typeof document.createRange != "undefined") {
-                    var range = document.createRange();
-                    range.selectNodeContents(el);
-                    range.collapse(false);
-                    var sel = window.getSelection();
-                    sel.removeAllRanges();
-                    sel.addRange(range);
-                } else if (typeof document.body.createTextRange != "undefined") {
-                    var textRange = document.body.createTextRange();
-                    textRange.moveToElementText(el);
-                    textRange.collapse(false);
-                    textRange.select();
-                }
-            }
-*/
