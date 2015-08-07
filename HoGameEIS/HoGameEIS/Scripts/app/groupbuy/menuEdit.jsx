@@ -2,6 +2,7 @@
     var Table = ReactBootstrap.Table;
     var Button = ReactBootstrap.Button;
     var LoadingIcon = App.Component.Loading;
+    var FileDragAndDrop = App.Component.FileDragAndDrop;
 
     var getRouterId = function () {
         var params = location.pathname.split("/");
@@ -293,15 +294,106 @@
         }
     });
 
+    
+
+
+    // this creates a React component that can be used in other components or
+    // used directly on the page with React.renderComponent
+    var FileForm = React.createClass({
+
+        // since we are starting off without any data, there is no initial value
+        getInitialState: function() {
+            return {
+                dataUriList: [],
+            };
+        },
+
+        // prevent form from submitting; we are going to capture the file contents
+        handleSubmit: function(e) {
+            e.preventDefault();
+        },
+
+        // when a file is passed to the input field, retrieve the contents as a
+        // base64-encoded data URI and save it to the component's state
+        handleFile: function(e) {
+            var files = e.target.files;
+            this.transferDataUri(files);
+            this.uploadFiles(files);
+        },
+        handleClick: function () {
+            this.refs.inputfiles.getDOMNode().click();
+        },
+        handleDrog: function (dataTransfer) {
+            
+            var files = dataTransfer.files;
+            this.transferDataUri(files);
+            this.uploadFiles(files);
+        },
+        transferDataUri: function (files) {
+            var self = this
+            $.each(files, function () {
+                var reader = new FileReader();
+                reader.onload = function (upload) {
+                    var dataUriList = self.state.dataUriList;
+                    dataUriList.push(upload.target.result);
+                    self.setState({
+                        dataUriList: dataUriList,
+                    });
+                    console.log(upload);
+                    console.log(upload.target.result);
+                };
+
+                reader.readAsDataURL(this);
+            });
+        },
+        uploadFiles: function (files) {
+            var data = new FormData();
+            $.each(files, function () {
+                data.append("file", this);
+            });
+
+
+            $.ajax({
+                url: "/api/MenuImageApi/5",
+                type: 'POST',
+                data: data,
+                success: function (data) {
+                    console.log(data);
+                },
+                cache: false,
+                contentType: false,
+                processData: false
+            });
+        },
+        // return the structure to display and bind the onChange, onSubmit handlers
+        render: function() {
+            // since JSX is case sensitive, be sure to use 'encType'
+            return (
+              <form onSubmit={this.handleSubmit} encType="multipart/form-data">
+            <input ref="inputfiles" style={{display:'none'}} type="file" onChange={this.handleFile} />
+                  <Button onClick={this.handleClick}>choose file</Button>
+                  {
+                  this.state.dataUriList.map(function(data_uri,i){
+                    return(
+                    <img key={i} src={data_uri} />     
+                    )
+                  })
+                  }
+                               
+                  <FileDragAndDrop className="upload-image-zone" onDrop={this.handleDrog}> Drop images here or click to upload.</FileDragAndDrop>
+            </form>
+
+    );
+},
+});
+
     var StoreManagementMenuEdit = React.createClass({
 
         render: function () {
             return (
             <div className="row">
                 <div className="col-sm-4">
-                    <div className="upload-image-zone">
-                        Drop images here or click to upload.
-                    </div>
+                    <FileForm />
                 </div>
                 <div className="col-sm-8">
                     <StoreInfo {...this.props}/>
