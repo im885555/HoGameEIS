@@ -14,7 +14,7 @@ namespace HoGameEIS.Models.Mapping
             // Table & Column Mappings
             this.ToTable("GroupBuyStoreMenuImages");
             this.Property(t => t.ImageId).HasColumnName("ImageId");
-            this.Property(t => t.path).HasColumnName("path");
+            this.Property(t => t.ImageUrl).HasColumnName("ImageUrl");
             this.Property(t => t.StoreId).HasColumnName("StoreId");
 
             // Relationships

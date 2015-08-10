@@ -114,12 +114,7 @@
         }
     });
 
-    var MenuItem = React.createClass({
-        render: function () {
-            var item
-            return (<div></div>);
-        }
-    });
+
 
     var MenuList = React.createClass({
         getInitialState: function () {
@@ -217,7 +212,7 @@
                           <tr>
                             <th colSpan="5">
                                 <div className="text-danger">
-                                    點擊名稱、價錢、備註可直接修改內容
+                                    點擊名稱、價錢可直接修改內容
                                     <Button className="pull-right" onClick={()=>this.handleNewItem()}>新增項目</Button>
                                 </div>
                             </th>
@@ -294,98 +289,157 @@
         }
     });
 
-    
 
 
-    // this creates a React component that can be used in other components or
-    // used directly on the page with React.renderComponent
-    var FileForm = React.createClass({
 
-        // since we are starting off without any data, there is no initial value
-        getInitialState: function() {
+
+    var MenuImageUpload = React.createClass({
+        isUploading: false,
+        getInitialState: function () {
             return {
-                dataUriList: [],
+                dataUriList:[],
+                imgList:[]
             };
         },
-
-        // prevent form from submitting; we are going to capture the file contents
-        handleSubmit: function(e) {
-            e.preventDefault();
+        componentDidMount: function () {
+            this.getMenuImagesFromServer();
         },
-
-        // when a file is passed to the input field, retrieve the contents as a
-        // base64-encoded data URI and save it to the component's state
-        handleFile: function(e) {
-            var files = e.target.files;
-            this.transferDataUri(files);
-            this.uploadFiles(files);
+        getMenuImagesFromServer: function () {
+            $.ajax({
+                url: "/api/MenuImageApi/" + this.props.storeId,
+                type: "GET",
+                success: function (data) {
+                    this.setState({
+                        imgList: data,
+                    });
+                }.bind(this)
+            });
         },
         handleClick: function () {
             this.refs.inputfiles.getDOMNode().click();
         },
-        handleDrog: function (dataTransfer) {
-            
-            var files = dataTransfer.files;
-            this.transferDataUri(files);
-            this.uploadFiles(files);
+        handleFileInput: function (dataTransfer) {
+            var files = dataTransfer.files || dataTransfer.target.files;
+            var self=this,_files = [];
+
+            $.each(files, function () {
+                if (self.validFileExtensions(this.name)) {
+                    _files.push(this);
+                }
+            });
+
+            this.transferDataUri(_files);
         },
         transferDataUri: function (files) {
-            var self = this
-            $.each(files, function () {
+            var self = this,
+                dataUriList = self.state.dataUriList,
+                i =0;
+            $.each(files, function () {                
+                var file = this;
+                if (!self.validFileExtensions(file.name)) {
+                    return;
+                }
                 var reader = new FileReader();
                 reader.onload = function (upload) {
-                    var dataUriList = self.state.dataUriList;
-                    dataUriList.push(upload.target.result);
+                    i++;
+                    dataUriList.push({ dataUri: upload.target.result, file: file });                    
                     self.setState({
                         dataUriList: dataUriList,
                     });
-                    console.log(upload);
-                    console.log(upload.target.result);
+                    if (i == files.length && !this.isUploading) {
+                        self.uploadFiles();
+                    }               
                 };
-
                 reader.readAsDataURL(this);
             });
         },
-        uploadFiles: function (files) {
+        validFileExtensions: function (fileName) {
+            var _fileName = fileName || "",
+                _validFileExtensions = ["jpg", "jpeg", "bmp", "gif", "png"],
+                extension = _fileName.split(".")[fileName.split(".").length - 1].toLowerCase();
+            return _validFileExtensions.indexOf(extension) != -1;
+        },
+        uploadFiles: function () {
+            var dataUriList = this.state.dataUriList;
+            if (dataUriList == 0) {
+                this.isUploading = false;
+                return;
+            }
+            this.isUploading = true;
             var data = new FormData();
-            $.each(files, function () {
-                data.append("file", this);
-            });
-
-
+            data.append("file", dataUriList[0].file);
             $.ajax({
-                url: "/api/MenuImageApi/5",
+                url: "/api/MenuImageApi/" + this.props.storeId,
                 type: 'POST',
                 data: data,
                 success: function (data) {
-                    console.log(data);
-                },
-                cache: false,
+                    dataUriList.splice(0, 1);
+                    this.setState({
+                        dataUriList:dataUriList,
+                        imgList: data,
+                    });
+                    this.uploadFiles();
+                }.bind(this),
                 contentType: false,
                 processData: false
             });
         },
-        // return the structure to display and bind the onChange, onSubmit handlers
+        handleDeleteImage: function (ImageId) {
+            $.ajax({
+                url: "/api/MenuImageApi/" + ImageId,
+                type: "DELETE",
+                success: function () {
+                    this.getMenuImagesFromServer();
+                }.bind(this)
+            });
+        },
         render: function() {
-            // since JSX is case sensitive, be sure to use 'encType'
             return (
-              <form onSubmit={this.handleSubmit} encType="multipart/form-data">
-            <input ref="inputfiles" style={{display:'none'}} type="file" onChange={this.handleFile} />
-                  <Button onClick={this.handleClick}>choose file</Button>
-                  {
-                  this.state.dataUriList.map(function(data_uri,i){
-                    return(
-                    <img key={i} src={data_uri} />     
-                    )
-                  })
-                  }
-                               
-                  <FileDragAndDrop className="upload-image-zone" onDrop={this.handleDrog}> Drop images here or click to upload.</FileDragAndDrop>
-            </form>
+                  <div>
+                     
+                    <input ref="inputfiles" style={{display:'none'}} type="file" onChange={this.handleFileInput} multiple/>
+                      <FileDragAndDrop      
+                         {...this.props}
+                        className="upload-image-zone"
+                        onPaste={this.handleFileInput}
+                        onDrop={this.handleFileInput}>
+                          可拖曳圖片上傳。
+                        <div className="row">
+                            {
+                                this.state.imgList.map(function(img,i){
+                                    var imgUrl= img.ImageUrl;
+                                    return(
+                                        <div  key={i} className="col-xs-6">
+                                          <div className="thumbnail">
+                                            <a href={imgUrl} target="_blank"><img src={imgUrl} /></a>
+                                            {!!img.ImageId&& <Button onClick={() =>this.handleDeleteImage(img.ImageId)}>刪除</Button>}
+                                          </div>
+                                        </div>
+                                    )
+                                }.bind(this))
+                            }
+                            {
+                                this.state.dataUriList.map(function(img,i){
+                                    var imgUrl= img.dataUri;
+                                    return(
+                                            <div key={i} className="col-xs-6">
+                                              <div className="thumbnail">
+                                                <a href="#"><img src={imgUrl} /></a>
+                                                  {!img.ImageId&& <Button><LoadingIcon />上傳中</Button>}
+                                              </div>
+                                            </div>
+                                        )
+                                }.bind(this))
+                            }
+                        </div>                           
+                      </FileDragAndDrop>
+                      <Button onClick={this.handleClick}>上傳圖片</Button>
+                    </div>
 
-    );
-},
-});
+            );
+        }
+    });
+
 
     var StoreManagementMenuEdit = React.createClass({
 
@@ -393,7 +447,7 @@
             return (
             <div className="row">
                 <div className="col-sm-4">
-                    <FileForm />
+                    <MenuImageUpload {...this.props}/>
                 </div>
                 <div className="col-sm-8">
                     <StoreInfo {...this.props}/>

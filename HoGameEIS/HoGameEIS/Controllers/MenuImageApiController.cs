@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HoGameEIS.Models;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -13,16 +14,6 @@ using System.Web.Http.Filters;
 namespace HoGameEIS.Controllers
 {
 
-    public class FileResult
-    {
-        public IEnumerable<string> FileNames { get; set; }
-        public string Description { get; set; }
-        public DateTime CreatedTimestamp { get; set; }
-        public DateTime UpdatedTimestamp { get; set; }
-        public string DownloadLink { get; set; }
-        public IEnumerable<string> ContentTypes { get; set; }
-        public IEnumerable<string> Names { get; set; }
-    }
 
     public class ValidateMimeMultipartContentFilter : ActionFilterAttribute
     {
@@ -56,14 +47,21 @@ namespace HoGameEIS.Controllers
         }
 
         // GET: api/MenuImageApi/5
-        public string Get(int id)
+        public List<GroupBuyStoreMenuImage> Get(int id)
         {
-            return "value";
+            List<GroupBuyStoreMenuImage> images = new List<GroupBuyStoreMenuImage>();
+            using (var db = new HoGameEISContext())
+            {
+                images = db.GroupBuyStoreMenuImages.Where(o => o.StoreId == id).ToList();
+
+            }
+
+            return images;
         }
 
         // POST: api/MenuImageApi/5
         [ValidateMimeMultipartContentFilter]
-        public async Task<FileResult> Post(int id)
+        public async Task<List<GroupBuyStoreMenuImage>> Post(int id)
         {
             var streamProvider = new MultipartFormDataStreamProvider(ServerUploadFolder);
 
@@ -71,45 +69,35 @@ namespace HoGameEIS.Controllers
             foreach (MultipartFileData file in streamProvider.FileData)
             {
                 try {
-                    string fileName = file.Headers.ContentDisposition.FileName;
-                    if (fileName.StartsWith("\"") && fileName.EndsWith("\""))
-                    {
-                        fileName = fileName.Trim('"');
-                    }
-                    if (fileName.Contains(@"/") || fileName.Contains(@"\"))
-                    {
-                        fileName = Path.GetFileName(fileName);
-                    }
+                    string fileName = localSaveFile(file);
 
-                    string newPath = Path.Combine(ServerUploadFolder, fileName);
 
-                    // Ensure that the target does not exist.
-                    if (File.Exists(newPath))
-                        File.Delete(newPath);
-      
-                    File.Move(file.LocalFileName, newPath);
+                    GroupBuyStoreMenuImage image = new GroupBuyStoreMenuImage()
+                    {
+                        StoreId = id,
+                        ImageUrl = fileName
+
+                    };
+
+                    using (var db = new HoGameEISContext())
+                    {
+                        db.GroupBuyStoreMenuImages.Add(image);
+                        db.SaveChanges();
+                    }
+ 
                 }
                 catch (Exception ex)
                 {
                     //如果有出錯的狀況，就把上船的檔案刪除
                     FileInfo DelFile = new FileInfo(file.LocalFileName);
                     DelFile.Delete();
-                    throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
+                    throw ex;
                 }
             }
-            
-
-                return new FileResult
-            {
-                FileNames = streamProvider.FileData.Select(entry => entry.LocalFileName),
-                Names = streamProvider.FileData.Select(entry => entry.Headers.ContentDisposition.FileName),
-                ContentTypes = streamProvider.FileData.Select(entry => entry.Headers.ContentType.MediaType),
-                Description = streamProvider.FormData["description"],
-                CreatedTimestamp = DateTime.UtcNow,
-                UpdatedTimestamp = DateTime.UtcNow,
-                DownloadLink = "TODO, will implement when file is persisited"
-            };
+            return Get(id);
         }
+
+
 
         // PUT: api/MenuImageApi/5
         public void Put(int id, [FromBody]string value)
@@ -119,8 +107,63 @@ namespace HoGameEIS.Controllers
         // DELETE: api/MenuImageApi/5
         public void Delete(int id)
         {
+            GroupBuyStoreMenuImage image = new GroupBuyStoreMenuImage();
+            using (var db = new HoGameEISContext())
+            {
+                image = db.GroupBuyStoreMenuImages.Where(o => o.ImageId == id).FirstOrDefault<GroupBuyStoreMenuImage>();
+
+            }
+            using (var db = new HoGameEISContext())
+            {
+                db.Entry(image).State = System.Data.Entity.EntityState.Deleted;
+                db.SaveChanges();
+            }
+
+            deleteLocalFile(image.ImageUrl);
         }
 
+
+
+
+
+        private string localSaveFile(MultipartFileData file)
+        {
+            string fileName = file.Headers.ContentDisposition.FileName;
+            if (fileName.StartsWith("\"") && fileName.EndsWith("\""))
+            {
+                fileName = fileName.Trim('"');
+            }
+            if (fileName.Contains(@"/") || fileName.Contains(@"\"))
+            {
+                fileName = Path.GetFileName(fileName);
+            }
+
+            //檔名加上時間戳記
+
+            fileName = String.Format("{0}_{1}", Convert.ToInt32(DateTime.UtcNow.AddHours(8).Subtract(new DateTime(1970, 1, 1)).TotalSeconds), fileName);
+
+            string newPath = Path.Combine(ServerUploadFolder, fileName);
+
+            // Ensure that the target does not exist.
+            if (File.Exists(newPath))
+                File.Delete(newPath);
+
+            File.Move(file.LocalFileName, newPath);
+
+            fileName = String.Format("/Content/uploads/{1}", ServerUploadFolder, fileName);
+
+            return fileName;
+        }
+
+        private void deleteLocalFile(string url)
+        {
+            //string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, image.ImageUrl);
+            string path = AppDomain.CurrentDomain.BaseDirectory + url;
+
+            // Ensure that the target does not exist.
+            if (File.Exists(path))
+                File.Delete(path);
+        }
         //// GET: api/MenuImageApi/GetImage/5
         //[Route("getImage/{id}")]
         //[HttpGet]
