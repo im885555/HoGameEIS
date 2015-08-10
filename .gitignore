@@ -189,3 +189,5 @@ _Pvt_Extensions/
 ModelManifest.xml
 /HoGameEIS/packages
 /HoGameEIS/.vs/config/applicationhost.config
+/HoGameEIS/HoGameEIS/Content/uploads
+/HoGameEIS/HoGameEIS/Properties/PublishProfiles/genechen - Web Deploy.pubxml
