@@ -11,6 +11,12 @@ using System.Web.Http;
 using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
 
+using Microsoft.WindowsAzure;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Auth;
+using Microsoft.WindowsAzure.Storage.Blob;
+using Microsoft.Azure;
+
 namespace HoGameEIS.Controllers
 {
 
@@ -43,6 +49,28 @@ namespace HoGameEIS.Controllers
         // GET: api/MenuImageApi
         public IEnumerable<string> Get()
         {
+
+            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(CloudConfigurationManager.GetSetting("StorageConnectionString"));
+
+            // Create the blob client.
+            CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
+
+            // Retrieve reference to a previously created container.
+            CloudBlobContainer container = blobClient.GetContainerReference("image");       
+
+
+            // Retrieve reference to a blob named "myblob".
+            CloudBlockBlob blockBlob = container.GetBlockBlobReference("Jellyfish.jpg");
+
+            // Create or overwrite the "myblob" blob with contents from a local file.
+            using (var fileStream = System.IO.File.OpenRead(ServerUploadFolder+ "1439229334_Jellyfish.jpg"))
+            {
+                blockBlob.UploadFromStream(fileStream);
+            }
+
+            //https://127.0.0.1:10000/devstoreaccount1/image/Jellyfish.jpg
+            //https://genechen.blob.core.windows.net/image
+
             return new string[] { "value1", "value2" };
         }
 
@@ -70,6 +98,7 @@ namespace HoGameEIS.Controllers
             {
                 try {
                     string fileName = localSaveFile(file);
+
 
 
                     GroupBuyStoreMenuImage image = new GroupBuyStoreMenuImage()
