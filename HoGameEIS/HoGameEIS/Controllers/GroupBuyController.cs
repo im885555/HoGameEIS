@@ -23,6 +23,13 @@ namespace HoGameEIS.Controllers
         }
 
         [Authorize]
+        [HttpPost]
+        public ActionResult CreateGroupBuy(FormCollection formData)
+        {
+            return RedirectToAction("GroupBuyList", "GroupBuy");
+        }
+
+        [Authorize]
         public ActionResult GroupBuyList()
         {
             return View();

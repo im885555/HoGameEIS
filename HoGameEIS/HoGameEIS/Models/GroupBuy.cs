@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HoGameEIS.Models
 {
@@ -17,5 +19,9 @@ namespace HoGameEIS.Models
         public System.DateTime EndTime { get; set; }
         public virtual ICollection<GroupBuyItem> GroupBuyItems { get; set; }
         public virtual ICollection<GroupBuyPaid> GroupBuyPaids { get; set; }
+
+
+        public int StoreId { get; set; }
+
     }
 }

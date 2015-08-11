@@ -27,7 +27,8 @@ namespace HoGameEIS.Models
         public virtual ICollection<GroupBuyStoreItem> GroupBuyStoreItems { get; set; }
         public virtual ICollection<GroupBuyStoreMenuImage> GroupBuyStoreMenuImages { get; set; }
 
-        
+
+
         //public ICollection<GroupBuyStoreItem> ParserStoreItems()
         //{
         //    int itemId=-1;

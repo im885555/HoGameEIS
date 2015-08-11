@@ -1,4 +1,4 @@
-App.StoreManagementInit = function(mountNode){
+﻿App.ChooseStoreInit = function (mountNode) {
     var Button = ReactBootstrap.Button;
     var ButtonGroup =  ReactBootstrap.ButtonGroup;
     var Table = ReactBootstrap.Table;
@@ -45,33 +45,6 @@ App.StoreManagementInit = function(mountNode){
         }
     });
 
-    var ConfirmDelete = React.createClass({
-        render:function(){
-            return(
-                <Modal
-                {...this.props}
-                 bsSize='small'
-                 bsStyle='primary'
-                 aria-labelledby='contained-modal-title-sm'
-                 animation={false}>
-                     <Modal.Header closeButton>
-                       <Modal.Title>請確認</Modal.Title>
-                     </Modal.Header>
-
-                     <Modal.Body>
-                       刪除店家 "{this.props.selectedData.StoreName}"
-                     </Modal.Body>
-
-                     <Modal.Footer>
-                       <Button onClick={()=>this.props.onHide(true)} bsStyle='primary'>確定</Button>
-                       <Button onClick={()=>this.props.onHide(false)} >取消</Button>
-                     </Modal.Footer>
-                   </Modal>
-            );
-        }
-    });
-
-
     var StoreGrid =  React.createClass({
         getInitialState: function() {
             return {
@@ -96,43 +69,30 @@ App.StoreManagementInit = function(mountNode){
         },
         render: function() {
             var rows = this.props.data.rows;
-            return (
-                <div>
-                    <ConfirmDelete
-                    show={this.state.confirmShow}
-                    onHide={this.handleDelete}
-                    selectedData={this.state.selectedData}/>
-                    <Table  bordered condensed hover>
-                        <thead>
-                            <tr>
-                              <th>店家名稱</th>
-                              <th>備註</th>
-                              <th>修改</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {
-                                rows.map(function(item,i){
-                                    return (
-                                        <tr key={item.StoreId}>
-                                            <td>{item.StoreName}</td>
-                                            <td>{item.Memo}</td>
-                                            <td>
-                                                <Button onClick={()=>location.href = "StoreManagementMenuEdit/"+ item.StoreId}>菜單資料管理</Button>
-                                                <Button onClick={()=>location.href = "StoreManagementEdit/"+ item.StoreId}>
-                                                    修改店家資料
-                                                </Button>
-                                                <Button onClick={()=>this.confirmDelete(item)}>
-                                                    刪除
-                                                </Button>
-                                            </td>
-                                        </tr>
-                                    );
-                                }.bind(this))
-                            }
-                        </tbody>
-                    </Table>
-                </div>
+            return (               
+                <Table  bordered condensed hover>
+                    <thead>
+                        <tr>
+                            <th>店家名稱</th>
+                            <th>電話</th>
+                            <th>備註</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {
+                            rows.map(function(item,i){
+                                return (
+                                    <tr key={item.StoreId} onClick={()=>this.props.onHide(item)}>
+                                        <td>{item.StoreName}</td>
+                                        <td>{item.Tel}</td>
+                                        <td>{item.Memo}</td>
+                                    </tr>
+                                );
+                            }.bind(this))
+                        }
+                    </tbody>
+                </Table>
+
             );
         }
     });
@@ -156,8 +116,6 @@ App.StoreManagementInit = function(mountNode){
             this.getStoreListFromServer();
         },
         getStoreListFromServer: function(){
-            //http://localhost:50908/api/groupbuystoreapi?search=d&order=asc&limit=10&offset=0&category=meal&_=1437099137914
-            //(new Date().getTime()).toString()
             var state = this.state;
             var params = {
                 search: state.searchText,
@@ -194,16 +152,14 @@ App.StoreManagementInit = function(mountNode){
             this.setState({pageSize:size},
             ()=>this.getStoreListFromServer());
         },
-        showConfirmDelete:function(callback){
-            this.setState({showModal:true});
-        },
         renderPaging:function () {
             var pagingBtn = "";
             if(this.state.pageSize<this.state.data.total){
                 var items = parseInt(this.state.data.total/this.state.pageSize)
                     +  (this.state.data.total/this.state.pageSize == 0 ? 0 : 1 ),
                     maxButtons = items>=5 ? 5 : items;
-                pagingBtn = <div className="pull-right">
+                pagingBtn =
+                <div className="pull-right">
                     <Pagination
                       prev={true}
                       next={true}
@@ -222,10 +178,7 @@ App.StoreManagementInit = function(mountNode){
             var to = this.state.pageSize * this.state.pageNumber,
                 from = to - this.state.pageSize + 1;
             return(
-                <div className="store-management-content">
-                    <div>
-                        <Button onClick={()=>location.href = "StoreManagementEdit"}> + 新增 </Button>
-                    </div>
+                <div>
                     <div>
                         <div className="form-inline">
                             <CategoryGroup onCategoryChange={this.handleCategroyChange}/>
@@ -236,10 +189,11 @@ App.StoreManagementInit = function(mountNode){
                     <div>
                         <div>
                             <StoreGrid
+                             {...this.props}
                              data= {this.state.data}
                              refresh ={this.getStoreListFromServer}
                              />
-                            <div>
+                            <div style={{'minHeight': '80px'}}>
                                 <div className="pull-left">
                                     Showing {from} to {to} of {this.state.data.total} rows
                                     <ButtonToolbar>
@@ -267,5 +221,60 @@ App.StoreManagementInit = function(mountNode){
             );
         }
     });
-    React.render(<StoreManagement/>,mountNode);
+
+
+    var ChooseWindow = React.createClass({
+        render:function(){
+            return(
+                <Modal
+                 {...this.props}
+                 bsSize='large'
+                 bsStyle='primary'
+                 aria-labelledby='contained-modal-title-lg'
+                 animation={false}>
+                     <Modal.Header closeButton>
+                       <Modal.Title>請選擇店家</Modal.Title>
+                     </Modal.Header>
+
+                     <Modal.Body>
+                        <StoreManagement {...this.props}/>
+                     </Modal.Body>
+
+                     
+                   </Modal>
+            );
+        }
+    });
+
+    var ChooseStore = React.createClass({
+        getInitialState: function () {
+            return {
+                chooseWindowShow: false,
+                selected: null
+            };
+        },
+        handleHide: function (store) {
+            console.log(store);
+
+            this.setState({ chooseWindowShow: false, selected: store })
+        },
+        render: function () {
+            var selected = this.state.selected;
+            return (
+                <div>
+                <Button bsStyle='primary' 
+                        onClick={()=>this.setState({chooseWindowShow:true})}>
+                    選擇商家
+                    <ChooseWindow 
+                    show={this.state.chooseWindowShow}
+                    onHide={this.handleHide}
+                    selectedData={this.state.selectedData} />
+                </Button>
+                    {!!selected && <span style={{margin:'10px'}}>{selected.StoreName}</span>}
+                    {!!selected && <input type="hidden" name="StoreId" value={selected.StoreId}/>}
+                </div>
+            )
+        }
+    });
+    React.render(<ChooseStore/>,mountNode);
 }

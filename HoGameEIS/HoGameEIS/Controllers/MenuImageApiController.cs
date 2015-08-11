@@ -16,6 +16,7 @@ using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Auth;
 using Microsoft.WindowsAzure.Storage.Blob;
 using Microsoft.Azure;
+using System.Configuration;
 
 namespace HoGameEIS.Controllers
 {
@@ -43,30 +44,41 @@ namespace HoGameEIS.Controllers
         //const string ServerUploadFolder = "D:\\Temp";
         //private readonly string ServerUploadFolder = HttpContext.Current.Server.MapPath("~/UploadFiles/");
 
-        private readonly string ServerUploadFolder = AppDomain.CurrentDomain.BaseDirectory + "Content/uploads/";
+        private readonly string ServerUploadFolder = HttpContext.Current.Server.MapPath("~/App_Data");
+
+        static readonly CloudStorageAccount storageAccount = CloudStorageAccount.Parse(CloudConfigurationManager.GetSetting("StorageConnectionString"));
+
+        // Create the blob client.
+        static readonly CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
+
+        // Retrieve reference to a previously created container.
+        static readonly CloudBlobContainer ImageContainer = blobClient.GetContainerReference("image");
+
+        static readonly string ImageUploadUrl = ConfigurationManager.AppSettings["ImageUploadUrl"];
+
 
 
         // GET: api/MenuImageApi
         public IEnumerable<string> Get()
         {
 
-            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(CloudConfigurationManager.GetSetting("StorageConnectionString"));
+            //CloudStorageAccount storageAccount = CloudStorageAccount.Parse(CloudConfigurationManager.GetSetting("StorageConnectionString"));
 
-            // Create the blob client.
-            CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
+            //// Create the blob client.
+            //CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
 
-            // Retrieve reference to a previously created container.
-            CloudBlobContainer container = blobClient.GetContainerReference("image");       
+            //// Retrieve reference to a previously created container.
+            //CloudBlobContainer container = blobClient.GetContainerReference("image");       
 
 
-            // Retrieve reference to a blob named "myblob".
-            CloudBlockBlob blockBlob = container.GetBlockBlobReference("Jellyfish.jpg");
+            //// Retrieve reference to a blob named "myblob".
+            //CloudBlockBlob blockBlob = container.GetBlockBlobReference("Jellyfish.jpg");
 
-            // Create or overwrite the "myblob" blob with contents from a local file.
-            using (var fileStream = System.IO.File.OpenRead(ServerUploadFolder+ "1439229334_Jellyfish.jpg"))
-            {
-                blockBlob.UploadFromStream(fileStream);
-            }
+            //// Create or overwrite the "myblob" blob with contents from a local file.
+            //using (var fileStream = System.IO.File.OpenRead(ServerUploadFolder+ "1439229334_Jellyfish.jpg"))
+            //{
+            //    blockBlob.UploadFromStream(fileStream);
+            //}
 
             //https://127.0.0.1:10000/devstoreaccount1/image/Jellyfish.jpg
             //https://genechen.blob.core.windows.net/image
@@ -84,6 +96,10 @@ namespace HoGameEIS.Controllers
 
             }
 
+            foreach (var img in images) {
+                img.ImageUrl = String.Format("{0}{1}", ImageUploadUrl, img.ImageUrl);
+            }
+
             return images;
         }
 
@@ -91,36 +107,30 @@ namespace HoGameEIS.Controllers
         [ValidateMimeMultipartContentFilter]
         public async Task<List<GroupBuyStoreMenuImage>> Post(int id)
         {
-            var streamProvider = new MultipartFormDataStreamProvider(ServerUploadFolder);
+            //var streamProvider = new MultipartFormDataStreamProvider(ServerUploadFolder);
 
-            await Request.Content.ReadAsMultipartAsync(streamProvider);
-            foreach (MultipartFileData file in streamProvider.FileData)
+            //await Request.Content.ReadAsMultipartAsync(streamProvider);
+
+            
+
+            var provider = new MultipartFileStreamProvider(Path.GetTempPath());
+
+            // Read the form data.
+            await Request.Content.ReadAsMultipartAsync(provider);
+            foreach (MultipartFileData file in provider.FileData)
             {
-                try {
-                    string fileName = localSaveFile(file);
-
-
-
-                    GroupBuyStoreMenuImage image = new GroupBuyStoreMenuImage()
-                    {
-                        StoreId = id,
-                        ImageUrl = fileName
-
-                    };
-
-                    using (var db = new HoGameEISContext())
-                    {
-                        db.GroupBuyStoreMenuImages.Add(image);
-                        db.SaveChanges();
-                    }
- 
-                }
-                catch (Exception ex)
+                string fileName = blobSaveFile(file);
+                GroupBuyStoreMenuImage image = new GroupBuyStoreMenuImage()
                 {
-                    //如果有出錯的狀況，就把上船的檔案刪除
-                    FileInfo DelFile = new FileInfo(file.LocalFileName);
-                    DelFile.Delete();
-                    throw ex;
+                    StoreId = id,
+                    ImageUrl = fileName
+
+                };
+
+                using (var db = new HoGameEISContext())
+                {
+                    db.GroupBuyStoreMenuImages.Add(image);
+                    db.SaveChanges();
                 }
             }
             return Get(id);
@@ -148,14 +158,56 @@ namespace HoGameEIS.Controllers
                 db.SaveChanges();
             }
 
-            deleteLocalFile(image.ImageUrl);
+            deleteblobFile(image.ImageUrl);
         }
 
 
+        public static string blobSaveFile(MultipartFileData file)
+        {
+            string fileName = file.Headers.ContentDisposition.FileName;
+            if (fileName.StartsWith("\"") && fileName.EndsWith("\""))
+            {
+                fileName = fileName.Trim('"');
+            }
+            if (fileName.Contains(@"/") || fileName.Contains(@"\"))
+            {
+                fileName = Path.GetFileName(fileName);
+            }
+
+            //檔名加上時間戳記
+
+            fileName = String.Format("{0}_{1}", Convert.ToInt32(DateTime.UtcNow.AddHours(8).Subtract(new DateTime(1970, 1, 1)).TotalSeconds), fileName);
+     
+            // Retrieve reference to a blob named "myblob".
+            CloudBlockBlob blockBlob = ImageContainer.GetBlockBlobReference(fileName);
+
+            // Create or overwrite the "myblob" blob with contents from a local file.
+            using (var fileStream = System.IO.File.OpenRead(file.LocalFileName))
+            {
+                blockBlob.UploadFromStream(fileStream);
+            }
+            if (File.Exists(file.LocalFileName))
+                File.Delete(file.LocalFileName);
 
 
+            return fileName;
+        }
 
-        private string localSaveFile(MultipartFileData file)
+
+        public static void deleteblobFile(string fileName)
+        {
+            try
+            {
+                // Retrieve reference to a blob named "myblob".
+                CloudBlockBlob blockBlob = ImageContainer.GetBlockBlobReference(fileName);
+                blockBlob.Delete();
+            }
+            catch (Exception ex) {
+
+            }
+        }
+
+       /* private string localSaveFile(MultipartFileData file)
         {
             string fileName = file.Headers.ContentDisposition.FileName;
             if (fileName.StartsWith("\"") && fileName.EndsWith("\""))
@@ -192,7 +244,7 @@ namespace HoGameEIS.Controllers
             // Ensure that the target does not exist.
             if (File.Exists(path))
                 File.Delete(path);
-        }
+        }*/
         //// GET: api/MenuImageApi/GetImage/5
         //[Route("getImage/{id}")]
         //[HttpGet]

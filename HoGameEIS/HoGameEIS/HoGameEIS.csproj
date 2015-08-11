@@ -310,6 +310,7 @@
     <None Include="Properties\PublishProfiles\genechen - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\genechen - Web Deploy.pubxml" />
     <Content Include="Scripts\app\common\component.jsx" />
+    <Content Include="Scripts\app\groupbuy\chooseStore.jsx" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="readme.txt" />
     <Content Include="Scripts\app\namespace.js" />
@@ -417,7 +418,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Content\uploads\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -78,6 +78,14 @@ namespace HoGameEIS.Controllers
         {
             using (var db = new HoGameEISContext())
             {
+                List<GroupBuyStoreMenuImage> images = new List<GroupBuyStoreMenuImage>();
+                images = db.GroupBuyStoreMenuImages.Where(o => o.StoreId == id).ToList();
+
+                foreach (var img in images)
+                {
+                    MenuImageApiController.deleteblobFile(img.ImageUrl);
+                }
+
                 var sql = @"exec [dbo].[usp_DeleteGroupBuyStore] @StoreId";
                 db.Database.ExecuteSqlCommand(sql, new SqlParameter("@StoreId", id));
             }

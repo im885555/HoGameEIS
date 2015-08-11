@@ -19,6 +19,9 @@ BEGIN
 	DELETE FROM [dbo].[GroupBuyStoreItems]
 	WHERE StoreId = @StoreId
 
+	DELETE FROM [dbo].[GroupBuyStoreMenuImages]
+	WHERE StoreId = @StoreId
+
 	DELETE FROM [dbo].[GroupBuyStores]
 	WHERE StoreId = @StoreId
 END

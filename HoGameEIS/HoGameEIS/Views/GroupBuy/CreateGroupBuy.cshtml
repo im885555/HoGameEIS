@@ -5,17 +5,15 @@
 @Html.Partial("_GroupBuyNav")
 <div>
     <div class="col-sm-12 col-md-10 col-lg-8">
-        <form class="form-horizontal create-groupbuy-form" role="form">
+        <form class="form-horizontal create-groupbuy-form" role="form" method="post" id="createGroupbuyForm">
             <div class="form-group">
                 <label for="exampleInputEmail1">描述</label>
                 <input type="text" class="form-control" name="StoreName" placeholder="請輸入描述"  >
                 <label for="exampleInputEmail1">店家</label>
-                <div>
-                    <button type="button" class="btn btn-primary">選擇商家</button>
-                </div>
+                <div id="ChooseStore"></div>
                 <label for="exampleInputEmail1">結束時間</label>
                 <div class='input-group date' id='datetimepicker1'>
-                    <input type='text' class="form-control" />
+                    <input type='text' name="EndTime" class="form-control" />
                     <span class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar"></span>
                     </span>
@@ -25,14 +23,21 @@
             <div class="form-group">
                     <button type="submit" class="btn btn-default">新增</button>
             </div>
-</form>
+        </form>
     </div>
 </div>
 @section scripts
 {
 <script>
     $(function () {
+        $("#createGroupbuyForm").submit(function (e) {
+            e.stopImmediatePropagation();           
+            if (!!e.originalEvent && (!!e.originalEvent.detail && e.originalEvent.detail >= 2)) {
+                return false;
+            }
+        });
         $('#datetimepicker1').datetimepicker();
+        App.ChooseStoreInit(document.getElementById("ChooseStore"))
     });
 </script>
 }
