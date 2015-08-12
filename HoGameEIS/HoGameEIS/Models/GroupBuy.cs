@@ -11,6 +11,7 @@ namespace HoGameEIS.Models
         {
             this.GroupBuyItems = new List<GroupBuyItem>();
             this.GroupBuyPaids = new List<GroupBuyPaid>();
+            this.GroupBuyMenuImages = new List<GroupBuyMenuImage>();
         }
 
         public int GroupBuyId { get; set; }
@@ -19,6 +20,7 @@ namespace HoGameEIS.Models
         public System.DateTime EndTime { get; set; }
         public virtual ICollection<GroupBuyItem> GroupBuyItems { get; set; }
         public virtual ICollection<GroupBuyPaid> GroupBuyPaids { get; set; }
+        public virtual ICollection<GroupBuyMenuImage> GroupBuyMenuImages { get; set; }
 
 
         public int StoreId { get; set; }

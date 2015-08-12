@@ -301,6 +301,9 @@
     <Content Include="Content\bootstrap\alerts.less" />
     <Content Include="Content\_bootstrap-datetimepicker.less" />
     <Content Include="Content\bootstrap-datetimepicker-build.less" />
+    <Content Include="Migrations\SeedSql\usp_AddGroupBuy.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Migrations\SeedSql\usp_DeleteGroupBuyStore.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -311,6 +314,7 @@
     <None Include="Properties\PublishProfiles\genechen - Web Deploy.pubxml" />
     <Content Include="Scripts\app\common\component.jsx" />
     <Content Include="Scripts\app\groupbuy\chooseStore.jsx" />
+    <Content Include="Scripts\app\groupbuy\control.jsx" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="readme.txt" />
     <Content Include="Scripts\app\namespace.js" />
@@ -379,11 +383,16 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201508120315141_GroupBuyMenuImage.cs" />
+    <Compile Include="Migrations\201508120315141_GroupBuyMenuImage.Designer.cs">
+      <DependentUpon>201508120315141_GroupBuyMenuImage.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\DTO\TableDto.cs" />
     <Compile Include="Models\Employee.cs" />
     <Compile Include="Models\GroupBuy.cs" />
     <Compile Include="Models\GroupBuyItem.cs" />
+    <Compile Include="Models\GroupBuyMenuImage.cs" />
     <Compile Include="Models\GroupBuyPaid.cs" />
     <Compile Include="Models\GroupBuyStore.cs" />
     <Compile Include="Models\GroupBuyStoreItem.cs" />
@@ -395,6 +404,7 @@
     <Compile Include="Models\Mapping\EmployeeMap.cs" />
     <Compile Include="Models\Mapping\GroupBuyItemMap.cs" />
     <Compile Include="Models\Mapping\GroupBuyMap.cs" />
+    <Compile Include="Models\Mapping\GroupBuyMenuImageMap.cs" />
     <Compile Include="Models\Mapping\GroupBuyPaidMap.cs" />
     <Compile Include="Models\Mapping\GroupBuyStoreItemMap.cs" />
     <Compile Include="Models\Mapping\GroupBuyStoreMap.cs" />
@@ -418,6 +428,11 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201508120315141_GroupBuyMenuImage.resx">
+      <DependentUpon>201508120315141_GroupBuyMenuImage.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -7,66 +7,10 @@
     var SplitButton = ReactBootstrap.SplitButton;
     var MenuItem = ReactBootstrap.MenuItem;
     var Modal = ReactBootstrap.Modal;
+    var CategoryGroup = App.GroupBuyControl.CategoryGroup;
 
-    var CategoryGroup = React.createClass({
-        getInitialState: function() {
-            return {current:""};
-        },
-        handleSelect: function(value){
-            this.props.onCategoryChange(value);
-            this.setState({current:value});
-        },
-        render: function() {
-            var btnData = [
-                {name:"全部",value:""},
-                {name:"正餐",value:"meal"},
-                {name:"飲料",value:"drink"},
-                {name:"點心",value:"dessert"},
-                {name:"團購",value:"groupbuy"},
-                {name:"活動",value:"party"}
-            ];
-            return (
-
-                    <ButtonGroup>
-                        {
-                            btnData.map(function (data, i) {
-                                var handleSelect = this.handleSelect.bind(this, data.value);
-                                return (
-                                    <Button key={i}
-                                    className = {data.value == this.state.current ? "active" :""}
-                                    onClick = {handleSelect}>{data.name}
-                                    </Button>
-                                );
-                            }.bind(this))
-                        }
-                    </ButtonGroup>
-
-            );
-        }
-    });
 
     var StoreGrid =  React.createClass({
-        getInitialState: function() {
-            return {
-                confirmShow:false,
-                selectedData:{}
-            };
-        },
-        confirmDelete:function(item){
-            this.setState({confirmShow:true,selectedData:item});
-        },
-        handleDelete: function(result){
-            this.setState({confirmShow:false});
-            if(result){
-                $.ajax({
-                    url: "/api/groupbuystoreapi/" + this.state.selectedData.StoreId,
-                    type: "DELETE",
-                    success: function(result) {
-                        this.props.refresh();
-                    }.bind(this)
-                });
-            }
-        },
         render: function() {
             var rows = this.props.data.rows;
             return (               
@@ -232,16 +176,13 @@
                  bsStyle='primary'
                  aria-labelledby='contained-modal-title-lg'
                  animation={false}>
-                     <Modal.Header closeButton>
-                       <Modal.Title>請選擇店家</Modal.Title>
-                     </Modal.Header>
-
-                     <Modal.Body>
+                    <Modal.Header closeButton>
+                        <Modal.Title>請選擇店家</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
                         <StoreManagement {...this.props}/>
-                     </Modal.Body>
-
-                     
-                   </Modal>
+                    </Modal.Body>               
+                </Modal>
             );
         }
     });
@@ -249,26 +190,24 @@
     var ChooseStore = React.createClass({
         getInitialState: function () {
             return {
-                chooseWindowShow: false,
+                showChooseWindow: false,
                 selected: null
             };
         },
         handleHide: function (store) {
-            console.log(store);
-
-            this.setState({ chooseWindowShow: false, selected: store })
+            this.setState({ showChooseWindow: false });
+            !!store && !!store.hasOwnProperty("StoreId") && this.setState({selected: store });            
         },
         render: function () {
             var selected = this.state.selected;
             return (
                 <div>
                 <Button bsStyle='primary' 
-                        onClick={()=>this.setState({chooseWindowShow:true})}>
+                        onClick={()=>this.setState({showChooseWindow:true})}>
                     選擇商家
                     <ChooseWindow 
-                    show={this.state.chooseWindowShow}
-                    onHide={this.handleHide}
-                    selectedData={this.state.selectedData} />
+                    show={this.state.showChooseWindow}
+                    onHide={this.handleHide}/>
                 </Button>
                     {!!selected && <span style={{margin:'10px'}}>{selected.StoreName}</span>}
                     {!!selected && <input type="hidden" name="StoreId" value={selected.StoreId}/>}
@@ -276,5 +215,6 @@
             )
         }
     });
-    React.render(<ChooseStore/>,mountNode);
+    React.render(<ChooseStore/>, mountNode);
+    return ChooseStore;
 }

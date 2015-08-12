@@ -27,3 +27,9 @@ IF EXISTS ( SELECT  *
             WHERE   object_id = OBJECT_ID(N'usp_DeleteGroupBuyStore')
                     AND type IN ( N'P', N'PC' )) 
 DROP  PROCEDURE [dbo].[usp_DeleteGroupBuyStore]
+
+IF EXISTS ( SELECT  *
+            FROM    sys.objects
+            WHERE   object_id = OBJECT_ID(N'usp_AddGroupBuy')
+                    AND type IN ( N'P', N'PC' )) 
+DROP  PROCEDURE [dbo].[usp_AddGroupBuy]

@@ -57,6 +57,31 @@
                  {
                      Email = "gene.chen@hg-asia.com",
                      FullName = "Gene Chen"
+                 },
+                 new Models.Employee()
+                 {
+                     Email = "hugo.cheng@hg-asia.com",
+                     FullName = "Hugo Cheng"
+                 },
+                 new Models.Employee()
+                 {
+                     Email = "joe.wu@hg-asia.com",
+                     FullName = "Joe Wu"
+                 },
+                 new Models.Employee()
+                 {
+                     Email = "archer.liou@hg-asia.com",
+                     FullName = "Archer Liou"
+                 },
+                 new Models.Employee()
+                 {
+                     Email = "ronnie.ho@hg-asia.com",
+                     FullName = "Ronnie Ho"
+                 },
+                 new Models.Employee()
+                 {
+                     Email = "lester.yeh@hg-asia.com",
+                     FullName = "Lester Yeh"
                  }
                 );
 
@@ -65,6 +90,7 @@
             executeSql(context, "usp_DeleteGroupBuyMenuSubItem.sql");
             executeSql(context, "usp_DeleteGroupBuyMenuItem.sql");
             executeSql(context, "usp_DeleteGroupBuyStore.sql");
+            executeSql(context, "usp_AddGroupBuy");
 
             base.Seed(context);
 

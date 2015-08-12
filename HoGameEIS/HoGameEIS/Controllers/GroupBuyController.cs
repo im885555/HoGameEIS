@@ -1,6 +1,7 @@
 ﻿using HoGameEIS.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -26,6 +27,27 @@ namespace HoGameEIS.Controllers
         [HttpPost]
         public ActionResult CreateGroupBuy(FormCollection formData)
         {
+            //GroupBuy groupbuy = new GroupBuy()
+            //{
+            //    Description=formData["Description"],
+            //    StartTime= DateTime.Now,
+            //    EndTime= DateTime.Now,
+            //    StoreId= Int32.Parse(formData["StoreId"])               
+
+            //};
+            using (var db = new HoGameEISContext())
+            {
+                //db.GroupBuys.Add(groupbuy);
+                //db.SaveChanges();
+
+                var sql = @"exec [dbo].[usp_AddGroupBuy] @Description=@Description,@EndTime=@EndTime,@StoreId=@StoreId";
+                db.Database.ExecuteSqlCommand(sql,
+                    new SqlParameter("@Description", formData["Description"]),
+                    new SqlParameter("@EndTime", DateTime.Now),
+                    new SqlParameter("@StoreId", Int32.Parse(formData["StoreId"]))
+                    );
+            }
+
             return RedirectToAction("GroupBuyList", "GroupBuy");
         }
 

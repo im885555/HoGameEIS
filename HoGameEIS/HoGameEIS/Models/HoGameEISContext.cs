@@ -27,8 +27,8 @@ namespace HoGameEIS.Models
         public DbSet<GroupBuyStoreSubItem> GroupBuyStoreSubItems { get; set; }
         public DbSet<GroupBuySubItem> GroupBuySubItems { get; set; }
         public DbSet<GroupBuySubscriber> GroupBuySubscribers { get; set; }
-
-
+        public DbSet<GroupBuyMenuImage> GroupBuyMenuImages { get; set; }
+    
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Configurations.Add(new EmployeeMap());
@@ -41,6 +41,7 @@ namespace HoGameEIS.Models
             modelBuilder.Configurations.Add(new GroupBuyStoreSubItemMap());
             modelBuilder.Configurations.Add(new GroupBuySubItemMap());
             modelBuilder.Configurations.Add(new GroupBuySubscriberMap());
+            modelBuilder.Configurations.Add(new GroupBuyMenuImageMap());
 
         }
     }
