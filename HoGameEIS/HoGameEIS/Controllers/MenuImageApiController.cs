@@ -199,8 +199,8 @@ namespace HoGameEIS.Controllers
             try
             {
                 // Retrieve reference to a blob named "myblob".
-                CloudBlockBlob blockBlob = ImageContainer.GetBlockBlobReference(fileName);
-                blockBlob.Delete();
+                //CloudBlockBlob blockBlob = ImageContainer.GetBlockBlobReference(fileName);
+                //blockBlob.Delete();
             }
             catch (Exception ex) {
 

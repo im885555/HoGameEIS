@@ -4,12 +4,15 @@
 
 @Html.Partial("_GroupBuyNav")
 
-
+<div id="content"></div>
 
 @section scripts{
     <script>
         //var list =  {StartTime:"",De};
+        $.get("/api/groupbuyapi", function (data) {
 
+            $("#content").html(JSON.stringify(data));
+        });
 
     </script>
 }

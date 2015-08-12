@@ -43,7 +43,7 @@ namespace HoGameEIS.Controllers
                 var sql = @"exec [dbo].[usp_AddGroupBuy] @Description=@Description,@EndTime=@EndTime,@StoreId=@StoreId";
                 db.Database.ExecuteSqlCommand(sql,
                     new SqlParameter("@Description", formData["Description"]),
-                    new SqlParameter("@EndTime", DateTime.Now),
+                    new SqlParameter("@EndTime", formData["EndTime"]),
                     new SqlParameter("@StoreId", Int32.Parse(formData["StoreId"]))
                     );
             }

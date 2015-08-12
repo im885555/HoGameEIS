@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HoGameEIS.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -14,9 +15,15 @@ namespace HoGameEIS.Controllers
         }
 
         // GET api/groupbuyapi
-        public IEnumerable<string> Get()
+        public List<GroupBuy> Get()
         {
-            return new string[] { "value1", "value2" };
+            List<GroupBuy> gb = new List<GroupBuy>();
+            using (var db = new HoGameEISContext())
+            {
+                gb = db.GroupBuys.ToList();
+            }
+
+            return gb;
         }
 
         // GET api/groupbuyapi/5

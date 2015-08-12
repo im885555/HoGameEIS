@@ -8,12 +8,12 @@
         <form class="form-horizontal create-groupbuy-form" role="form" method="post" id="createGroupbuyForm">
             <div class="form-group">
                 <label for="exampleInputEmail1">描述</label>
-                <input type="text" class="form-control" name="Description" placeholder="請輸入描述"  >
+                <input type="text" class="form-control" name="Description" placeholder="請輸入描述" required />
                 <label for="exampleInputEmail1">店家</label>
                 <div id="ChooseStore"></div>
                 <label for="exampleInputEmail1">結束時間</label>
                 <div class='input-group date' id='datetimepicker1'>
-                    <input type='text' name="EndTime" class="form-control" />
+                    <input type='text' name="EndTime" class="form-control" required />
                     <span class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar"></span>
                     </span>
@@ -35,8 +35,15 @@
             if (!!e.originalEvent && (!!e.originalEvent.detail && e.originalEvent.detail >= 2)) {
                 return false;
             }
+
+            if (!($("input[name='StoreId']").length > 0 && !!$("input[name='StoreId']").val())) {
+                alert("請選擇商家");
+                return false;
+            }
         });
-        $('#datetimepicker1').datetimepicker();
+        $('#datetimepicker1').datetimepicker({
+            defaultDate: new Date(new Date().setHours(new Date().getHours() + 2))
+        });
         App.ChooseStoreInit(document.getElementById("ChooseStore"))
     });
 </script>

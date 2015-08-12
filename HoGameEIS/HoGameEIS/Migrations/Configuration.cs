@@ -90,7 +90,7 @@
             executeSql(context, "usp_DeleteGroupBuyMenuSubItem.sql");
             executeSql(context, "usp_DeleteGroupBuyMenuItem.sql");
             executeSql(context, "usp_DeleteGroupBuyStore.sql");
-            executeSql(context, "usp_AddGroupBuy");
+            executeSql(context, "usp_AddGroupBuy.sql");
 
             base.Seed(context);
 
