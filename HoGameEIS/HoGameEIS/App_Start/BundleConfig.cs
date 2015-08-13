@@ -27,10 +27,12 @@ namespace HoGameEIS.App_Start
                // "~/Scripts/react/JSXTransformer-0.13.1.js",
                 "~/Scripts/moment.js",
                 "~/Scripts/bootstrap.js",
-                "~/Scripts/bootstrap-datetimepicker.js",
-                "~/Scripts/app/namespace.js"));
+                "~/Scripts/bootstrap-datetimepicker.js"));
 
-            bundles.Add(new JsxBundle("~/bundles/app")
+            bundles.Add(new ScriptBundle("~/bundles/app")
+                .IncludeDirectory("~/Scripts/app", "*.js", true));
+
+            bundles.Add(new JsxBundle("~/bundles/appjsx")
                 .IncludeDirectory("~/Scripts/app", "*.jsx", true));
 
             //// Use the development version of Modernizr to develop with and learn from. Then, when you're

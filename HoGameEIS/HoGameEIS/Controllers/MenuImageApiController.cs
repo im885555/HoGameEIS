@@ -198,9 +198,18 @@ namespace HoGameEIS.Controllers
         {
             try
             {
-                // Retrieve reference to a blob named "myblob".
-                //CloudBlockBlob blockBlob = ImageContainer.GetBlockBlobReference(fileName);
-                //blockBlob.Delete();
+                using (var db = new HoGameEISContext())
+                {                    
+                    //檢查菜單圖片已存在團購，就不刪除實體圖片。
+                    if (!db.GroupBuyMenuImages.ToList().Exists(o => o.ImageUrl == fileName))
+                    {
+                        // Retrieve reference to a blob named "myblob".
+                        CloudBlockBlob blockBlob = ImageContainer.GetBlockBlobReference(fileName);
+                        blockBlob.Delete();
+                    }
+                }
+
+                   
             }
             catch (Exception ex) {
 

@@ -1,18 +1,19 @@
-App.StoreManagementInit = function(mountNode){
+App.GroupBuy.StoreManagement = (function () {
     var Button = ReactBootstrap.Button;
-    var ButtonGroup =  ReactBootstrap.ButtonGroup;
+    var ButtonGroup = ReactBootstrap.ButtonGroup;
     var Table = ReactBootstrap.Table;
-    var Pagination =  ReactBootstrap.Pagination;
+    var Pagination = ReactBootstrap.Pagination;
     var ButtonToolbar = ReactBootstrap.ButtonToolbar;
     var SplitButton = ReactBootstrap.SplitButton;
     var MenuItem = ReactBootstrap.MenuItem;
     var Modal = ReactBootstrap.Modal;
-    var CategoryGroup = App.GroupBuyControl.CategoryGroup;
-  
+    var CategoryGroup = App.GroupBuy.Control.CategoryGroup;
+    var LoadingIcon = App.Component.Loading;
+
 
     var ConfirmDelete = React.createClass({
-        render:function(){
-            return(
+        render: function () {
+            return (
                 <Modal
                 {...this.props}
                  bsSize='small'
@@ -37,29 +38,29 @@ App.StoreManagementInit = function(mountNode){
     });
 
 
-    var StoreGrid =  React.createClass({
-        getInitialState: function() {
+    var StoreGrid = React.createClass({
+        getInitialState: function () {
             return {
-                confirmShow:false,
-                selectedData:{}
+                confirmShow: false,
+                selectedData: {}
             };
         },
-        confirmDelete:function(item){
-            this.setState({confirmShow:true,selectedData:item});
+        confirmDelete: function (item) {
+            this.setState({ confirmShow: true, selectedData: item });
         },
-        handleDelete: function(result){
-            this.setState({confirmShow:false});
-            if(result){
+        handleDelete: function (result) {
+            this.setState({ confirmShow: false });
+            if (result) {
                 $.ajax({
                     url: "/api/groupbuystoreapi/" + this.state.selectedData.StoreId,
                     type: "DELETE",
-                    success: function(result) {
+                    success: function (result) {
                         this.props.refresh();
                     }.bind(this)
                 });
             }
         },
-        render: function() {
+        render: function () {
             var rows = this.props.data.rows;
             return (
                 <div>
@@ -77,7 +78,10 @@ App.StoreManagementInit = function(mountNode){
                             </thead>
                             <tbody>
                             {
-                                rows.map(function(item,i){
+                                !rows && <tr><td colSpan="4"  className="text-center"><LoadingIcon/></td></tr>
+                            }
+                            {                                                            
+                                !!rows && rows.map(function(item,i){
                                     return (
                                         <tr key={item.StoreId}>
                                             <td>{item.StoreName}</td>
@@ -94,6 +98,7 @@ App.StoreManagementInit = function(mountNode){
                                         </tr>
                                     );
                                 }.bind(this))
+                                
                             }
                         </tbody>
                     </Table>
@@ -104,23 +109,23 @@ App.StoreManagementInit = function(mountNode){
 
 
     var StoreManagement = React.createClass({
-        getInitialState: function() {
+        getInitialState: function () {
             return {
-                pageSize:5,
-                pageNumber:1,
-                searchText:"",
-                category:"",
-                total:0,
-                data:{
-                    total:0,
-                    rows:[]
+                pageSize: 10,
+                pageNumber: 1,
+                searchText: "",
+                category: "",
+                total: 0,
+                data: {
+                    total: 0,
+                    rows: null
                 }
             };
         },
         componentDidMount: function () {
             this.getStoreListFromServer();
         },
-        getStoreListFromServer: function(){
+        getStoreListFromServer: function () {
             //http://localhost:50908/api/groupbuystoreapi?search=d&order=asc&limit=10&offset=0&category=meal&_=1437099137914
             //(new Date().getTime()).toString()
             var state = this.state;
@@ -128,16 +133,16 @@ App.StoreManagementInit = function(mountNode){
                 search: state.searchText,
                 limit: state.pageSize,
                 offset: state.pageSize * state.pageNumber - state.pageSize,
-                category:state.category
+                category: state.category
             };
-            params[(new Date().getTime()).toString()]=null;
+            params[(new Date().getTime()).toString()] = null;
 
             $.ajax({
                 url: "/api/groupbuystoreapi/",
                 data: params,
                 type: "GET",
-                success: function(data) {
-                    this.setState({data:data});
+                success: function (data) {
+                    this.setState({ data: data });
                     //this.props.onFetch(data);
                 }.bind(this)
             });
@@ -145,29 +150,29 @@ App.StoreManagementInit = function(mountNode){
         handleSelectPage(event, selectedEvent) {
             this.setState({
                 pageNumber: selectedEvent.eventKey
-            },()=>this.getStoreListFromServer());
+            }, () =>this.getStoreListFromServer());
         },
-        handleCategroyChange:function(category){
-            this.setState({category:category},
-            ()=>this.getStoreListFromServer());
+        handleCategroyChange: function (category) {
+            this.setState({ category: category },
+            () =>this.getStoreListFromServer());
         },
-        handleSearchChange:function(){
-            this.setState({searchText:React.findDOMNode(this.refs.Search).value},
-            ()=>this.getStoreListFromServer());
+        handleSearchChange: function () {
+            this.setState({ searchText: React.findDOMNode(this.refs.Search).value },
+            () =>this.getStoreListFromServer());
         },
-        handlePageSizeChange: function(size){
-            this.setState({pageSize:size},
-            ()=>this.getStoreListFromServer());
+        handlePageSizeChange: function (size) {
+            this.setState({ pageSize: size },
+            () =>this.getStoreListFromServer());
         },
-        showConfirmDelete:function(callback){
-            this.setState({showModal:true});
+        showConfirmDelete: function (callback) {
+            this.setState({ showModal: true });
         },
-        renderPaging:function () {
+        renderPaging: function () {
             var pagingBtn = "";
-            if(this.state.pageSize<this.state.data.total){
-                var items = parseInt(this.state.data.total/this.state.pageSize)
-                    +  (this.state.data.total/this.state.pageSize == 0 ? 0 : 1 ),
-                    maxButtons = items>=5 ? 5 : items;
+            if (this.state.pageSize < this.state.data.total) {
+                var items = parseInt(this.state.data.total / this.state.pageSize)
+                    + (this.state.data.total / this.state.pageSize == 0 ? 0 : 1),
+                    maxButtons = items >= 5 ? 5 : items;
                 pagingBtn = <div className="pull-right">
                     <Pagination
                       prev={true}
@@ -183,10 +188,10 @@ App.StoreManagementInit = function(mountNode){
             }
             return pagingBtn;
         },
-        render: function() {
+        render: function () {
             var to = this.state.pageSize * this.state.pageNumber,
                 from = to - this.state.pageSize + 1;
-            return(
+            return (
                 <div className="store-management-content">
                     <div>
                         <Button onClick={()=>location.href = "StoreManagementEdit"}> + 新增 </Button>
@@ -232,5 +237,5 @@ App.StoreManagementInit = function(mountNode){
             );
         }
     });
-    React.render(<StoreManagement/>,mountNode);
-}
+    return StoreManagement;
+})();

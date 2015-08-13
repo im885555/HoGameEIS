@@ -7,15 +7,9 @@
     <meta name="author" content="">
     <link rel="icon" href="/Content/AssetsBS3/img/favicon.ico">
     <title>@ViewBag.Title</title>    
-    @*<link href="~/Content/bootstrap.css" rel="stylesheet" />   
-    <link href="~/Content/bootstrap-datetimepicker.css" rel="stylesheet" />
-    <link href="~/Content/site.css" rel="stylesheet" />*@
-    @Styles.Render("~/Content/css")
-
-   
+    @Styles.Render("~/Content/css")   
 </head>
-<body>
-    
+<body>    
     @Html.Partial("_Navbar")
     <div class="container">
         <div class="toggle-nav">
@@ -38,14 +32,7 @@
 
     @Scripts.Render("~/bundles/main")
     @Scripts.Render("~/bundles/app")
+    @Scripts.Render("~/bundles/appjsx")
     @RenderSection("scripts", required: false)
-    <script>
-        $(document).ready(function () {
-            $("[data-toggle=offcanvas]").click(function () {
-                $('.row-offcanvas').toggleClass('active');
-            });
-        });
-    </script>
-    @*<script src="@Url.Content("~/Scripts/app/groupBuyStoreList.jsx")"></script>*@
 </body>
 </html>

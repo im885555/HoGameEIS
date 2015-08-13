@@ -1,14 +1,8 @@
-﻿App.StoreManagementMenuInit = function (mountNode) {
+﻿App.GroupBuy.StoreManagementMenuEdit = (function () {
     var Table = ReactBootstrap.Table;
     var Button = ReactBootstrap.Button;
     var LoadingIcon = App.Component.Loading;
     var FileDragAndDrop = App.Component.FileDragAndDrop;
-
-    var getRouterId = function () {
-        var params = location.pathname.split("/");
-        return params[params.length - 1];
-    };
-    var storeId = getRouterId();
 
     var StoreInfo = React.createClass({
         getInitialState: function () {
@@ -459,6 +453,11 @@
     });
 
 
-    React.render(<StoreManagementMenuEdit storeId={storeId} />, mountNode);
-
-};
+    return React.createClass({
+            render: function () {
+                return(
+                    <StoreManagementMenuEdit storeId={this.props.id}/>
+                    );
+                }
+            });
+})();

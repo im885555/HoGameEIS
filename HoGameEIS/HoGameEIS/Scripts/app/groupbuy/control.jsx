@@ -1,5 +1,5 @@
 ﻿
-App.GroupBuyControl = (function () {
+App.GroupBuy.Control = (function () {
     var Button = ReactBootstrap.Button,
         ButtonGroup = ReactBootstrap.ButtonGroup,
         CategoryGroup = React.createClass({

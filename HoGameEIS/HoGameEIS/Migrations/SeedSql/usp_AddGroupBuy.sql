@@ -35,7 +35,7 @@ BEGIN
 	SELECT ItemId FROM @TempTable
 
 	OPEN ItemId_Cursor
-	DECLARE @ItemId nvarchar(MAX)
+	DECLARE @ItemId int
 	    
     FETCH NEXT FROM ItemId_Cursor
 	into @ItemId

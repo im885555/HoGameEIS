@@ -1,20 +1,4 @@
-﻿App.Component.Loading = React.createClass({
-    getDefaultProps: function () {
-        return {
-            show:true
-        }
-    },
-    render: function () {
-        var style = {};
-        !this.props.show && (style.display="none");
-        return(
-            <span style={style} className="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span>
-        )
-    }
-});
-
-
-App.Component.FileDragAndDrop = React.createClass({
+﻿App.Component.FileDragAndDrop = React.createClass({
     handleDragStart: function (event) {
         if (typeof this.props.onDragStart === 'function') {
             this.props.onDragStart(event);

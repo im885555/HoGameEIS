@@ -307,17 +307,20 @@
     <Content Include="Migrations\SeedSql\usp_DeleteGroupBuyStore.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\app\groupbuy\storeList.jsx" />
-    <Content Include="Scripts\app\groupbuy\menuEdit.jsx" />
+    <Content Include="Scripts\app\groupbuy\storeManagement.jsx" />
+    <Content Include="Scripts\app\groupbuy\storeManagementMenuEdit.jsx" />
     <None Include="Properties\PublishProfiles\gene.pubxml" />
     <None Include="Properties\PublishProfiles\genechen - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\genechen - Web Deploy.pubxml" />
-    <Content Include="Scripts\app\common\component.jsx" />
+    <Content Include="Scripts\app\component\loading.jsx" />
     <Content Include="Scripts\app\groupbuy\chooseStore.jsx" />
     <Content Include="Scripts\app\groupbuy\control.jsx" />
+    <Content Include="Scripts\app\component\fileDragAndDrop.jsx" />
+    <Content Include="Scripts\app\groupbuy\createGroupBuy.jsx" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="readme.txt" />
-    <Content Include="Scripts\app\namespace.js" />
+    <Content Include="Scripts\app\app.js" />
+    <Content Include="Scripts\app\main.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -352,10 +355,7 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Account\Logout.cshtml" />
-    <Content Include="Views\GroupBuy\CreateGroupBuy.cshtml" />
     <Content Include="Views\GroupBuy\GroupBuyList.cshtml" />
-    <Content Include="Views\GroupBuy\StoreManagement.cshtml" />
-    <Content Include="Views\GroupBuy\StoreManagement.cshtml_backup" />
     <Content Include="Views\GroupBuy\StoreManagementEdit.cshtml" />
     <Content Include="Views\GroupBuy\_GroupBuyNav.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
@@ -414,7 +414,7 @@
     <Content Include="Views\web.config" />
     <Content Include="packages.config" />
     <Content Include="Scripts\jquery-2.1.4.min.map" />
-    <Content Include="Views\GroupBuy\StoreManagementMenuEdit.cshtml" />
+    <Content Include="Views\GroupBuy\App.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

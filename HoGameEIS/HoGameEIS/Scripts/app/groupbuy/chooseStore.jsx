@@ -7,7 +7,8 @@
     var SplitButton = ReactBootstrap.SplitButton;
     var MenuItem = ReactBootstrap.MenuItem;
     var Modal = ReactBootstrap.Modal;
-    var CategoryGroup = App.GroupBuyControl.CategoryGroup;
+    var CategoryGroup = App.GroupBuy.Control.CategoryGroup;
+    var LoadingIcon = App.Component.Loading;
 
 
     var StoreGrid =  React.createClass({
@@ -24,7 +25,10 @@
                         </thead>
                         <tbody>
                         {
-                            rows.map(function(item,i){
+                            !rows && <tr><td colSpan="4" className="text-center"><LoadingIcon /></td></tr>
+                        }
+                        {
+                            !!rows && rows.map(function(item,i){
                                 return (
                                     <tr key={item.StoreId} onClick={()=>this.props.onHide(item)}>
                                         <td>{item.StoreName}</td>
@@ -45,14 +49,14 @@
     var StoreManagement = React.createClass({
         getInitialState: function() {
             return {
-                pageSize:5,
+                pageSize:10,
                 pageNumber:1,
                 searchText:"",
                 category:"",
                 total:0,
                 data:{
                     total:0,
-                    rows:[]
+                    rows:null
                 }
             };
         },
@@ -215,6 +219,6 @@
             )
         }
     });
-    React.render(<ChooseStore/>, mountNode);
+    !!mountNode && React.render(<ChooseStore/>, mountNode);
     return ChooseStore;
 }

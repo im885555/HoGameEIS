@@ -14,32 +14,21 @@ namespace HoGameEIS.Controllers
         // GET: /GroupBuy/
         public ActionResult Index()
         {
-            return View("CreateGroupBuy");
+            return RedirectToAction("CreateGroupBuy", "GroupBuy");
         }
 
         [Authorize]
         public ActionResult CreateGroupBuy()
         {
-            return View();
+            return View("App");
         }
 
         [Authorize]
         [HttpPost]
         public ActionResult CreateGroupBuy(FormCollection formData)
         {
-            //GroupBuy groupbuy = new GroupBuy()
-            //{
-            //    Description=formData["Description"],
-            //    StartTime= DateTime.Now,
-            //    EndTime= DateTime.Now,
-            //    StoreId= Int32.Parse(formData["StoreId"])               
-
-            //};
             using (var db = new HoGameEISContext())
             {
-                //db.GroupBuys.Add(groupbuy);
-                //db.SaveChanges();
-
                 var sql = @"exec [dbo].[usp_AddGroupBuy] @Description=@Description,@EndTime=@EndTime,@StoreId=@StoreId";
                 db.Database.ExecuteSqlCommand(sql,
                     new SqlParameter("@Description", formData["Description"]),
@@ -60,7 +49,7 @@ namespace HoGameEIS.Controllers
         [Authorize]
         public ActionResult StoreManagement()
         {
-            return View();
+            return View("App");
         }
 
         [Authorize]
@@ -128,7 +117,7 @@ namespace HoGameEIS.Controllers
         [Authorize]
         public ActionResult StoreManagementMenuEdit(int Id)
         {
-            return View();
+            return View("App");
         }
     }
 }
