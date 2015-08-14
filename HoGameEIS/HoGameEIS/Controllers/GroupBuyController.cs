@@ -43,7 +43,7 @@ namespace HoGameEIS.Controllers
         [Authorize]
         public ActionResult GroupBuyList()
         {
-            return View();
+            return View("App");
         }
 
         [Authorize]
@@ -64,7 +64,7 @@ namespace HoGameEIS.Controllers
             {
                 store = new GroupBuyStoreApiController().Get(id);
             }
-            return View(store);
+            return View("App");
         }
 
         [Authorize]

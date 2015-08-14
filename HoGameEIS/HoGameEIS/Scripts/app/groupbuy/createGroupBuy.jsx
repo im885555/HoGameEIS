@@ -22,11 +22,11 @@
                 <div className="col-sm-12 col-md-10 col-lg-8">
                 <form className="form-horizontal create-groupbuy-form" role="form" method="post" id="createGroupbuyForm">
                     <div className="form-group">
-                        <label for="exampleInputEmail1">描述</label>
+                        <label>描述</label>
                         <input type="text" className="form-control" name="Description" placeholder="請輸入描述" required />
-                        <label for="exampleInputEmail1">店家</label>
+                        <label>店家</label>
                         <div id="ChooseStore"></div>
-                        <label for="exampleInputEmail1">結束時間</label>
+                        <label>結束時間</label>
                         <div className='input-group date' id='datetimepicker1'>
                             <input type='text' name="EndTime" className="form-control" required />
                             <span className="input-group-addon">

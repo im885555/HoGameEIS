@@ -143,7 +143,12 @@ App.GroupBuy.StoreManagement = (function () {
                 type: "GET",
                 success: function (data) {
                     this.setState({ data: data });
-                    //this.props.onFetch(data);
+
+                    if (data.rows.length == 0 && state.pageNumber > 1) {
+                        this.setState({
+                            pageNumber: state.pageNumber-1
+                        }, () =>this.getStoreListFromServer());
+                    }
                 }.bind(this)
             });
         },
@@ -171,7 +176,7 @@ App.GroupBuy.StoreManagement = (function () {
             var pagingBtn = "";
             if (this.state.pageSize < this.state.data.total) {
                 var items = parseInt(this.state.data.total / this.state.pageSize)
-                    + (this.state.data.total / this.state.pageSize == 0 ? 0 : 1),
+                    + (this.state.data.total % this.state.pageSize == 0 ? 0 : 1),
                     maxButtons = items >= 5 ? 5 : items;
                 pagingBtn = <div className="pull-right">
                     <Pagination

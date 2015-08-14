@@ -317,6 +317,8 @@
     <Content Include="Scripts\app\groupbuy\control.jsx" />
     <Content Include="Scripts\app\component\fileDragAndDrop.jsx" />
     <Content Include="Scripts\app\groupbuy\createGroupBuy.jsx" />
+    <Content Include="Scripts\app\groupbuy\groupBuyList.jsx" />
+    <Content Include="Scripts\app\groupbuy\storeManagementEdit.jsx" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="readme.txt" />
     <Content Include="Scripts\app\app.js" />
@@ -355,8 +357,6 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Account\Logout.cshtml" />
-    <Content Include="Views\GroupBuy\GroupBuyList.cshtml" />
-    <Content Include="Views\GroupBuy\StoreManagementEdit.cshtml" />
     <Content Include="Views\GroupBuy\_GroupBuyNav.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\HumanResource\Index.cshtml" />

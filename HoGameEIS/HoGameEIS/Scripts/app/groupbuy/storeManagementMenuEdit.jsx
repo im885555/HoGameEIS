@@ -1,8 +1,10 @@
 ﻿App.GroupBuy.StoreManagementMenuEdit = (function () {
     var Table = ReactBootstrap.Table;
     var Button = ReactBootstrap.Button;
+
     var LoadingIcon = App.Component.Loading;
     var FileDragAndDrop = App.Component.FileDragAndDrop;
+
 
     var StoreInfo = React.createClass({
         getInitialState: function () {
@@ -434,9 +436,12 @@
         }
     });
 
-
     var StoreManagementMenuEdit = React.createClass({
-
+        getDefaultProps: function () {
+            return {
+                storeId: App.Core.UrlParams.id
+            };
+        },
         render: function () {
             return (
             <div className="row">
@@ -453,11 +458,5 @@
     });
 
 
-    return React.createClass({
-            render: function () {
-                return(
-                    <StoreManagementMenuEdit storeId={this.props.id}/>
-                    );
-                }
-            });
+    return StoreManagementMenuEdit;
 })();

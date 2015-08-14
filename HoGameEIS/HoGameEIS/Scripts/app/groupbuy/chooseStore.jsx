@@ -79,7 +79,6 @@
                 type: "GET",
                 success: function(data) {
                     this.setState({data:data});
-                    //this.props.onFetch(data);
                 }.bind(this)
             });
         },
@@ -104,7 +103,7 @@
             var pagingBtn = "";
             if(this.state.pageSize<this.state.data.total){
                 var items = parseInt(this.state.data.total/this.state.pageSize)
-                    +  (this.state.data.total/this.state.pageSize == 0 ? 0 : 1 ),
+                    + (this.state.data.total % this.state.pageSize == 0 ? 0 : 1),
                     maxButtons = items>=5 ? 5 : items;
                 pagingBtn =
                 <div className="pull-right">
