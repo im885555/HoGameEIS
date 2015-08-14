@@ -34,15 +34,25 @@
                 StoreName: this.refs.StoreName.getValue(),
                 Tel: this.refs.Tel.getValue(),
                 Address: this.refs.Address.getValue(),
-                Memo: this.refs.Memo.getValue(),
-                ValidationStoreName: !!this.refs.StoreName.getValue()
+                Memo: this.refs.Memo.getValue()
             });
+        },
+        validationStoreName: function () {
+            var result=false;
+            if (!!this.refs.StoreName.getValue()) {
+                result = true;
+            }
+            this.setState({              
+                ValidationStoreName: result
+            });
+            this.handleChange();
+            return result;
         },
         _handleSumbit:false,
         handleSumbit: function (e) {
             this._handleSumbit = true;
             this.handleChange();
-            if (!this.state.StoreName) {
+            if (!this.validationStoreName()) {
                 e.preventDefault();
                 this._handleSumbit = false;
             }
@@ -87,7 +97,7 @@
                 help: "店家名稱不可為空"
                 } : {};
 
-            var submitProps = this._handleSumbit ? {disabled:true} : {};
+            var submitBtnProps = this._handleSumbit ? { disabled: true } : {};
 
             return(
                  <div className="col-sm-12 col-md-10 col-lg-8">
@@ -99,7 +109,7 @@
                                label="店家名稱"                              
                                placeholder="輸入店家名稱"
                                {...StoreNamePorps}
-                               onChange={this.handleChange}
+                               onChange={this.validationStoreName}
                                value={state.StoreName}/>
                         <Input name="Tel"
                                ref="Tel"
@@ -123,7 +133,7 @@
                                onChange={this.handleChange}
                                value={state.Memo} />
                         {this.renderCategoryRadio()}
-                        <button type="submit" className="btn btn-default" {...submitProps}>新增/修改</button>
+                        <button type="submit" className="btn btn-default" {...submitBtnProps}>新增/修改</button>
                     </form>
                 </div>
                 );
