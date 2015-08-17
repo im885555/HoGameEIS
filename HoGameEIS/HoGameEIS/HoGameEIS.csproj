@@ -312,13 +312,14 @@
     <None Include="Properties\PublishProfiles\gene.pubxml" />
     <None Include="Properties\PublishProfiles\genechen - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\genechen - Web Deploy.pubxml" />
-    <Content Include="Scripts\app\component\loading.jsx" />
+    <Content Include="Scripts\app\2.component\loading.jsx" />
     <Content Include="Scripts\app\groupbuy\chooseStore.jsx" />
     <Content Include="Scripts\app\groupbuy\control.jsx" />
-    <Content Include="Scripts\app\component\fileDragAndDrop.jsx" />
+    <Content Include="Scripts\app\2.component\fileDragAndDrop.jsx" />
     <Content Include="Scripts\app\groupbuy\createGroupBuy.jsx" />
     <Content Include="Scripts\app\groupbuy\groupBuyList.jsx" />
     <Content Include="Scripts\app\groupbuy\storeManagementEdit.jsx" />
+    <Content Include="Scripts\app\1.mixins\formWithValidationMixin.jsx" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="readme.txt" />
     <Content Include="Scripts\app\app.js" />

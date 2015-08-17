@@ -12,6 +12,7 @@
     var CategoryGroup = App.GroupBuy.Control.CategoryGroup;
     var LoadingIcon = App.Component.Loading;
 
+    var FormWithValidationMixin = App.Mixins.FormWithValidationMixin;
 
 
     var StoreGrid =  React.createClass({
@@ -202,116 +203,107 @@
         },
         handleHide: function (store) {
             this.setState({ showChooseWindow: false });
-            !!store && !!store.hasOwnProperty("StoreId") && this.setState({selected: store });            
+            !!store && !!store.hasOwnProperty("StoreId") &&
+            this.setState({ selected: store }, this.props.onChange);
         },
         render: function () {
             var selected = this.state.selected;
             var btn =  <Button bsStyle='primary' 
-                            onClick={()=>this.setState({showChooseWindow:true})}>
+                              onClick={()=>this.setState({showChooseWindow:true})}>
                             選擇店家
                             <ChooseWindow 
                             show={this.state.showChooseWindow}
                             onHide={this.handleHide}/>
                        </Button>
             return (
-                <Input type='text' buttonBefore={btn} label="店家" value={selected.StoreName} readOnly >
-                        {!!selected && <input type="hidden" name="StoreId" value={selected.StoreId} />}
-                </Input>          
+                <div>
+                    <Input type='text' 
+                           buttonBefore={btn}
+                           style={{cursor: "pointer"}} 
+                           label="店家" 
+                           value={selected.StoreName} 
+                           onClick={()=>this.setState({showChooseWindow:true})}
+                           bsStyle= {this.props.bsStyle}
+                           help= {this.props.help}
+                           onChange={()=>{}}
+                           >
+                       
+                    </Input>     
+                    {!!selected && <input type="hidden" name="StoreId" value={selected.StoreId} />}
+                </div>
             )
         }
     });
 
-
-
-
-    var CreateGroupBuy = React.createClass({
+    var ChooseEndTime = React.createClass({
         getInitialState: function () {
-            return {
-                Description: "",
-                EndTime:"",
-                ValidationDescription: true,
-                ValidationEndTime: true
-            };
+            return { value:""}
         },
-
         componentDidMount: function () {
-            //$("#createGroupbuyForm").submit(function (e) {
-            //    e.stopImmediatePropagation();
-            //    if (!!e.originalEvent && (!!e.originalEvent.detail && e.originalEvent.detail >= 2)) {
-            //        return false;
-            //    }
-
-            //    if (!($("input[name='StoreId']").length > 0 && !!$("input[name='StoreId']").val())) {
-            //        alert("請選擇商家");
-            //        return false;
-            //    }
-            //});
-            $('#datetimepicker1').datetimepicker({
-                defaultDate: new Date(new Date().setHours(new Date().getHours() + 2))
-            });
-            //App.ChooseStoreInit(document.getElementById("ChooseStore"));
+            var dom = this.refs.el.getDOMNode();
+            $(dom).datetimepicker({
+                defaultDate: new Date(new Date().setHours(new Date().getHours() + 2)),
+                minDate: new Date()
+            }).on("dp.change", function (e) {
+                if (!e.date) {
+                    $(dom).data("DateTimePicker").date(e.oldDate);
+                }
+                this.setState({ value: this.refs.EndTime.getDOMNode().value });
+            }.bind(this));
         },
-   
-
-        handleChange: function () {
-            this.setState({
-                Description: this.refs.Description.getValue(),
-                EndTime: this.refs.EndTime.getDOMNode().value
-            });
-        },
-        validationDescription: function () {
-            var result = false;
-            if (!!this.refs.Description.getValue()) {
-                result = true;
-            }
-            this.setState({
-                ValidationDescription: result
-            });
-            this.handleChange();
-            return result;
-        },
-        
-        _handleSumbit: false,
-        handleSumbit: function (e) {
-            this._handleSumbit = true;
-            this.handleChange();
-            if (!this.validationDescription()) {
-                e.preventDefault();
-                this._handleSumbit = false;
-            }
+        componentWillUnmount: function () {
+            $(this.refs.el.getDOMNode()).data("DateTimePicker").destroy();
         },
         render: function () {
-            var state = this.state,
-                DescriptionPorps = !state.ValidationDescription ? {
-                    bsStyle: "error",
-                    help: "描述不可為空"
-                } : {};
-
-            var submitBtnProps = this._handleSumbit ? { disabled: true } : {};
-            return(
-                <div className="col-sm-12 col-md-10 col-lg-8">
-                <form className="form-horizontal create-groupbuy-form" role="form" method="post" id="createGroupbuyForm" onSubmit={this.handleSumbit}>
-                    <Input name="Description"
-                            ref="Description"
-                            type="text"
-                            label="描述"
-                            placeholder="請輸入描述"
-                            {...DescriptionPorps}
-                            onChange={this.handleChange}
-                            value={this.state.Description} />
-                    <ChooseStore />
-                    <div className="form-group">
+            return (
+                <div className="form-group">
                         <label>結束時間</label>
-                        <div className='input-group date' id='datetimepicker1'>
-                            <input type='text'  ref="EndTime" name="EndTime" className="form-control"  onChange={this.handleChange} required />
+                        <div ref="el" className='input-group date'>
+                            <input type='text'  ref="EndTime" name="EndTime" className="form-control"/>
                             <span className="input-group-addon">
                                 <span className="glyphicon glyphicon-calendar"></span>
                             </span>
                         </div>
-                    </div>
+                    </div>     
+            )
+        }
+});
+
+   
+
+    var CreateGroupBuy = React.createClass({
+        mixins: [FormWithValidationMixin],
+        getInitialState: function () {
+            return {
+                Description: "",
+                StoreId:""
+            };
+        },
+        getInputValue: function () {
+            return {
+                Description: this.refs.Description.getValue(),
+                StoreId: this.refs.Store.state.selected.StoreId
+            };
+        },       
+        render: function () {
+            return(
+                <div className="col-sm-12 col-md-10 col-lg-8">
+                <form className="form-horizontal create-groupbuy-form" ref="form" role="form" method="post" onSubmit={this.handleSumbit}>
+                    <Input  name="Description"
+                            ref="Description"
+                            type="text"
+                            label="描述"
+                            placeholder="請輸入描述"
+                            {...this.validationPorps("Description","描述不可為空",(o)=>!o)}
+                            onChange={this.handleChange}
+                            value={this.state.Description} />
+                    <ChooseStore ref="Store" 
+                                 onChange={this.handleChange} 
+                                 {...this.validationPorps("StoreId","店家不可為空",(o)=>!o)}/>
+                    <ChooseEndTime />
 
                     <div className="form-group">
-                            <button type="submit" className="btn btn-default" {...submitBtnProps}>新增</button>
+                            <button type="submit" className="btn btn-default" {...this.submitBtnProps()}>新增</button>
                     </div>
                 </form>
             </div>

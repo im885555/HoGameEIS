@@ -3,7 +3,10 @@
     var Row = ReactBootstrap.Row;
     var Col = ReactBootstrap.Col;
 
+    var FormWithValidationMixin = App.Mixins.FormWithValidationMixin;
+
     var StoreManagementEdit = React.createClass({
+        mixins: [FormWithValidationMixin],
         getDefaultProps: function () {
             return {
                 storeId: App.Core.UrlParams.id
@@ -11,8 +14,7 @@
         },
         getInitialState: function () {
             return {
-                Category: "meal",
-                ValidationStoreName:true
+                Category: "meal"
             };
         },
         componentDidMount: function () {
@@ -29,34 +31,14 @@
                 });
             }
         },
-        handleChange: function () {
-            this.setState({
+        getInputValue: function () {
+            return {
                 StoreName: this.refs.StoreName.getValue(),
                 Tel: this.refs.Tel.getValue(),
                 Address: this.refs.Address.getValue(),
                 Memo: this.refs.Memo.getValue()
-            });
-        },
-        validationStoreName: function () {
-            var result=false;
-            if (!!this.refs.StoreName.getValue()) {
-                result = true;
-            }
-            this.setState({              
-                ValidationStoreName: result
-            });
-            this.handleChange();
-            return result;
-        },
-        _handleSumbit:false,
-        handleSumbit: function (e) {
-            this._handleSumbit = true;
-            this.handleChange();
-            if (!this.validationStoreName()) {
-                e.preventDefault();
-                this._handleSumbit = false;
-            }
-        },
+            };
+        },        
         renderCategoryRadio: function () {
             var self=this,
                 category= this.state.Category,
@@ -91,25 +73,19 @@
                 );
         },
         render: function () {
-            var state = this.state,
-                StoreNamePorps = !state.ValidationStoreName ? {
-                bsStyle: "error",
-                help: "店家名稱不可為空"
-                } : {};
-
-            var submitBtnProps = this._handleSumbit ? { disabled: true } : {};
+            var state = this.state;
 
             return(
                  <div className="col-sm-12 col-md-10 col-lg-8">
                     <h4 className="page-header">店家基本資料</h4>
-                    <form role="form" method="post" onSubmit={this.handleSumbit}>
+                    <form role="form" ref="form" method="post" onSubmit={this.handleSumbit}>
                         <Input name="StoreName"
                                ref="StoreName"
                                type="text"
                                label="店家名稱"                              
                                placeholder="輸入店家名稱"
-                               {...StoreNamePorps}
-                               onChange={this.validationStoreName}
+                               {...this.validationPorps("StoreName","店家名稱不可為空",(o)=>!o)}
+                               onChange={this.handleChange}
                                value={state.StoreName}/>
                         <Input name="Tel"
                                ref="Tel"
@@ -133,7 +109,7 @@
                                onChange={this.handleChange}
                                value={state.Memo} />
                         {this.renderCategoryRadio()}
-                        <button type="submit" className="btn btn-default" {...submitBtnProps}>新增/修改</button>
+                        <button type="submit" className="btn btn-default"  {...this.submitBtnProps()}>新增/修改</button>
                     </form>
                 </div>
                 );

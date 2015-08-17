@@ -1,7 +1,13 @@
 ﻿var App = App || {};
+
 App.Component = App.Component || {};
+
 App.Core = App.Core || {};
+
+App.Mixins = App.Mixins || {};
+
 App.GroupBuy = App.GroupBuy || {};
+
 
 App.Core._UrlParams;
 App.Core.UrlParams = (function (pathname) {
