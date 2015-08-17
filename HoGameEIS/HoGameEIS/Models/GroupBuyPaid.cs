@@ -9,7 +9,7 @@ namespace HoGameEIS.Models
         public int EmployeeId { get; set; }
         public int Paid { get; set; }
         public int GroupBuyId { get; set; }
-        public virtual Employee Employee { get; set; }
+
         public virtual GroupBuy GroupBuy { get; set; }
     }
 }

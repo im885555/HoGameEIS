@@ -22,6 +22,8 @@ namespace HoGameEIS.Models
         public virtual ICollection<GroupBuyPaid> GroupBuyPaids { get; set; }
         public virtual ICollection<GroupBuyMenuImage> GroupBuyMenuImages { get; set; }
 
+        public int Creator { get; set; }
+
 
         public int StoreId { get; set; }
 

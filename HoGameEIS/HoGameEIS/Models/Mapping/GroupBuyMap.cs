@@ -18,8 +18,10 @@ namespace HoGameEIS.Models.Mapping
             this.Property(t => t.StartTime).HasColumnName("StartTime");
             this.Property(t => t.EndTime).HasColumnName("EndTime");
             this.Property(t => t.StoreId).HasColumnName("StoreId");
+            this.Property(t => t.Creator).HasColumnName("Creator");
 
-           
+   
+
 
         }
     }

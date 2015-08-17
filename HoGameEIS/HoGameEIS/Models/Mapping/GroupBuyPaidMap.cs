@@ -18,10 +18,6 @@ namespace HoGameEIS.Models.Mapping
             this.Property(t => t.Paid).HasColumnName("Paid");
             this.Property(t => t.GroupBuyId).HasColumnName("GroupBuyId");
 
-            // Relationships
-            this.HasRequired(t => t.Employee)
-                .WithMany(t => t.GroupBuyPaids)
-                .HasForeignKey(d => d.EmployeeId);
             this.HasRequired(t => t.GroupBuy)
                 .WithMany(t => t.GroupBuyPaids)
                 .HasForeignKey(d => d.GroupBuyId);
