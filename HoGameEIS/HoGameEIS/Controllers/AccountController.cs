@@ -50,7 +50,7 @@ namespace HoGameEIS.Controllers
                     DateTime expires = DateTime.Now.AddMonths(1);
                    
                     FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(1,
-                      emp.Email,//你想要存放在 User.Identy.Name 的值，通常是使用者帳號
+                      emp.FullName,//你想要存放在 User.Identy.Name 的值，通常是使用者帳號
                       DateTime.Now,
                       expires,
                       isRememberMe,//將管理者登入的 Cookie 設定成 Session Cookie

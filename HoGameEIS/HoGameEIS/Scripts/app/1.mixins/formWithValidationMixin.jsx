@@ -7,15 +7,17 @@
     handleSumbit: function (e) {
         e.preventDefault();
         this._handleSumbit = true;
-        this._validation = false;
+        this._neverSubmit = false;
+        this._validation = true;
         this.handleChange(() =>!!this._validation && this.refs.form.getDOMNode().submit());
     },
     submitBtnProps: function () {
         return this._handleSumbit ? { disabled: true } : {};
     },
+    _neverSubmit: true,
     _validation: true,
     validationPorps: function (attr, help, context) {
-        if (!!this._validation) {
+        if (!!this._neverSubmit) {
             return {};
         }
         var val = this.state[attr];
@@ -27,7 +29,6 @@
                 help: help
             }
         }
-        this._validation = true;
         return {};
     }
 };
