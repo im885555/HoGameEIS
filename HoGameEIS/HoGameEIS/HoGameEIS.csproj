@@ -307,18 +307,17 @@
     <Content Include="Migrations\SeedSql\usp_DeleteGroupBuyStore.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\app\groupbuy\storeManagement.jsx" />
-    <Content Include="Scripts\app\groupbuy\storeManagementMenuEdit.jsx" />
+    <Content Include="Scripts\app\groupbuy\page\storeManagement.jsx" />
+    <Content Include="Scripts\app\groupbuy\page\storeManagementMenuEdit.jsx" />
     <None Include="Properties\PublishProfiles\gene.pubxml" />
     <None Include="Properties\PublishProfiles\genechen - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\genechen - Web Deploy.pubxml" />
     <Content Include="Scripts\app\2.component\loading.jsx" />
-    <Content Include="Scripts\app\groupbuy\chooseStore.jsx" />
-    <Content Include="Scripts\app\groupbuy\control.jsx" />
+    <Content Include="Scripts\app\groupbuy\1.control\control.jsx" />
     <Content Include="Scripts\app\2.component\fileDragAndDrop.jsx" />
-    <Content Include="Scripts\app\groupbuy\createGroupBuy.jsx" />
-    <Content Include="Scripts\app\groupbuy\groupBuyList.jsx" />
-    <Content Include="Scripts\app\groupbuy\storeManagementEdit.jsx" />
+    <Content Include="Scripts\app\groupbuy\page\createGroupBuy.jsx" />
+    <Content Include="Scripts\app\groupbuy\page\groupBuyList.jsx" />
+    <Content Include="Scripts\app\groupbuy\page\storeManagementEdit.jsx" />
     <Content Include="Scripts\app\1.mixins\formWithValidationMixin.jsx" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="readme.txt" />
