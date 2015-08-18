@@ -8,7 +8,8 @@
 CREATE PROCEDURE [dbo].[usp_AddGroupBuy]
 	@StoreId int,
 	@Description nvarchar(max),
-	@EndTime datetime
+	@EndTime datetime,
+	@Creator int
 AS
 BEGIN
 	DECLARE @GroupBuyId int
@@ -18,12 +19,14 @@ BEGIN
 			   ([Description],
 			   [StartTime],
 			   [EndTime],
-			   [StoreId])
+			   [StoreId],
+			   [Creator])
 		 VALUES
 			   (@Description,
 			   CURRENT_TIMESTAMP,
 			   @EndTime,
-			   @StoreId)
+			   @StoreId,
+			   @Creator)
     SELECT @GroupBuyId = SCOPE_IDENTITY() 
 
 	DECLARE @TempTable TABLE(ItemId int)

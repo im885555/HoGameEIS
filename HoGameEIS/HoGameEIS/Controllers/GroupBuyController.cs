@@ -20,6 +20,8 @@ namespace HoGameEIS.Controllers
         [Authorize]
         public ActionResult CreateGroupBuy()
         {
+            String aa = User.Identity.Name;
+
             return View("App");
         }
 
@@ -29,11 +31,12 @@ namespace HoGameEIS.Controllers
         {
             using (var db = new HoGameEISContext())
             {
-                var sql = @"exec [dbo].[usp_AddGroupBuy] @Description=@Description,@EndTime=@EndTime,@StoreId=@StoreId";
+                var sql = @"exec [dbo].[usp_AddGroupBuy] @Description=@Description,@EndTime=@EndTime,@StoreId=@StoreId,@Creator=@Creator";
                 db.Database.ExecuteSqlCommand(sql,
                     new SqlParameter("@Description", formData["Description"]),
                     new SqlParameter("@EndTime", formData["EndTime"]),
-                    new SqlParameter("@StoreId", Int32.Parse(formData["StoreId"]))
+                    new SqlParameter("@StoreId", Int32.Parse(formData["StoreId"])),
+                    new SqlParameter("@Creator", CurrentUser.Info.EmployeeId)
                     );
             }
 

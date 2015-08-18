@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HoGameEIS.Models
 {
@@ -15,6 +16,6 @@ namespace HoGameEIS.Models
         public int EmployeeId { get; set; }
         public string FullName { get; set; }
 
-
+       
     }
 }

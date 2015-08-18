@@ -47,6 +47,9 @@ namespace HoGameEIS.Controllers
                 Employee emp = db.Employees.Where(o => o.Email.Contains(account.Trim())).FirstOrDefault();
                 if (emp != null)
                 {
+                    System.Web.Script.Serialization.JavaScriptSerializer objSerializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+                    string userData = objSerializer.Serialize(emp);
+                 
                     DateTime expires = DateTime.Now.AddMonths(1);
                    
                     FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(1,
@@ -54,6 +57,7 @@ namespace HoGameEIS.Controllers
                       DateTime.Now,
                       expires,
                       isRememberMe,//將管理者登入的 Cookie 設定成 Session Cookie
+                      userData,
                       FormsAuthentication.FormsCookiePath);
 
                     string encTicket = FormsAuthentication.Encrypt(ticket);
@@ -80,6 +84,7 @@ namespace HoGameEIS.Controllers
         public ActionResult Logout()
         {
             FormsAuthentication.SignOut();
+            CurrentUser.Info = null;
             return RedirectToAction("Login");          
         }
        

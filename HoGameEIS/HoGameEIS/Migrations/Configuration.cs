@@ -85,19 +85,20 @@
                  }
                 );
 
-            executeSql(context, "drop_procedure.sql");
-            executeSql(context, "usp_AddGroupBuyMenuItem.sql");
-            executeSql(context, "usp_DeleteGroupBuyMenuSubItem.sql");
-            executeSql(context, "usp_DeleteGroupBuyMenuItem.sql");
-            executeSql(context, "usp_DeleteGroupBuyStore.sql");
-            executeSql(context, "usp_AddGroupBuy.sql");
+            executeUspSeed(context, "drop_procedure");
+            executeUspSeed(context, "usp_AddGroupBuyMenuItem");
+            executeUspSeed(context, "usp_DeleteGroupBuyMenuSubItem");
+            executeUspSeed(context, "usp_DeleteGroupBuyMenuItem");
+            executeUspSeed(context, "usp_DeleteGroupBuyStore");
+            executeUspSeed(context, "usp_AddGroupBuy");
+            executeUspSeed(context, "usp_GetGroupbuyList");
 
             base.Seed(context);
 
         }
-        private void executeSql(HoGameEIS.Models.HoGameEISContext context, string scriptFile)
+        private void executeUspSeed(HoGameEIS.Models.HoGameEISContext context, string uspName)
         {
-            context.Database.ExecuteSqlCommand(File.ReadAllText(AppDomain.CurrentDomain.BaseDirectory + "\\Migrations\\SeedSql\\" + scriptFile));
+            context.Database.ExecuteSqlCommand(File.ReadAllText(AppDomain.CurrentDomain.BaseDirectory + "\\Migrations\\SeedSql\\" + uspName + ".sql"));
         }
     }
 }

@@ -24,6 +24,8 @@ namespace HoGameEIS.Models
 
         public int Creator { get; set; }
 
+        [NotMapped]
+        public string FullName { get; set; }
 
         public int StoreId { get; set; }
 

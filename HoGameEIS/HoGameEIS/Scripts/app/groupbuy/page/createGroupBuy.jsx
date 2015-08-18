@@ -13,6 +13,7 @@
     var LoadingIcon = App.Component.Loading;
 
     var FormWithValidationMixin = App.Mixins.FormWithValidationMixin;
+    var GridMixin = App.Mixins.GridMixin;
 
 
     var StoreGrid =  React.createClass({
@@ -51,8 +52,21 @@
 
 
     var StoreManagement = React.createClass({
-        getInitialState: function() {
+        getDefaultProps: function () {
             return {
+                restUri: "/api/groupbuylistapi/",
+                categoryOptions: {
+                    "": "",
+                    meal: "正餐",
+                    drink: "飲料",
+                    dessert: "點心",
+                    groupbuy: "團購",
+                    party: "活動"
+                }
+            }
+        },
+        getInitialState: function() {
+            return {                
                 pageSize:10,
                 pageNumber:1,
                 searchText:"",
@@ -242,14 +256,16 @@
         componentDidMount: function () {
             var dom = this.refs.el.getDOMNode();
             $(dom).datetimepicker({
-                defaultDate: new Date(new Date().setHours(new Date().getHours() + 2)),
                 minDate: new Date()
             }).on("dp.change", function (e) {
                 if (!e.date) {
                     $(dom).data("DateTimePicker").date(e.oldDate);
                 }
                 this.setState({ value: this.refs.EndTime.getDOMNode().value });
-            }.bind(this));
+            }.bind(this))
+                .data("DateTimePicker")
+                .date(new Date(new Date().setHours(new Date().getHours() + 2)));
+
         },
         componentWillUnmount: function () {
             $(this.refs.el.getDOMNode()).data("DateTimePicker").destroy();

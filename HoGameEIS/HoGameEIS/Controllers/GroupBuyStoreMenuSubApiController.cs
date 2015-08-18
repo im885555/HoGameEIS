@@ -24,6 +24,7 @@ namespace HoGameEIS.Controllers
         }
 
         // POST: api/GroupBuyStoreMenuSubApi
+        [Authorize]
         public void Post([FromBody]GroupBuyStoreSubItem item)
         {
             using (var db = new HoGameEISContext())
@@ -34,6 +35,7 @@ namespace HoGameEIS.Controllers
         }
 
         // PUT: api/GroupBuyStoreMenuSubApi/5
+        [Authorize]
         public void Put(int id, [FromBody]GroupBuyStoreSubItem item)
         {
             if (String.IsNullOrEmpty(item.Action)) {
@@ -55,6 +57,7 @@ namespace HoGameEIS.Controllers
         }
 
         // DELETE: api/GroupBuyStoreMenuSubApi/5
+        [Authorize]
         public Boolean Delete(int id)
         {
             int result = 0;

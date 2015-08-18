@@ -18,6 +18,7 @@ namespace HoGameEIS.Controllers
         }
 
         // GET: api/GroupBuyStoreMenuApi/5
+        [Authorize]
         public List<GroupBuyStoreItem> Get(int id)
         {
             List<GroupBuyStoreItem> menu = new List<GroupBuyStoreItem>();
@@ -33,6 +34,7 @@ namespace HoGameEIS.Controllers
         }
 
         // POST: api/GroupBuyStoreMenuApi
+        [Authorize]
         public Boolean Post([FromBody]GroupBuyStoreItem item)
         {
             int result = 0;
@@ -45,6 +47,7 @@ namespace HoGameEIS.Controllers
         }
 
         // PUT: api/GroupBuyStoreMenuApi/5
+        [Authorize]
         public void Put(int id, [FromBody]GroupBuyStoreItem item)
         {
             using (var db = new HoGameEISContext())
@@ -57,6 +60,7 @@ namespace HoGameEIS.Controllers
         }
 
         // DELETE: api/GroupBuyStoreMenuApi/5
+        [Authorize]
         public Boolean Delete(int id)
         {
             int result = 0;

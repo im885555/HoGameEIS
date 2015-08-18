@@ -20,6 +20,7 @@ namespace HoGameEIS.Controllers
 
         //取得店家清單
         // GET api/groupbuystoreapi
+        [Authorize]
         public TableDto<GroupBuyStore> Get(int limit = 1000, int offset = 0, string search = null, string order = "asc", string category=null)
         {
             List<GroupBuyStore> stores; 
@@ -49,6 +50,7 @@ namespace HoGameEIS.Controllers
         }
 
         // GET api/groupbuystoreapi/5
+        [Authorize]
         public GroupBuyStore Get(int id)
         {
             GroupBuyStore store = new GroupBuyStore()
@@ -74,6 +76,7 @@ namespace HoGameEIS.Controllers
         }
 
         // DELETE api/groupbuystoreapi/5
+        [Authorize]
         public void Delete(int id)
         {
             using (var db = new HoGameEISContext())

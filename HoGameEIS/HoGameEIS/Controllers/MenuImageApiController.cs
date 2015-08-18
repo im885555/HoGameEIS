@@ -61,32 +61,11 @@ namespace HoGameEIS.Controllers
         // GET: api/MenuImageApi
         public IEnumerable<string> Get()
         {
-
-            //CloudStorageAccount storageAccount = CloudStorageAccount.Parse(CloudConfigurationManager.GetSetting("StorageConnectionString"));
-
-            //// Create the blob client.
-            //CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
-
-            //// Retrieve reference to a previously created container.
-            //CloudBlobContainer container = blobClient.GetContainerReference("image");       
-
-
-            //// Retrieve reference to a blob named "myblob".
-            //CloudBlockBlob blockBlob = container.GetBlockBlobReference("Jellyfish.jpg");
-
-            //// Create or overwrite the "myblob" blob with contents from a local file.
-            //using (var fileStream = System.IO.File.OpenRead(ServerUploadFolder+ "1439229334_Jellyfish.jpg"))
-            //{
-            //    blockBlob.UploadFromStream(fileStream);
-            //}
-
-            //https://127.0.0.1:10000/devstoreaccount1/image/Jellyfish.jpg
-            //https://genechen.blob.core.windows.net/image
-
             return new string[] { "value1", "value2" };
         }
 
         // GET: api/MenuImageApi/5
+        [Authorize]
         public List<GroupBuyStoreMenuImage> Get(int id)
         {
             List<GroupBuyStoreMenuImage> images = new List<GroupBuyStoreMenuImage>();
@@ -104,6 +83,7 @@ namespace HoGameEIS.Controllers
         }
 
         // POST: api/MenuImageApi/5
+        [Authorize]
         [ValidateMimeMultipartContentFilter]
         public async Task<List<GroupBuyStoreMenuImage>> Post(int id)
         {
@@ -124,7 +104,6 @@ namespace HoGameEIS.Controllers
                 {
                     StoreId = id,
                     ImageUrl = fileName
-
                 };
 
                 using (var db = new HoGameEISContext())
@@ -144,6 +123,7 @@ namespace HoGameEIS.Controllers
         }
 
         // DELETE: api/MenuImageApi/5
+        [Authorize]
         public void Delete(int id)
         {
             GroupBuyStoreMenuImage image = new GroupBuyStoreMenuImage();
