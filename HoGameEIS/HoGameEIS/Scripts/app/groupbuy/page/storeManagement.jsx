@@ -1,14 +1,10 @@
 App.GroupBuy.StoreManagement = (function () {
     var Button = ReactBootstrap.Button;
-    var ButtonGroup = ReactBootstrap.ButtonGroup;
     var Table = ReactBootstrap.Table;
-    var Pagination = ReactBootstrap.Pagination;
-    var ButtonToolbar = ReactBootstrap.ButtonToolbar;
-    var SplitButton = ReactBootstrap.SplitButton;
-    var MenuItem = ReactBootstrap.MenuItem;
     var Modal = ReactBootstrap.Modal;
-    var CategoryGroup = App.GroupBuy.Control.CategoryGroup;
     var LoadingIcon = App.Component.Loading;
+
+    var GridMixin = App.Mixins.GridMixin;
 
 
     var ConfirmDelete = React.createClass({
@@ -109,6 +105,20 @@ App.GroupBuy.StoreManagement = (function () {
 
 
     var StoreManagement = React.createClass({
+        mixins: [GridMixin],
+        getDefaultProps: function () {
+            return {
+                restUri: "/api/groupbuystoreapi/",
+                categoryOptions: {
+                    "": "全部",
+                    meal: "正餐",
+                    drink: "飲料",
+                    dessert: "點心",
+                    groupbuy: "團購",
+                    party: "活動"
+                }
+            }
+        },
         getInitialState: function () {
             return {
                 pageSize: 10,
@@ -123,79 +133,9 @@ App.GroupBuy.StoreManagement = (function () {
             };
         },
         componentDidMount: function () {
-            this.getStoreListFromServer();
-        },
-        getStoreListFromServer: function () {
-            //http://localhost:50908/api/groupbuystoreapi?search=d&order=asc&limit=10&offset=0&category=meal&_=1437099137914
-            //(new Date().getTime()).toString()
-            var state = this.state;
-            var params = {
-                search: state.searchText,
-                limit: state.pageSize,
-                offset: state.pageSize * state.pageNumber - state.pageSize,
-                category: state.category
-            };
-            params[(new Date().getTime()).toString()] = null;
-
-            $.ajax({
-                url: "/api/groupbuystoreapi/",
-                data: params,
-                type: "GET",
-                success: function (data) {
-                    this.setState({ data: data });
-
-                    if (data.rows.length == 0 && state.pageNumber > 1) {
-                        this.setState({
-                            pageNumber: state.pageNumber-1
-                        }, () =>this.getStoreListFromServer());
-                    }
-                }.bind(this)
-            });
-        },
-        handleSelectPage(event, selectedEvent) {
-            this.setState({
-                pageNumber: selectedEvent.eventKey
-            }, () =>this.getStoreListFromServer());
-        },
-        handleCategroyChange: function (category) {
-            this.setState({ category: category },
-            () =>this.getStoreListFromServer());
-        },
-        handleSearchChange: function () {
-            this.setState({ searchText: React.findDOMNode(this.refs.Search).value },
-            () =>this.getStoreListFromServer());
-        },
-        handlePageSizeChange: function (size) {
-            this.setState({ pageSize: size },
-            () =>this.getStoreListFromServer());
-        },
-        showConfirmDelete: function (callback) {
-            this.setState({ showModal: true });
-        },
-        renderPaging: function () {
-            var pagingBtn = "";
-            if (this.state.pageSize < this.state.data.total) {
-                var items = parseInt(this.state.data.total / this.state.pageSize)
-                    + (this.state.data.total % this.state.pageSize == 0 ? 0 : 1),
-                    maxButtons = items >= 5 ? 5 : items;
-                pagingBtn = <div className="pull-right">
-                    <Pagination
-                      prev={true}
-                      next={true}
-                      first={true}
-                      last={true}
-                      ellipsis={true}
-                      items={items}
-                      maxButtons={maxButtons}
-                      activePage={this.state.pageNumber}
-                      onSelect={this.handleSelectPage} />
-                </div>;
-            }
-            return pagingBtn;
+            this.getListFromServer();
         },
         render: function () {
-            var to = this.state.pageSize * this.state.pageNumber,
-                from = to - this.state.pageSize + 1;
             return (
                 <div className="store-management-content">
                     <div>
@@ -203,37 +143,18 @@ App.GroupBuy.StoreManagement = (function () {
                     </div>
                     <div>
                         <div className="form-inline">
-                            <CategoryGroup onCategoryChange={this.handleCategroyChange}/>
-                            <input type="email" className="form-control pull-right"
-                            placeholder="Search" ref="Search" onChange={this.handleSearchChange}/>
+                            {this.renderCategoryGroup()}
+                            {this.renderSearch()}
                         </div>
                     </div>
                     <div>
                         <div>
                             <StoreGrid
                              data= {this.state.data}
-                             refresh ={this.getStoreListFromServer}
+                             refresh ={this.getListFromServer}
                              />
                             <div>
-                                <div className="pull-left">
-                                    Showing {from} to {to} of {this.state.data.total} rows
-                                    <ButtonToolbar>
-                                     <SplitButton title={this.state.pageSize} dropup>
-                                       {
-                                           [5,10,25,50,100].map(function(size,i){
-                                               return(
-                                                   <MenuItem
-                                                   key={i}
-                                                   onClick={this.handlePageSizeChange.bind(this,size)}>
-                                                   {size}
-                                                   </MenuItem>
-                                               );
-                                           }.bind(this))
-                                       }
-                                     </SplitButton>
-                                    </ButtonToolbar>
-                                    records per page
-                                </div>
+                                {this.renderPageSizeDDL()}
                                 {this.renderPaging()}
                             </div>
                         </div>

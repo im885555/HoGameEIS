@@ -1,4 +1,4 @@
-﻿App.GroupBuy.GroupBuyList = (function () {
+﻿App.GroupBuy.CurrentGroupBuy = (function () {
     var Button = ReactBootstrap.Button;
     var Table = ReactBootstrap.Table;
 
@@ -38,7 +38,7 @@
                                     return (
                                         <tr key={i}>
                                             <td>{item.StartTime}</td>
-                                            <td>{item.Description}</td>
+                                            <td><a href={"/GroupBuy/CurrentGroupBuyDetail/"+item.GroupBuyId}>{item.Description}</a></td>
                                             <td>{item.StoreName}</td>
                                             <td>{item.CreatorName}</td>
                                             <td>{categoryMap[item.Status]}</td>
@@ -58,6 +58,7 @@
 
 
     var GroupBuyList = React.createClass({
+        mixins: [GridMixin],
         getDefaultProps: function () {
             return{
                 restUri: "/api/groupbuylistapi/",
@@ -79,8 +80,7 @@
         },
         componentDidMount: function () {
             this.getListFromServer();
-        },
-        mixins: [GridMixin],
+        },        
         render: function () {
             return (
                 <div className="store-management-content">

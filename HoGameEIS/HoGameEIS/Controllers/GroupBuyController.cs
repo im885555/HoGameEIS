@@ -20,8 +20,6 @@ namespace HoGameEIS.Controllers
         [Authorize]
         public ActionResult CreateGroupBuy()
         {
-            String aa = User.Identity.Name;
-
             return View("App");
         }
 
@@ -44,7 +42,13 @@ namespace HoGameEIS.Controllers
         }
 
         [Authorize]
-        public ActionResult GroupBuyList()
+        public ActionResult CurrentGroupBuy()
+        {
+            return View("App");
+        }
+
+        [Authorize]
+        public ActionResult CurrentGroupBuyDetail()
         {
             return View("App");
         }

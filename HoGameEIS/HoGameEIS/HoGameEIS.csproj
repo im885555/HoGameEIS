@@ -319,10 +319,11 @@
     <Content Include="Scripts\app\groupbuy\1.control\control.jsx" />
     <Content Include="Scripts\app\2.component\fileDragAndDrop.jsx" />
     <Content Include="Scripts\app\groupbuy\page\createGroupBuy.jsx" />
-    <Content Include="Scripts\app\groupbuy\page\groupBuyList.jsx" />
+    <Content Include="Scripts\app\groupbuy\page\currentGroupBuy.jsx" />
     <Content Include="Scripts\app\groupbuy\page\storeManagementEdit.jsx" />
     <Content Include="Scripts\app\1.mixins\formWithValidationMixin.jsx" />
     <Content Include="Scripts\app\1.mixins\gridMixin.jsx" />
+    <Content Include="Scripts\app\groupbuy\page\currentGroupBuyDetail.jsx" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="readme.txt" />
     <Content Include="Scripts\app\app.js" />
