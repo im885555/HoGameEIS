@@ -108,7 +108,7 @@ footer {
 
 
 /*倒數計時*/
-@media screen and (max-width: 1800px) {
+@media screen and (max-width: 18000px) {
 .flip-clock-wrapper { margin-top:3em;}
 .flip-clock-wrapper ul {width: 40px;height: 60px;margin: 0 2px;}
 .flip-clock-wrapper ul li {line-height:60px;}
