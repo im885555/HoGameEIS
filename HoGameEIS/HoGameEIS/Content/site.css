@@ -105,3 +105,18 @@ footer {
     background: white;
     min-height:300px;
 }
+
+
+/*倒數計時*/
+@media screen and (max-width: 1800px) {
+.flip-clock-wrapper { margin-top:3em;}
+.flip-clock-wrapper ul {width: 40px;height: 60px;margin: 0 2px;}
+.flip-clock-wrapper ul li {line-height:60px;}
+.flip-clock-wrapper ul li a div div.inn {border-radius: 3px;font-size: 30px;}
+.flip-clock-wrapper ul li a div.down {border-bottom-left-radius: 3px; border-bottom-right-radius: 3px;}
+.flip-clock-wrapper ul li a div.up:after {top: 38px;height: 2px;}
+.flip-clock-dot { width: 5px;height: 5px;}
+.flip-clock-dot.top{top:15px}
+.flip-clock-dot.bottom{bottom:50px}
+.flip-clock-divider .flip-clock-label { font-size: 18px;}
+}

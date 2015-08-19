@@ -27,7 +27,8 @@ namespace HoGameEIS.App_Start
                // "~/Scripts/react/JSXTransformer-0.13.1.js",
                 "~/Scripts/moment.js",
                 "~/Scripts/bootstrap.js",
-                "~/Scripts/bootstrap-datetimepicker.js"));
+                "~/Scripts/bootstrap-datetimepicker.js",
+                "~/Scripts/flipclock.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/app")
                 .IncludeDirectory("~/Scripts/app", "*.js", true));
@@ -46,6 +47,7 @@ namespace HoGameEIS.App_Start
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/bootstrap-datetimepicker.css",
+                      "~/Content/flipclock.css",
                       "~/Content/site.css"));
         }
     }

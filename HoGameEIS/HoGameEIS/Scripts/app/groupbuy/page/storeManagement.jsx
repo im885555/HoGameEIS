@@ -6,6 +6,14 @@ App.GroupBuy.StoreManagement = (function () {
 
     var GridMixin = App.Mixins.GridMixin;
 
+    var CategoryOptions = {
+        "": "全部",
+        meal: "正餐",
+        drink: "飲料",
+        dessert: "點心",
+        groupbuy: "團購",
+        party: "活動"
+    };
 
     var ConfirmDelete = React.createClass({
         render: function () {
@@ -68,20 +76,22 @@ App.GroupBuy.StoreManagement = (function () {
                         <thead>
                             <tr>
                               <th>店家名稱</th>
+                              <th>分類</th>
                               <th>備註</th>
                               <th>修改</th>
                             </tr>
                             </thead>
                             <tbody>
                             {
-                                !rows && <tr><td colSpan="4"  className="text-center"><LoadingIcon/></td></tr>
+                                !rows && <tr><td colSpan="5"  className="text-center"><LoadingIcon/></td></tr>
                             }
                             {                                                            
                                 !!rows && rows.map(function(item,i){
                                     return (
                                         <tr key={item.StoreId}>
                                             <td>{item.StoreName}</td>
-                                            <td>{item.Memo}</td>
+                                            <td>{CategoryOptions[item.Category]}</td>
+                                            <td>{item.Memo}</td>                                            
                                             <td>
                                                 <Button onClick={()=>location.href = "StoreManagementMenuEdit/"+ item.StoreId}>菜單資料管理</Button>
                                                 <Button onClick={()=>location.href = "StoreManagementEdit/"+ item.StoreId}>
@@ -109,14 +119,7 @@ App.GroupBuy.StoreManagement = (function () {
         getDefaultProps: function () {
             return {
                 restUri: "/api/groupbuystoreapi/",
-                categoryOptions: {
-                    "": "全部",
-                    meal: "正餐",
-                    drink: "飲料",
-                    dessert: "點心",
-                    groupbuy: "團購",
-                    party: "活動"
-                }
+                categoryOptions: CategoryOptions
             }
         },
         getInitialState: function () {

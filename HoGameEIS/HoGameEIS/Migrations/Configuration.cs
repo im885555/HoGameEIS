@@ -92,6 +92,7 @@
             executeUspSeed(context, "usp_DeleteGroupBuyStore");
             executeUspSeed(context, "usp_AddGroupBuy");
             executeUspSeed(context, "usp_GetGroupbuyList");
+            executeUspSeed(context, "usp_GetGroupbuyDetail");
 
             base.Seed(context);
 

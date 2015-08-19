@@ -38,7 +38,7 @@ namespace HoGameEIS.Controllers
                     );
             }
 
-            return RedirectToAction("GroupBuyList", "GroupBuy");
+            return RedirectToAction("CurrentGroupBuy", "GroupBuy");
         }
 
         [Authorize]

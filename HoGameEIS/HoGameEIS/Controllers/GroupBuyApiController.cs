@@ -20,11 +20,6 @@ namespace HoGameEIS.Controllers
         public List<GroupBuyDto> Get()
         {
             List<GroupBuyDto> gb = new List<GroupBuyDto>();
-            //using (var db = new HoGameEISContext())
-            //{
-            //    gb = db.GroupBuys.ToList();
-            //}
-
             using (var db = new HoGameEISContext())
             {
                 var sql = @"[dbo].[usp_GetGroupbuyList] @isCurrent";
@@ -35,9 +30,16 @@ namespace HoGameEIS.Controllers
         }
 
         // GET api/groupbuyapi/5
-        public string Get(int id)
+        public GroupBuyDto Get(int id)
         {
-            return "value";
+            GroupBuyDto gb;
+            using (var db = new HoGameEISContext())
+            {
+                var sql = @"[dbo].[usp_GetGroupbuyDetail] @GroupBuyId";
+                gb = db.Database.SqlQuery<GroupBuyDto>(sql, new SqlParameter("@GroupBuyId", id)).FirstOrDefault();
+            }
+
+            return gb;
         }
 
         // POST api/groupbuyapi

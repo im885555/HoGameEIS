@@ -92,6 +92,8 @@
                                type="text"
                                label="電話"
                                placeholder="輸入電話"
+                               {...this.validationPorps("Tel","請輸入電話",
+                               (o)=>!!o && !/0\d{1,2}-\d{6,8}|^[0-9]*$/.test(o))}
                                onChange={this.handleChange}
                                value={state.Tel} />
                         <Input name="Address"

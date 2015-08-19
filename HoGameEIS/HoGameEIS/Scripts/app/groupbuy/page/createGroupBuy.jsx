@@ -12,6 +12,7 @@
     var FormWithValidationMixin = App.Mixins.FormWithValidationMixin;
     var GridMixin = App.Mixins.GridMixin;
 
+    var GetCurrentUser = App.Context.GetCurrentUser;
 
     var StoreGrid =  React.createClass({
         render: function() {
@@ -179,11 +180,9 @@
                 if (!e.date) {
                     $(dom).data("DateTimePicker").date(e.oldDate);
                 }
-                this.setState({ value: this.refs.EndTime.getDOMNode().value });
-            }.bind(this))
-                .data("DateTimePicker")
-                .date(new Date(new Date().setHours(new Date().getHours() + 2)));
-
+                this.setState({ value: this.refs.el.getDOMNode().value });
+            }.bind(this)).data("DateTimePicker")
+            .date(new Date(new Date(new Date().setHours(new Date().getHours() + 2)).setMinutes(0)));
         },
         componentWillUnmount: function () {
             $(this.refs.el.getDOMNode()).data("DateTimePicker").destroy();
@@ -192,12 +191,7 @@
             return (
                 <div className="form-group">
                         <label>結束時間</label>
-                        <div ref="el" className='input-group date'>
-                            <input type='text'  ref="EndTime" name="EndTime" className="form-control"/>
-                            <span className="input-group-addon">
-                                <span className="glyphicon glyphicon-calendar"></span>
-                            </span>
-                        </div>
+                        <input ref="el" type="text" name="EndTime" className="form-control" />
                     </div>     
             )
         }
@@ -209,7 +203,7 @@
         mixins: [FormWithValidationMixin],
         getInitialState: function () {
             return {
-                Description: "",
+                Description: GetCurrentUser().FullName + " 的團",
                 StoreId:""
             };
         },

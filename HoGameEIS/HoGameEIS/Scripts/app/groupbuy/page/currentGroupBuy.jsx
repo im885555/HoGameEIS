@@ -37,12 +37,12 @@
                                 !!rows && rows.map(function(item,i){
                                     return (
                                         <tr key={i}>
-                                            <td>{item.StartTime}</td>
+                                            <td>{moment(item.StartTime).format("MM/DD/YYYY  h:mm A")}</td>
                                             <td><a href={"/GroupBuy/CurrentGroupBuyDetail/"+item.GroupBuyId}>{item.Description}</a></td>
                                             <td>{item.StoreName}</td>
                                             <td>{item.CreatorName}</td>
                                             <td>{categoryMap[item.Status]}</td>
-                                            <td>{item.EndTime}</td>
+                                            <td>{moment(item.EndTime).format("MM/DD/YYYY  h:mm A")}</td>
                                         </tr>
                                     );
                                 }.bind(this))

@@ -41,3 +41,8 @@ IF EXISTS ( SELECT  *
                     AND type IN ( N'P', N'PC' )) 
 DROP  PROCEDURE [dbo].[usp_GetGroupbuyList]
 
+IF EXISTS ( SELECT  *
+            FROM    sys.objects
+            WHERE   object_id = OBJECT_ID(N'usp_GetGroupbuyDetail')
+                    AND type IN ( N'P', N'PC' )) 
+DROP  PROCEDURE [dbo].[usp_GetGroupbuyDetail]

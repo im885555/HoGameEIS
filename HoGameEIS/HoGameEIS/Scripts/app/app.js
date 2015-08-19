@@ -4,9 +4,13 @@ App.Component = App.Component || {};
 
 App.Core = App.Core || {};
 
+
+App.Context = App.Context || {};
+
 App.Mixins = App.Mixins || {};
 
 App.GroupBuy = App.GroupBuy || {};
+
 
 
 App.Core._UrlParams;
@@ -29,3 +33,16 @@ App.Core.UrlParams = (function (pathname) {
     return App.Core._UrlParams || getParams();
 })(location.pathname);
 
+App.Context._CurrentUser = App.Context._CurrentUser || (function () {
+    return $.ajax({
+        url: "/api/CurrentUserApi",
+        type: "GET",
+        success: function (info) {
+            App.Context._CurrentUser = info;
+        }.bind(this)
+    });
+})();
+
+App.Context.GetCurrentUser = function () {
+    return App.Context._CurrentUser;
+};
