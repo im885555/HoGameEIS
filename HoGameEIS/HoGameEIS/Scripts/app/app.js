@@ -4,12 +4,14 @@ App.Component = App.Component || {};
 
 App.Core = App.Core || {};
 
-
 App.Context = App.Context || {};
 
 App.Mixins = App.Mixins || {};
 
 App.GroupBuy = App.GroupBuy || {};
+
+App.GroupBuy.Control = App.GroupBuy.Control || {};
+App.GroupBuy.Panel = App.GroupBuy.Panel || {};
 
 
 

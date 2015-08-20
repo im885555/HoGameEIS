@@ -22,9 +22,13 @@ namespace HoGameEIS.Models
         public virtual ICollection<GroupBuyPaid> GroupBuyPaids { get; set; }
         public virtual ICollection<GroupBuyMenuImage> GroupBuyMenuImages { get; set; }
 
-        public int Creator { get; set; }
 
+        public int Creator { get; set; }
         public int StoreId { get; set; }
+        public string StoreName { get; set; }
+        public string Address { get; set; }
+        public string Tel { get; set; }
+        public string Memo { get; set; }
 
     }
 }

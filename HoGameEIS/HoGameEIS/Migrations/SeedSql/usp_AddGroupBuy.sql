@@ -20,13 +20,24 @@ BEGIN
 			   [StartTime],
 			   [EndTime],
 			   [StoreId],
+			   [StoreName],
+			   [Address],
+			   [Tel],
+			   [Memo],
 			   [Creator])
-		 VALUES
-			   (@Description,
-			   CURRENT_TIMESTAMP,
-			   @EndTime,
-			   @StoreId,
-			   @Creator)
+    SELECT @Description,
+			CURRENT_TIMESTAMP,
+			@EndTime,
+			@StoreId,
+			[StoreName],
+			[Address],
+			[Tel],
+			[Memo],
+			@Creator 
+	FROM [dbo].[GroupBuyStores]
+	WHERE [StoreId] = @StoreId
+
+
     SELECT @GroupBuyId = SCOPE_IDENTITY() 
 
 	DECLARE @TempTable TABLE(ItemId int)

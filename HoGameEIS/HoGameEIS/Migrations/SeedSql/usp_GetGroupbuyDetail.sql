@@ -16,11 +16,13 @@ BEGIN
 	a.[EndTime],
 	a.[Creator],
 	e.[FullName] as [CreatorName],
-	s.[StoreId],
-	s.[StoreName],
+	a.[StoreId],
+	a.[StoreName],
+	a.[Tel],
+	a.[Address],
+	a.[Memo],
 	CAST(CASE WHEN a.[EndTime]>GETDATE() THEN 'ongoing' ELSE 'closed' END as char(10)) as [Status]
-	FROM [dbo].[GroupBuys] a, [dbo].[Employees] e, [dbo].[GroupBuyStores] s
+	FROM [dbo].[GroupBuys] a, [dbo].[Employees] e
 	WHERE e.EmployeeId=a.Creator
-	AND s.[StoreId]=a.StoreId 
 	AND a.[GroupBuyId]=@GroupBuyId
 END

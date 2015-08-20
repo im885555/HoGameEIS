@@ -20,7 +20,7 @@ namespace HoGameEIS.Models.Mapping
 
             // Relationships
             this.HasRequired(t => t.GroupBuyItem)
-                .WithMany(t => t.GroupBuySubItems)
+                .WithMany(t => t.SubItems)
                 .HasForeignKey(d => d.ItemId);
 
         }

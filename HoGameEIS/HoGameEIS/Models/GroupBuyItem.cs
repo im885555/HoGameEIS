@@ -7,13 +7,13 @@ namespace HoGameEIS.Models
     {
         public GroupBuyItem()
         {
-            this.GroupBuySubItems = new List<GroupBuySubItem>();
+            this.SubItems = new List<GroupBuySubItem>();
         }
 
         public int ItemId { get; set; }
         public string ItemName { get; set; }
         public int GroupBuyId { get; set; }
         public virtual GroupBuy GroupBuy { get; set; }
-        public virtual ICollection<GroupBuySubItem> GroupBuySubItems { get; set; }
+        public virtual ICollection<GroupBuySubItem> SubItems { get; set; }
     }
 }

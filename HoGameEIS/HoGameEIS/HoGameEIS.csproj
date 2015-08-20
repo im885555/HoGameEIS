@@ -302,6 +302,9 @@
     <Content Include="Content\bootstrap\alerts.less" />
     <Content Include="Content\_bootstrap-datetimepicker.less" />
     <Content Include="Content\bootstrap-datetimepicker-build.less" />
+    <Content Include="Migrations\SeedSql\usp_AddGroupBuyItem.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Migrations\SeedSql\usp_GetGroupbuyDetail.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -320,7 +323,7 @@
     <None Include="Properties\PublishProfiles\genechen - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\genechen - Web Deploy.pubxml" />
     <Content Include="Scripts\app\2.component\loading.jsx" />
-    <Content Include="Scripts\app\groupbuy\1.control\control.jsx" />
+    <Content Include="Scripts\app\groupbuy\1.control\tdEditable.jsx" />
     <Content Include="Scripts\app\2.component\fileDragAndDrop.jsx" />
     <Content Include="Scripts\app\groupbuy\page\createGroupBuy.jsx" />
     <Content Include="Scripts\app\groupbuy\page\currentGroupBuy.jsx" />
@@ -328,6 +331,7 @@
     <Content Include="Scripts\app\1.mixins\formWithValidationMixin.jsx" />
     <Content Include="Scripts\app\1.mixins\gridMixin.jsx" />
     <Content Include="Scripts\app\groupbuy\page\currentGroupBuyDetail.jsx" />
+    <Content Include="Scripts\app\groupbuy\2.panel\order.jsx" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="readme.txt" />
     <Content Include="Scripts\app\app.js" />
@@ -385,6 +389,8 @@
     <Compile Include="Controllers\CurrentUserApiController.cs" />
     <Compile Include="Controllers\GroupBuyApiController.cs" />
     <Compile Include="Controllers\GroupBuyController.cs" />
+    <Compile Include="Controllers\GroupBuyOrderApiController.cs" />
+    <Compile Include="Controllers\GroupBuyOrderSubApiController.cs" />
     <Compile Include="Controllers\GroupBuyStoreApiController.cs" />
     <Compile Include="Controllers\GroupBuyStoreMenuApiController.cs" />
     <Compile Include="Controllers\GroupBuyStoreMenuSubApiController.cs" />

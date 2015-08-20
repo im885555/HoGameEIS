@@ -18,12 +18,14 @@ BEGIN
 			a.[EndTime],
 			a.[Creator],
 			e.[FullName] as [CreatorName],
-			s.[StoreId],
-			s.[StoreName],
+			a.[StoreId],
+			a.[StoreName],
+			a.[Tel],
+			a.[Address],
+			a.[Memo],
 			'ongoing' as [Status]
-			FROM [dbo].[GroupBuys] a, [dbo].[Employees] e, [dbo].[GroupBuyStores] s
+			FROM [dbo].[GroupBuys] a, [dbo].[Employees] e
 			WHERE e.EmployeeId=a.Creator
-			AND s.[StoreId]=a.StoreId 
 			AND a.EndTime>GETDATE ( )
 			ORDER BY a.[StartTime] DESC
 	END
@@ -35,12 +37,14 @@ BEGIN
 			a.[EndTime],
 			a.[Creator],
 			e.[FullName] as [CreatorName],
-			s.[StoreId],
-			s.[StoreName],
+			a.[StoreId],
+			a.[StoreName],
+			a.[Tel],
+			a.[Address],
+			a.[Memo],
 			'closed' as [Status]
-			FROM [dbo].[GroupBuys] a, [dbo].[Employees] e, [dbo].[GroupBuyStores] s
+			FROM [dbo].[GroupBuys] a, [dbo].[Employees] e
 			WHERE e.EmployeeId=a.Creator
-			AND s.[StoreId]=a.StoreId 
 			AND a.EndTime<GETDATE ( )
 			ORDER BY a.[StartTime] DESC
 

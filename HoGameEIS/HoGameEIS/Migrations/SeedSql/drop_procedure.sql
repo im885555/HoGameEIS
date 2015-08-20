@@ -46,3 +46,22 @@ IF EXISTS ( SELECT  *
             WHERE   object_id = OBJECT_ID(N'usp_GetGroupbuyDetail')
                     AND type IN ( N'P', N'PC' )) 
 DROP  PROCEDURE [dbo].[usp_GetGroupbuyDetail]
+
+IF EXISTS ( SELECT  *
+            FROM    sys.objects
+            WHERE   object_id = OBJECT_ID(N'usp_AddGroupBuyItem')
+                    AND type IN ( N'P', N'PC' )) 
+DROP  PROCEDURE [dbo].[usp_AddGroupBuyItem]
+
+IF EXISTS ( SELECT  *
+            FROM    sys.objects
+            WHERE   object_id = OBJECT_ID(N'usp_DeleteGroupBuyOrderItem')
+                    AND type IN ( N'P', N'PC' )) 
+DROP  PROCEDURE [dbo].[usp_DeleteGroupBuyOrderItem]
+
+
+IF EXISTS ( SELECT  *
+            FROM    sys.objects
+            WHERE   object_id = OBJECT_ID(N'usp_DeleteGroupBuyOrderSubItem')
+                    AND type IN ( N'P', N'PC' )) 
+DROP  PROCEDURE [dbo].[usp_DeleteGroupBuyOrderSubItem]
