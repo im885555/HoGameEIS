@@ -145,7 +145,13 @@
                                              </Button>   
                                          </td>,
                                          OrderDetail=
-                                         <td></td>
+                                         <td>
+                                             {
+                                             sub.GroupBuySubscribers.map(function(subscriber,i){
+                                                return (<span key={i}>{subscriber.SubscriberName} ({subscriber.Amount})</span>);
+                                             })
+                                             }
+                                         </td>
                                         ; 
                                         if(i==0){
                                             _items.push(
