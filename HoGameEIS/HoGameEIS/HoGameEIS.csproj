@@ -302,6 +302,12 @@
     <Content Include="Content\bootstrap\alerts.less" />
     <Content Include="Content\_bootstrap-datetimepicker.less" />
     <Content Include="Content\bootstrap-datetimepicker-build.less" />
+    <Content Include="Migrations\SeedSql\usp_CancelGroupBuySubscriber.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Migrations\SeedSql\usp_AddGroupBuySubscriber.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Migrations\SeedSql\usp_AddGroupBuyItem.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -394,6 +400,7 @@
     <Compile Include="Controllers\GroupBuyStoreApiController.cs" />
     <Compile Include="Controllers\GroupBuyStoreMenuApiController.cs" />
     <Compile Include="Controllers\GroupBuyStoreMenuSubApiController.cs" />
+    <Compile Include="Controllers\GroupBuySubscriberApiController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\HumanResourceController.cs" />
     <Compile Include="Controllers\MenuImageApiController.cs" />

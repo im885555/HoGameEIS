@@ -77,6 +77,25 @@
                 }.bind(this)
             });
         },
+        handleAddSubscriber: function (subItemId) {
+            $.ajax({
+                url: "/api/GroupBuySubscriberApi",
+                type: "POST",
+                data: { SubItemId: subItemId },
+                success: function (data) {
+                    this.getOrderFromServer();
+                }.bind(this)
+            });
+        },
+        handleCancelSubscriber: function (subItemId) {
+            $.ajax({
+                url: "/api/GroupBuySubscriberApi/" + subItemId,
+                type: "DELETE",
+                success: function (data) {
+                    this.getOrderFromServer();
+                }.bind(this)
+            });
+        },
         render: function () {
             var menuList = this.state.menuList;
             return (
@@ -118,12 +137,16 @@
                                          </TdEditable>,
                                          DeleteSubItemDom =
                                          <td>
-                                             <Button bsStyle="success">
+                                             <Button bsStyle="success" onClick={()=>this.handleAddSubscriber(sub.SubItemId)}>
                                              <span className="glyphicon glyphicon-plus"></span>
                                              </Button>
+                                             <Button bsStyle="danger" onClick={()=>this.handleCancelSubscriber(sub.SubItemId)}>
+                                             <span className="glyphicon glyphicon-minus"></span>
+                                             </Button>   
                                          </td>,
                                          OrderDetail=
-                                         <td></td> 
+                                         <td></td>
+                                        ; 
                                         if(i==0){
                                             _items.push(
                                                 <tr key={i}>

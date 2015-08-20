@@ -17,6 +17,7 @@ namespace HoGameEIS.Models.Mapping
             this.Property(t => t.EmployeeId).HasColumnName("EmployeeId");
             this.Property(t => t.Amount).HasColumnName("Amount");
             this.Property(t => t.SubItemId).HasColumnName("SubItemId");
+            this.Property(t => t.SubscriberName).HasColumnName("SubscriberName");
 
             this.HasRequired(t => t.GroupBuySubItem)
                 .WithMany(t => t.GroupBuySubscribers)

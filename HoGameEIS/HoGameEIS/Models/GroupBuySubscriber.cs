@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HoGameEIS.Models
 {
@@ -9,7 +10,9 @@ namespace HoGameEIS.Models
         public int EmployeeId { get; set; }
         public int Amount { get; set; }
         public int SubItemId { get; set; }
- 
+
+        public string SubscriberName { get; set; }
+
         public virtual GroupBuySubItem GroupBuySubItem { get; set; }
     }
 }

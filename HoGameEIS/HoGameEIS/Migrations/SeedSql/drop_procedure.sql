@@ -55,13 +55,13 @@ DROP  PROCEDURE [dbo].[usp_AddGroupBuyItem]
 
 IF EXISTS ( SELECT  *
             FROM    sys.objects
-            WHERE   object_id = OBJECT_ID(N'usp_DeleteGroupBuyOrderItem')
+            WHERE   object_id = OBJECT_ID(N'usp_AddGroupBuySubscriber')
                     AND type IN ( N'P', N'PC' )) 
-DROP  PROCEDURE [dbo].[usp_DeleteGroupBuyOrderItem]
+DROP  PROCEDURE [dbo].[usp_AddGroupBuySubscriber]
 
 
 IF EXISTS ( SELECT  *
             FROM    sys.objects
-            WHERE   object_id = OBJECT_ID(N'usp_DeleteGroupBuyOrderSubItem')
+            WHERE   object_id = OBJECT_ID(N'usp_CancelGroupBuySubscriber')
                     AND type IN ( N'P', N'PC' )) 
-DROP  PROCEDURE [dbo].[usp_DeleteGroupBuyOrderSubItem]
+DROP  PROCEDURE [dbo].[usp_CancelGroupBuySubscriber]

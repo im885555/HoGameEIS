@@ -26,8 +26,14 @@ namespace HoGameEIS.Controllers
             {
                 order = db.GroupBuyItems.Where(o => o.GroupBuyId == id).ToList();
 
-                order.ForEach(m => m.SubItems
-                = db.GroupBuySubItems.Where(s => s.ItemId == m.ItemId).ToList());
+                order.ForEach((m) => {
+                    m.SubItems= db.GroupBuySubItems.Where(s => s.ItemId == m.ItemId).ToList();
+                    List<GroupBuySubItem> subItems = m.SubItems.ToList();
+                    subItems.ForEach((si)=> {
+                        si.GroupBuySubscribers = db.GroupBuySubscribers.Where(gs => gs.SubItemId == si.SubItemId).ToList();
+                    });
+                    //m.SubItems = subItems;
+                });
 
             }
             return order;
