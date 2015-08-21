@@ -19,7 +19,7 @@ namespace HoGameEIS.Controllers
         }
 
         // GET: api/GroupBuyPaidDetailApi/5
-        public List<GroupBuyPaidDetailDto> Get(int id) //GroupButId
+        public List<GroupBuyPaidDetailDto> Get(int id) 
         {
             List<GroupBuyPaidDetailDto> Details;
             using (var db = new HoGameEISContext())
@@ -40,8 +40,16 @@ namespace HoGameEIS.Controllers
         }
 
         // POST: api/GroupBuyPaidDetailApi
-        public void Post([FromBody]string value)
+        public void Post(GroupBuyPaid paid)
         {
+            using (var db = new HoGameEISContext())
+            {
+                var sql = @"exec [dbo].[usp_SetGroupBuyPaid] @EmployeeId,@GroupBuyId,@Paid";
+                db.Database.ExecuteSqlCommand(sql, 
+                    new SqlParameter("@EmployeeId", paid.EmployeeId),
+                    new SqlParameter("@GroupBuyId", paid.GroupBuyId),
+                    new SqlParameter("@Paid", paid.Paid));
+            }
         }
 
         // PUT: api/GroupBuyPaidDetailApi/5

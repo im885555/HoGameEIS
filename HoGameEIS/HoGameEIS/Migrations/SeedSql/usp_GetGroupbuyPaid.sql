@@ -22,7 +22,7 @@ BEGIN
 	  a.EmployeeId ,
 	  a.SubscriberName , 
 	  i.GroupBuyId ,
-	  SUM(s.Price)  as 'Payable' 
+	  SUM(s.Price *a.Amount )  as 'Payable' 
 	  FROM [dbo].[GroupBuySubscribers] a, [dbo].[GroupBuySubItems] s, [dbo].[GroupBuyItems] i
 	  WHERE i.ItemId= s.ItemId AND s.SubItemId=a.SubItemId AND i.GroupBuyId=@GroupBuyId 
 	  GROUP BY a.EmployeeId, a.SubscriberName, i.GroupBuyId
@@ -33,7 +33,7 @@ BEGIN
 	  a.Payable,
 	  ISNULL(p.Paid,0) as 'Paid'
 	   FROM @PayableTable a Left JOIN [dbo].[GroupBuyPaids] p
-	  ON  a.GroupBuyId =p.GroupBuyId 
+	  ON  a.GroupBuyId =p.GroupBuyId AND a.EmployeeId = p.EmployeeId
 	  Union
 	  SELECT 
 	  p.EmployeeId ,
@@ -44,6 +44,6 @@ BEGIN
 	  ON  a.GroupBuyId =p.GroupBuyId 
 	  LEFT JOIN [dbo].[Employees] e 
 	  ON e.EmployeeId=p.EmployeeId
-	  WHERE p.GroupBuyId=@GroupBuyId
+	  WHERE p.GroupBuyId=@GroupBuyId AND a.EmployeeId = p.EmployeeId
 
 END

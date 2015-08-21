@@ -98,6 +98,8 @@
             executeUspSeed(context, "usp_CancelGroupBuySubscriber");
             executeUspSeed(context, "usp_GetGroupbuyPaid");
             executeUspSeed(context, "usp_GetGroupbuySubscriber");
+            executeUspSeed(context, "usp_SetGroupBuyPaid");
+
 
             base.Seed(context);
 

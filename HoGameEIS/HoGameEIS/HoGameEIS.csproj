@@ -302,6 +302,9 @@
     <Content Include="Content\bootstrap\alerts.less" />
     <Content Include="Content\_bootstrap-datetimepicker.less" />
     <Content Include="Content\bootstrap-datetimepicker-build.less" />
+    <Content Include="Migrations\SeedSql\usp_SetGroupBuyPaid.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Migrations\SeedSql\usp_CancelGroupBuySubscriber.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -55,7 +55,7 @@
                 MenuImg: (<App.GroupBuy.Panel.MenuImg {...this.props}></App.GroupBuy.Panel.MenuImg>),
                 Order: (<App.GroupBuy.Panel.Order  {...this.props}></App.GroupBuy.Panel.Order>),
                 PaidDetail: (<App.GroupBuy.Panel.PaidDetail  {...this.props}></App.GroupBuy.Panel.PaidDetail>),
-                Memo: (<div>Memo</div>),
+                Memo: (<div>{this.state.data.Memo}</div>),
                 OrderDetail: (<div>OrderDetail</div>),
                 SendNotice: (<div>SendNotice</div>)
             };
