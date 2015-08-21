@@ -21,7 +21,7 @@
                             return(
                             <CarouselItem key={i} onClick={() =>
                                 this.setState({showPopupImage:true})}>
-                              <img src={img.ImageUrl}  style={{"width":"100%","height":"auto"}}/>
+                              <img src={img.ImageUrl}  style={{"width":"100%"}}/>
                             </CarouselItem>
                             )
                             }.bind(this))}

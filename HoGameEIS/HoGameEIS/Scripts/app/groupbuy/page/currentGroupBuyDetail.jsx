@@ -3,49 +3,6 @@
     var Nav = ReactBootstrap.Nav;
     var NavItem = ReactBootstrap.NavItem;
 
-    var OrderPanel = React.createClass({
-        render: function () {
-            return(
-                <App.GroupBuy.Panel.Order GroupBuyId={this.props.GroupBuyId}></App.GroupBuy.Panel.Order>
-                );
-        }
-    });
-    var MenuImgPanel = React.createClass({
-        render: function () {
-            return(
-                <App.GroupBuy.Panel.MenuImg  GroupBuyId={this.props.GroupBuyId}></App.GroupBuy.Panel.MenuImg>
-                );
-        }
-    });
-    var PaidDetailPanel = React.createClass({
-        render: function () {
-            return(
-                <div>paidDetail</div>
-                );
-        }
-    });
-    var MemoPanel = React.createClass({
-        render: function () {
-            return(
-                <div>memo</div>
-                );
-        }
-    });
-    var OrderDetailPanel = React.createClass({
-        render: function () {
-            return(
-                <div>orderDetail</div>
-                );
-        }
-    });
-    var SendNoticePanel = React.createClass({
-        render: function () {
-            return(
-                <div>sendNotice</div>
-                );
-        }
-    });
-
 
     var CurrentGroupBuyDetail = React.createClass({
         getDefaultProps: function () {
@@ -95,12 +52,12 @@
         },
         renderPanel: function () {
             var panelConf = {
-                MenuImg: (<MenuImgPanel {...this.props}/>),
-                Order: (<OrderPanel {...this.props}/>),
-                PaidDetail: (<PaidDetailPanel {...this.props}/>),
-                Memo: (<MemoPanel {...this.props}/>),
-                OrderDetail: (<OrderDetailPanel {...this.props}/>),
-                SendNotice: (<SendNoticePanel {...this.props}/>)
+                MenuImg: (<App.GroupBuy.Panel.MenuImg {...this.props}></App.GroupBuy.Panel.MenuImg>),
+                Order: (<App.GroupBuy.Panel.Order  {...this.props}></App.GroupBuy.Panel.Order>),
+                PaidDetail: (<App.GroupBuy.Panel.PaidDetail  {...this.props}></App.GroupBuy.Panel.PaidDetail>),
+                Memo: (<div>Memo</div>),
+                OrderDetail: (<div>OrderDetail</div>),
+                SendNotice: (<div>SendNotice</div>)
             };
             return panelConf[this.state.currentPanel];
         },

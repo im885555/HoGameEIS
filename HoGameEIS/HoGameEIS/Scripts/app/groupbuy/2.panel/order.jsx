@@ -205,7 +205,7 @@
                           {
                            <tr>
                             <td colSpan="6" className="text-right">
-                                <span>總個數:{countOrder.sumTotal}  總金額:{countOrder.sumMoney}</span>
+                                <span>總個數:{countOrder.sumTotal}  總金額:{countOrder.sumMoney}元</span>
                             </td>
                            </tr>
                           }

@@ -311,6 +311,12 @@
     <Content Include="Migrations\SeedSql\usp_AddGroupBuyItem.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Migrations\SeedSql\usp_GetGroupbuySubscriber.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Migrations\SeedSql\usp_GetGroupbuyPaid.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Migrations\SeedSql\usp_GetGroupbuyDetail.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -339,6 +345,7 @@
     <Content Include="Scripts\app\groupbuy\page\currentGroupBuyDetail.jsx" />
     <Content Include="Scripts\app\groupbuy\2.panel\order.jsx" />
     <Content Include="Scripts\app\groupbuy\2.panel\menuImg.jsx" />
+    <Content Include="Scripts\app\groupbuy\2.panel\paidDetail.jsx" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="readme.txt" />
     <Content Include="Scripts\app\app.js" />
@@ -399,6 +406,7 @@
     <Compile Include="Controllers\GroupBuyImageApiController.cs" />
     <Compile Include="Controllers\GroupBuyOrderApiController.cs" />
     <Compile Include="Controllers\GroupBuyOrderSubApiController.cs" />
+    <Compile Include="Controllers\GroupBuyPaidDetailApiController.cs" />
     <Compile Include="Controllers\GroupBuyStoreApiController.cs" />
     <Compile Include="Controllers\GroupBuyStoreMenuApiController.cs" />
     <Compile Include="Controllers\GroupBuyStoreMenuSubApiController.cs" />
@@ -408,17 +416,10 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201508210140017_init.cs" />
-    <Compile Include="Migrations\201508210140017_init.Designer.cs">
-      <DependentUpon>201508210140017_init.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201508210141199_init1.cs" />
-    <Compile Include="Migrations\201508210141199_init1.Designer.cs">
-      <DependentUpon>201508210141199_init1.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\CurrentUser.cs" />
     <Compile Include="Models\DTO\GroupBuyDto.cs" />
+    <Compile Include="Models\DTO\GroupBuyPaidDetailDto.cs" />
     <Compile Include="Models\DTO\TableDto.cs" />
     <Compile Include="Models\Employee.cs" />
     <Compile Include="Models\GroupBuy.cs" />
@@ -459,14 +460,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201508210140017_init.resx">
-      <DependentUpon>201508210140017_init.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201508210141199_init1.resx">
-      <DependentUpon>201508210141199_init1.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
