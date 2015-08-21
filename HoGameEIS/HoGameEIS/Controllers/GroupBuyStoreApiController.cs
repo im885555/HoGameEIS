@@ -86,7 +86,7 @@ namespace HoGameEIS.Controllers
 
                 foreach (var img in images)
                 {
-                    MenuImageApiController.deleteblobFile(img.ImageUrl);
+                    GroupBuyImageApiController.deleteblobFile(img.ImageUrl);
                 }
 
                 var sql = @"exec [dbo].[usp_DeleteGroupBuyStore] @StoreId";

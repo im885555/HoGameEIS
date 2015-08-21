@@ -6,14 +6,14 @@
     var OrderPanel = React.createClass({
         render: function () {
             return(
-                <App.GroupBuy.Panel.Order GroupBuyId={this.props.GroupBuyId}>order</App.GroupBuy.Panel.Order>
+                <App.GroupBuy.Panel.Order GroupBuyId={this.props.GroupBuyId}></App.GroupBuy.Panel.Order>
                 );
         }
     });
     var MenuImgPanel = React.createClass({
         render: function () {
             return(
-                <div>MenuImg</div>
+                <App.GroupBuy.Panel.MenuImg  GroupBuyId={this.props.GroupBuyId}></App.GroupBuy.Panel.MenuImg>
                 );
         }
     });
@@ -45,7 +45,7 @@
                 );
         }
     });
-    
+
 
     var CurrentGroupBuyDetail = React.createClass({
         getDefaultProps: function () {
@@ -55,14 +55,14 @@
         },
         getInitialState: function () {
             return {
-                currentPanel: "Order",
+                currentPanel: App.Core.UrlParams.tab ||  "Order",
                 data: {}
             }
         },
         _countdown:null,
         componentDidMount: function () {
             this.initCountdown();
-            this.getGroupbuyDataFromServer();            
+            this.getGroupbuyDataFromServer();
         },
         initCountdown: function () {
             this._countdown = $(this.refs.Clock.getDOMNode()).FlipClock(0, {
@@ -91,7 +91,7 @@
             });
         },
         componentWillUnmount: function () {
-            
+
         },
         renderPanel: function () {
             var panelConf = {
@@ -131,13 +131,17 @@
                             <Button bsStyle="warning">訂單列印</Button>
                             <Button bsStyle="danger">代理點餐</Button>
                         </div>
-                        
+
                     </div>
                     <hr/>
                     <div className="row">
-                         <Nav bsStyle='tabs' justified 
-                              activeKey={this.state.currentPanel} 
-                              onSelect={(selectedKey)=>this.setState({ currentPanel: selectedKey })}>
+                         <Nav bsStyle='tabs' justified
+                              activeKey={this.state.currentPanel}
+                              onSelect={(selectedKey)=>{
+                                  this.setState({ currentPanel: selectedKey });
+                                  window.history.pushState("", "", location.pathname + "?tab="+selectedKey);
+                                  //location.search = "tab="+selectedKey;
+                              }}>
                               <NavItem eventKey={"MenuImg"}>圖片</NavItem>
                               <NavItem eventKey={"Order"}>訂購單</NavItem>
                               <NavItem eventKey={"PaidDetail"}>付費明細</NavItem>
@@ -147,7 +151,7 @@
                          </Nav>
                     </div>
                     {this.renderPanel()}
-                    
+
                 </div>
             );
         }

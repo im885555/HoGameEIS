@@ -10,7 +10,7 @@
     var OrderList = React.createClass({
         getInitialState: function () {
             return {
-                menuList: [],
+                orderList: [],
                 isLoading:true
             };
         },
@@ -22,7 +22,7 @@
                 url: "/api/GroupBuyOrderApi/" + this.props.GroupBuyId,
                 type: "GET",
                 success: function (data) {
-                    this.setState({ menuList: data ,isLoading: false});
+                    this.setState({ orderList: data ,isLoading: false});
                     !!callback && callback();
                 }.bind(this)
             });
@@ -96,8 +96,25 @@
                 }.bind(this)
             });
         },
+        getCountOrder: function (orderList) {
+            var sumTotal = 0,
+                sumMoney = 0;
+
+            orderList.forEach(function (item) {
+                item.SubItems.forEach(function (sub) {
+                    sub.GroupBuySubscribers.forEach(function (Subscriber) {
+                        sumTotal += Subscriber.Amount;
+                        sumMoney += Subscriber.Amount * sub.Price;
+                    });
+                });
+            });
+            return {
+                sumTotal: sumTotal, sumMoney: sumMoney
+            };
+        },
         render: function () {
-            var menuList = this.state.menuList;
+            var orderList = this.state.orderList,
+                countOrder = this.getCountOrder(orderList);
             return (
                       <Table bordered condensed>
                         <thead>
@@ -120,7 +137,7 @@
                         </thead>
                         <tbody>
                             {
-                                menuList.map(function(item,i){
+                                orderList.map(function(item,i){
 
                                    var _items =[];
                                     item.SubItems.map(function(sub,i){
@@ -148,7 +165,7 @@
                                          <td>
                                              {
                                              sub.GroupBuySubscribers.map(function(subscriber,i){
-                                                return (<span key={i}>{subscriber.SubscriberName} ({subscriber.Amount})</span>);
+                                                return (<span key={i}>{subscriber.SubscriberName}({subscriber.Amount}) </span>);
                                              })
                                              }
                                          </td>
@@ -185,6 +202,13 @@
                                     return _items;
                                 }.bind(this))
                             }
+                          {
+                           <tr>
+                            <td colSpan="6" className="text-right">
+                                <span>總個數:{countOrder.sumTotal}  總金額:{countOrder.sumMoney}</span>
+                            </td>
+                           </tr>
+                          }
                           {!!this.state.isLoading &&
                             <tr>
                             <td colSpan="6" className="text-center">

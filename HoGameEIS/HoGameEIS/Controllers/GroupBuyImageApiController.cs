@@ -1,6 +1,10 @@
 ﻿using HoGameEIS.Models;
+using Microsoft.Azure;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Blob;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -11,17 +15,8 @@ using System.Web.Http;
 using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
 
-using Microsoft.WindowsAzure;
-using Microsoft.WindowsAzure.Storage;
-using Microsoft.WindowsAzure.Storage.Auth;
-using Microsoft.WindowsAzure.Storage.Blob;
-using Microsoft.Azure;
-using System.Configuration;
-
 namespace HoGameEIS.Controllers
 {
-
-
     public class ValidateMimeMultipartContentFilter : ActionFilterAttribute
     {
         public override void OnActionExecuting(HttpActionContext actionContext)
@@ -39,10 +34,8 @@ namespace HoGameEIS.Controllers
 
     }
 
-    public class MenuImageApiController : ApiController
+    public class GroupBuyImageApiController : ApiController
     {
-        //const string ServerUploadFolder = "D:\\Temp";
-        //private readonly string ServerUploadFolder = HttpContext.Current.Server.MapPath("~/UploadFiles/");
 
         private readonly string ServerUploadFolder = HttpContext.Current.Server.MapPath("~/App_Data");
 
@@ -56,15 +49,26 @@ namespace HoGameEIS.Controllers
 
         static readonly string ImageUploadUrl = ConfigurationManager.AppSettings["ImageUploadUrl"];
 
-
-
-        // GET: api/MenuImageApi
-        public IEnumerable<string> Get()
+        //GET api/GroupBuyOrderImageApi/5
+        [Route("api/GroupBuyOrderImageApi/{id}")]
+        [HttpGet]
+        public List<GroupBuyMenuImage> GetGroupbuyList(int id)
         {
-            return new string[] { "value1", "value2" };
+            List<GroupBuyMenuImage> images;
+            using (var db = new HoGameEISContext())
+            {
+                images = db.GroupBuyMenuImages.Where(o => o.GroupBuyId == id).ToList();
+            }
+
+            foreach (var img in images)
+            {
+                img.ImageUrl = String.Format("{0}{1}", ImageUploadUrl, img.ImageUrl);
+            }
+
+            return images;
         }
 
-        // GET: api/MenuImageApi/5
+        // GET: api/GroupBuyImageApi/5
         [Authorize]
         public List<GroupBuyStoreMenuImage> Get(int id)
         {
@@ -75,14 +79,16 @@ namespace HoGameEIS.Controllers
 
             }
 
-            foreach (var img in images) {
+            foreach (var img in images)
+            {
                 img.ImageUrl = String.Format("{0}{1}", ImageUploadUrl, img.ImageUrl);
             }
 
             return images;
         }
 
-        // POST: api/MenuImageApi/5
+
+        // POST: api/GroupBuyImageApi
         [Authorize]
         [ValidateMimeMultipartContentFilter]
         public async Task<List<GroupBuyStoreMenuImage>> Post(int id)
@@ -91,7 +97,7 @@ namespace HoGameEIS.Controllers
 
             //await Request.Content.ReadAsMultipartAsync(streamProvider);
 
-            
+
 
             var provider = new MultipartFileStreamProvider(Path.GetTempPath());
 
@@ -116,13 +122,12 @@ namespace HoGameEIS.Controllers
         }
 
 
-
-        // PUT: api/MenuImageApi/5
+        // PUT: api/GroupBuyImageApi/5
         public void Put(int id, [FromBody]string value)
         {
         }
 
-        // DELETE: api/MenuImageApi/5
+        // DELETE: api/GroupBuyImage/5
         [Authorize]
         public void Delete(int id)
         {
@@ -141,7 +146,6 @@ namespace HoGameEIS.Controllers
             deleteblobFile(image.ImageUrl);
         }
 
-
         public static string blobSaveFile(MultipartFileData file)
         {
             string fileName = file.Headers.ContentDisposition.FileName;
@@ -157,7 +161,7 @@ namespace HoGameEIS.Controllers
             //檔名加上時間戳記
 
             fileName = String.Format("{0}_{1}", Convert.ToInt32(DateTime.UtcNow.AddHours(8).Subtract(new DateTime(1970, 1, 1)).TotalSeconds), fileName);
-     
+
             // Retrieve reference to a blob named "myblob".
             CloudBlockBlob blockBlob = ImageContainer.GetBlockBlobReference(fileName);
 
@@ -179,7 +183,7 @@ namespace HoGameEIS.Controllers
             try
             {
                 using (var db = new HoGameEISContext())
-                {                    
+                {
                     //檢查菜單圖片已存在團購，就不刪除實體圖片。
                     if (!db.GroupBuyMenuImages.ToList().Exists(o => o.ImageUrl == fileName))
                     {
@@ -189,51 +193,52 @@ namespace HoGameEIS.Controllers
                     }
                 }
 
-                   
+
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
 
             }
         }
 
-       /* private string localSaveFile(MultipartFileData file)
-        {
-            string fileName = file.Headers.ContentDisposition.FileName;
-            if (fileName.StartsWith("\"") && fileName.EndsWith("\""))
-            {
-                fileName = fileName.Trim('"');
-            }
-            if (fileName.Contains(@"/") || fileName.Contains(@"\"))
-            {
-                fileName = Path.GetFileName(fileName);
-            }
+        /* private string localSaveFile(MultipartFileData file)
+         {
+             string fileName = file.Headers.ContentDisposition.FileName;
+             if (fileName.StartsWith("\"") && fileName.EndsWith("\""))
+             {
+                 fileName = fileName.Trim('"');
+             }
+             if (fileName.Contains(@"/") || fileName.Contains(@"\"))
+             {
+                 fileName = Path.GetFileName(fileName);
+             }
 
-            //檔名加上時間戳記
+             //檔名加上時間戳記
 
-            fileName = String.Format("{0}_{1}", Convert.ToInt32(DateTime.UtcNow.AddHours(8).Subtract(new DateTime(1970, 1, 1)).TotalSeconds), fileName);
+             fileName = String.Format("{0}_{1}", Convert.ToInt32(DateTime.UtcNow.AddHours(8).Subtract(new DateTime(1970, 1, 1)).TotalSeconds), fileName);
 
-            string newPath = Path.Combine(ServerUploadFolder, fileName);
+             string newPath = Path.Combine(ServerUploadFolder, fileName);
 
-            // Ensure that the target does not exist.
-            if (File.Exists(newPath))
-                File.Delete(newPath);
+             // Ensure that the target does not exist.
+             if (File.Exists(newPath))
+                 File.Delete(newPath);
 
-            File.Move(file.LocalFileName, newPath);
+             File.Move(file.LocalFileName, newPath);
 
-            fileName = String.Format("/Content/uploads/{1}", ServerUploadFolder, fileName);
+             fileName = String.Format("/Content/uploads/{1}", ServerUploadFolder, fileName);
 
-            return fileName;
-        }
+             return fileName;
+         }
 
-        private void deleteLocalFile(string url)
-        {
-            //string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, image.ImageUrl);
-            string path = AppDomain.CurrentDomain.BaseDirectory + url;
+         private void deleteLocalFile(string url)
+         {
+             //string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, image.ImageUrl);
+             string path = AppDomain.CurrentDomain.BaseDirectory + url;
 
-            // Ensure that the target does not exist.
-            if (File.Exists(path))
-                File.Delete(path);
-        }*/
+             // Ensure that the target does not exist.
+             if (File.Exists(path))
+                 File.Delete(path);
+         }*/
         //// GET: api/MenuImageApi/GetImage/5
         //[Route("getImage/{id}")]
         //[HttpGet]

@@ -233,7 +233,7 @@
         },
         getMenuImagesFromServer: function () {
             $.ajax({
-                url: "/api/MenuImageApi/" + this.props.storeId,
+                url: "/api/GroupBuyImageApi/" + this.props.storeId,
                 type: "GET",
                 success: function (data) {
                     this.setState({
@@ -296,7 +296,7 @@
             var data = new FormData();
             data.append("file", dataUriList[0].file);
             $.ajax({
-                url: "/api/MenuImageApi/" + this.props.storeId,
+                url: "/api/GroupBuyImageApi/" + this.props.storeId,
                 type: 'POST',
                 data: data,
                 success: function (data) {
@@ -313,7 +313,7 @@
         },
         handleDeleteImage: function (ImageId) {
             $.ajax({
-                url: "/api/MenuImageApi/" + ImageId,
+                url: "/api/GroupBuyImageApi/" + ImageId,
                 type: "DELETE",
                 success: function () {
                     this.getMenuImagesFromServer();
