@@ -56,7 +56,7 @@
                 Order: (<App.GroupBuy.Panel.Order  {...this.props}></App.GroupBuy.Panel.Order>),
                 PaidDetail: (<App.GroupBuy.Panel.PaidDetail  {...this.props}></App.GroupBuy.Panel.PaidDetail>),
                 Memo: (<div>{this.state.data.Memo}</div>),
-                OrderDetail: (<div>OrderDetail</div>),
+                OrderDetail: (<App.GroupBuy.Panel.OrderDetail  {...this.props}></App.GroupBuy.Panel.OrderDetail>),
                 SendNotice: (<div>SendNotice</div>)
             };
             return panelConf[this.state.currentPanel];

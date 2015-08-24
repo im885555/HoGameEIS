@@ -349,6 +349,7 @@
     <Content Include="Scripts\app\groupbuy\2.panel\order.jsx" />
     <Content Include="Scripts\app\groupbuy\2.panel\menuImg.jsx" />
     <Content Include="Scripts\app\groupbuy\2.panel\paidDetail.jsx" />
+    <Content Include="Scripts\app\groupbuy\2.panel\orderDeatil.jsx" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="readme.txt" />
     <Content Include="Scripts\app\app.js" />

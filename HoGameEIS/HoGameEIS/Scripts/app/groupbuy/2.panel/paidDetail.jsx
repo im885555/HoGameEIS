@@ -1,8 +1,53 @@
 ﻿App.GroupBuy.Panel.PaidDetail = (function () {
     var Table = ReactBootstrap.Table;
     var Button = ReactBootstrap.Button;
+    var Input = ReactBootstrap.Input;
+    
 
     var LoadingIcon = App.Component.Loading;
+
+
+    var CasherInput = React.createClass({
+        getInitialState: function () {
+            return {
+                showInput: false
+            };
+        },
+        handleChange: function (callback) {
+            var str = this.refs.valInput.getDOMNode().value;
+            str = $.trim(str);
+            str = !str ? "0" : str;
+            str = str.replace(/[^0-9]/g, "");
+            str = parseInt(str, 10);
+            isNaN(str) && (str = 0);
+            this.props.onChange(str);
+        },
+        handleBlur: function () {
+            this.setState({ showInput: false });
+            this.props.setPaidMoney(this.props.EmployeeId, this.props.value);
+        },
+        render: function () {
+            var btn= <Button bsStyle="info"
+                             onClick={()=>this.setState({showInput:!this.state.showInput})}>
+                      收銀機</Button>,
+                valInput =<input ref="valInput"
+                                 type="text" 
+                             style={{display: "inline-block",width:"68px",position:"absolute"}}
+                             className="form-control" 
+                             value={this.props.value}
+                             onBlur={this.handleBlur} 
+                             onFocus={()=>setTimeout(()=>document.execCommand("selectAll"), 0)}   
+                             onChange={this.handleChange}
+                             autoFocus/>;
+            
+            if (this.state.showInput) {
+                return(<div style={{display: "inline-block"}}>{btn}{valInput}</div>)
+            } else {
+                return btn;
+            }
+        }
+    });
+
 
     var PaidDetail = React.createClass({
         getInitialState: function () {
@@ -95,12 +140,11 @@
                                                     onClick={()=>this.setPaidMoney(detail.EmployeeId,detail.Payable)}
                                                     >結清
                                             </Button>
-                                            }
-                                            <Button bsStyle="info">收銀機</Button>
+                                            }                                            
                                             {
                                             detail.Paid > detail.Payable &&
                                             <Button bsStyle="warning"
-                                                    onClick={()=>this.setPaidMoney(detail.EmployeeId,detail.Paid - detail.Payable)}
+                                                    onClick={()=>this.setPaidMoney(detail.EmployeeId,detail.Payable)}
                                                     >找零
                                             </Button>
                                             }
@@ -111,6 +155,12 @@
                                                     >取消繳費
                                             </Button> 
                                             }
+                                            <CasherInput setPaidMoney={this.setPaidMoney}
+                                                         onChange={(val) =>
+                                                        {var list = this.state.paidList; console.log(list,i,list[i]); list[i].Paid=val; this.setState({paidList:list});}}
+                                                        EmployeeId={detail.EmployeeId}
+                                                        value={detail.Paid}>
+                                            </CasherInput>
                                         </td>
                                         <td>{detail.EmployeeName}</td>
                                         <td>{detail.Payable}</td>
