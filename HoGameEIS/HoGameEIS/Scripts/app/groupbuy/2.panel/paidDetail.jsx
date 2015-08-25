@@ -15,12 +15,7 @@
         },
         handleChange: function (callback) {
             var str = this.refs.valInput.getDOMNode().value;
-            str = $.trim(str);
-            str = !str ? "0" : str;
-            str = str.replace(/[^0-9]/g, "");
-            str = parseInt(str, 10);
-            isNaN(str) && (str = 0);
-            this.refs.valInput.getDOMNode().value = str;
+            this.refs.valInput.getDOMNode().value = App.Utility.ParseInt(str);
             //this.props.onChange(str);
         },
         handleBlur: function () {
@@ -117,7 +112,8 @@
         },
         render: function () {
             var paidList = this.state.paidList,
-                total = this.countTotal(paidList);
+                total = this.countTotal(paidList),
+                isCreator = this.props.groupBuyInfo.isCreator;
             return(
                 <div>
                     <Table bordered condensed hover>
@@ -136,30 +132,34 @@
                                 return(
                                     <tr key={i}>
                                         <td>
-                                            {
-                                            detail.Paid < detail.Payable &&
-                                            <Button bsStyle="success"
-                                                    onClick={()=>this.setPaidMoney(detail.EmployeeId,detail.Payable)}
-                                                    >結清
-                                            </Button>
-                                            }                                            
-                                            {
-                                            detail.Paid > detail.Payable &&
-                                            <Button bsStyle="warning"
-                                                    onClick={()=>this.setPaidMoney(detail.EmployeeId,detail.Payable)}
-                                                    >找零
-                                            </Button>
+                                            {!!isCreator && 
+                                                <div>
+                                                {
+                                                detail.Paid < detail.Payable &&
+                                                <Button bsStyle="success"
+                                                        onClick={()=>this.setPaidMoney(detail.EmployeeId,detail.Payable)}
+                                                        >結清
+                                                </Button>
+                                                }                                            
+                                                {
+                                                detail.Paid > detail.Payable &&
+                                                <Button bsStyle="warning"
+                                                        onClick={()=>this.setPaidMoney(detail.EmployeeId,detail.Payable)}
+                                                        >找零
+                                                </Button>
+                                                }
+                                                {
+                                                detail.Paid >= detail.Payable &&
+                                                <Button bsStyle="danger"
+                                                         onClick={()=>this.setPaidMoney(detail.EmployeeId,0)}
+                                                        >取消繳費
+                                                </Button> 
+                                                }
+                                                <CasherInput setPaidMoney={this.setPaidMoney}                                                      
+                                                             EmployeeId={detail.EmployeeId}
+                                                             value={detail.Paid}/>
+                                                </div>
                                             }
-                                            {
-                                            detail.Paid >= detail.Payable &&
-                                            <Button bsStyle="danger"
-                                                     onClick={()=>this.setPaidMoney(detail.EmployeeId,0)}
-                                                    >取消繳費
-                                            </Button> 
-                                            }
-                                            <CasherInput setPaidMoney={this.setPaidMoney}                                                      
-                                                         EmployeeId={detail.EmployeeId}
-                                                         value={detail.Paid}/>
                                         </td>
                                         <td>{detail.EmployeeName}</td>
                                         <td>{detail.Payable}</td>

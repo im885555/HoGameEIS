@@ -15,7 +15,7 @@ namespace HoGameEIS.Models
         public string Address { get; set; }
         public int EmployeeId { get; set; }
         public string FullName { get; set; }
+        public string Password { get; set; }
 
-       
     }
 }

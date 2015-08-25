@@ -167,7 +167,8 @@
         componentDidMount: function () {
             var dom = this.refs.el.getDOMNode();
             $(dom).datetimepicker({
-                minDate: new Date()
+                minDate: new Date(),
+                sideBySide:true
             }).on("dp.change", function (e) {
                 if (!e.date) {
                     $(dom).data("DateTimePicker").date(e.oldDate);

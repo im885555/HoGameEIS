@@ -50,6 +50,7 @@ namespace HoGameEIS.Controllers
         // PUT api/groupbuyapi/5
         public void Put(int id, [FromBody]string value)
         {
+
         }
 
         // DELETE api/groupbuyapi/5
@@ -84,6 +85,48 @@ namespace HoGameEIS.Controllers
             }
 
             return list;
+        }
+
+        [Route("api/GroupbuySecurityApi/{GroupBuyId}")]
+        [HttpGet]
+        public GroupbuySecurityDto GroupbuySecurity(int GroupBuyId)
+        {
+            GroupbuySecurityDto securtiy = new GroupbuySecurityDto()
+            {
+                Role = ""
+            };
+
+            using (var db = new HoGameEISContext())
+            {
+                if (db.GroupBuys.Any(o => o.GroupBuyId == GroupBuyId && o.Creator == CurrentUser.Info.EmployeeId))
+                {
+                    securtiy.Role += "GroupBuyCreator;";
+                }
+                
+            }
+            return securtiy;
+        }
+
+        [Route("api/GroupbuyEndTimeApi/{GroupBuyId}")]
+        [HttpPut]
+        public void GroupbuyEndTime(int GroupBuyId, GroupBuy input)
+        {
+            GroupBuy groupBuy;
+
+            using (var db = new HoGameEISContext())
+            {
+                groupBuy = db.GroupBuys.Where(o => o.GroupBuyId == GroupBuyId).FirstOrDefault<GroupBuy>();
+
+                if (groupBuy != null)
+                {
+                    groupBuy.EndTime = input.EndTime;
+
+                    db.Entry(groupBuy).State = System.Data.Entity.EntityState.Modified;
+
+                    db.SaveChanges();
+                }
+
+            }
         }
     }
 }

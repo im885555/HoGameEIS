@@ -112,7 +112,14 @@
                 sumTotal: sumTotal, sumMoney: sumMoney
             };
         },
+        isFullControl: function () {
+            return !!this.props.groupBuyInfo.isOngoing || !!this.props.isCreator;
+        },
         render: function () {
+            if (!this.isFullControl()) {
+                return <App.GroupBuy.Panel.OrderDetail  {...this.props}/>;
+            }
+
             var orderList = this.state.orderList,
                 countOrder = this.getCountOrder(orderList);
             return (

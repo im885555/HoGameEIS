@@ -4,6 +4,8 @@ App.Component = App.Component || {};
 
 App.Core = App.Core || {};
 
+App.Utility = App.Utility || {};
+
 App.Context = App.Context || {};
 
 App.Mixins = App.Mixins || {};
@@ -12,6 +14,7 @@ App.GroupBuy = App.GroupBuy || {};
 
 App.GroupBuy.Control = App.GroupBuy.Control || {};
 App.GroupBuy.Panel = App.GroupBuy.Panel || {};
+
 
 
 (window.onpopstate = function () {
@@ -41,6 +44,16 @@ App.GroupBuy.Panel = App.GroupBuy.Panel || {};
 
     App.Core.UrlParams = urlParams;
 })();
+
+App.Utility.ParseInt = function (_str) {
+    var str = _str;
+    str = $.trim(str);
+    str = !str ? "0" : str;
+    str = str.replace(/[^0-9]/g, "");
+    str = parseInt(str, 10);
+    isNaN(str) && (str = 0);
+    return str;
+}
 
 
 App.Context._CurrentUser = App.Context._CurrentUser || (function () {

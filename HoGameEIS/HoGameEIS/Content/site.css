@@ -107,9 +107,20 @@ footer {
 }
 
 .custom-modal-full-page-image {
-    width:95%;
+    width:90%;
+}
+.display-inline-block {
+     display:inline-block;
 }
 
+.group-inputBtn-left {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+.group-inputBtn-right {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
 
 .groupbuy-casher-input {
     display:inline-block;

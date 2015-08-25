@@ -2,6 +2,9 @@
     var Button = ReactBootstrap.Button;
     var Nav = ReactBootstrap.Nav;
     var NavItem = ReactBootstrap.NavItem;
+    var OverlayTrigger = ReactBootstrap.OverlayTrigger;
+    var Popover = ReactBootstrap.Popover;
+
 
 
     var CurrentGroupBuyDetail = React.createClass({
@@ -12,14 +15,18 @@
         },
         getInitialState: function () {
             return {
+                isOngoing:false, //團購是否進行中
+                isCreator:false, //使用者是否為開團者
                 currentPanel: App.Core.UrlParams.tab ||  "Order",
-                data: {}
+                data: {},
+                entendTimeInputVal:15
             }
         },
         _countdown:null,
         componentDidMount: function () {
             this.initCountdown();
             this.getGroupbuyDataFromServer();
+            this.getGroupbuySecurityFromServer();
         },
         initCountdown: function () {
             this._countdown = $(this.refs.Clock.getDOMNode()).FlipClock(0, {
@@ -32,37 +39,71 @@
             var now = moment(new Date()).unix();
             var endTime = moment(_endtime).unix();
 
+            this._countdown.setTime(0);
             if (endTime > now) {
                 this._countdown.setTime(endTime - now);
                 this._countdown.start();
+                return true;
+            } else {
+                return false;
             }
+
         },
         getGroupbuyDataFromServer: function () {
             $.ajax({
                 url: "/api/groupbuyapi/" + this.props.GroupBuyId,
                 type: "GET",
                 success: function (data) {
-                    this.startCountdown(data.EndTime);
-                    this.setState({ data: data });
+                    var isOngoing = this.startCountdown(data.EndTime);
+                    this.setState({ data: data, isOngoing: isOngoing });
                 }.bind(this)
             });
+        },
+        getGroupbuySecurityFromServer: function () {
+            $.ajax({
+                url: "/api/GroupbuySecurityApi/" + this.props.GroupBuyId,
+                type: "GET",
+                success: function (data) {
+                    if (data.Role.indexOf("GroupBuyCreator") > -1) {
+                        this.setState({ isCreator: true });
+                    }
+                }.bind(this)
+            });
+        },
+        handleExtendTime: function () {
+            this.updateEndTime(moment(this.state.data.EndTime).add(this.refs.entendTimeInput.getDOMNode().value, 'minutes').format());
+        },
+        updateEndTime: function (endTime) {
+            $.ajax({
+                url: "/api/GroupbuyEndTimeApi/" + this.props.GroupBuyId,
+                type: "PUT",
+                data: {
+                    EndTime: endTime
+                },
+                success: function (data) {
+                    this.getGroupbuyDataFromServer();
+                }.bind(this)
+            });
+
         },
         componentWillUnmount: function () {
 
         },
         renderPanel: function () {
+            var info = $.extend({}, {}, this.state);
             var panelConf = {
                 MenuImg: (<App.GroupBuy.Panel.MenuImg {...this.props}/>),
-                Order: (<App.GroupBuy.Panel.Order  {...this.props}/>),
-                PaidDetail: (<App.GroupBuy.Panel.PaidDetail  {...this.props}/>),
+                Order: (<App.GroupBuy.Panel.Order  {...this.props} groupBuyInfo={info}/>),
+                PaidDetail: (<App.GroupBuy.Panel.PaidDetail  {...this.props} groupBuyInfo={info}/>),
                 Memo: (<div>{this.state.data.Memo}</div>),
                 OrderDetail: (<App.GroupBuy.Panel.OrderDetail  {...this.props}/>),
                 SendNotice: (<div>尚未開放</div>)
             };
             return panelConf[this.state.currentPanel];
         },
+
         render: function () {
-            var data = this.state.data;
+            var data = this.state;
             return (
                 <div>
                     <div className="row">
@@ -81,14 +122,27 @@
                         <div className="col-md-9 col-sm-12 col-lg-6">
                             <div ref="Clock"></div>
                         </div>
+                        {!!this.state.isCreator &&
                         <div className="col-md-12 col-sm-12 col-lg-3">
-                            <Button bsStyle="primary" onClick={()=>alert("尚未開放")}>延長</Button>
-                            <Button bsStyle="success" onClick={()=>alert("尚未開放")}>提前結束</Button>
+                            <input type="text"
+                                   style={{width:"130px"}} 
+                                   className="form-control display-inline-block group-inputBtn-left" 
+                                   value={this.state.entendTimeInputVal}
+                                   ref= "entendTimeInput"
+                                   onChange={(e)=>{
+                                                this.setState({entendTimeInputVal: App.Utility.ParseInt(e.target.value)});
+                                            }}/>
+                            <Button className="group-inputBtn-right">分鐘</Button>
+                            <Button bsStyle="primary" 
+                                    onClick={()=>this.updateEndTime(moment(this.state.data.EndTime)
+                                                .add(this.refs.entendTimeInput.getDOMNode().value, 'minutes')
+                                                .format())}>延長</Button>
+                            {!!this.state.isOngoing &&<Button bsStyle="success" onClick={()=>this.updateEndTime(moment().format())}>提前結束</Button>}
                             <Button bsStyle="info" onClick={()=>alert("尚未開放")}>委託收費</Button>
                             <Button bsStyle="warning" onClick={()=>alert("尚未開放")}>訂單列印</Button>
                             <Button bsStyle="danger" onClick={()=>alert("尚未開放")}>代理點餐</Button>
                         </div>
-
+                        }
                     </div>
                     <hr/>
                     <div className="row">

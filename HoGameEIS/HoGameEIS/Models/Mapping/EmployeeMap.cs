@@ -17,6 +17,7 @@ namespace HoGameEIS.Models.Mapping
             this.Property(t => t.Address).HasColumnName("Address");
             this.Property(t => t.EmployeeId).HasColumnName("EmployeeId");
             this.Property(t => t.FullName).HasColumnName("FullName");
+            this.Property(t => t.Password).HasColumnName("Password");
         }
     }
 }

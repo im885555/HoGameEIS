@@ -35,8 +35,8 @@ namespace HoGameEIS.Controllers
 
 
             String account = formCollection["InputEmail"];
+            string password = formCollection["password"];
 
-         
             if (account == null)
             {
                 return View();
@@ -44,7 +44,7 @@ namespace HoGameEIS.Controllers
             using (var db = new HoGameEISContext())
             {
                 Boolean isRememberMe = formCollection["RememberMe"].Contains("true");
-                Employee emp = db.Employees.Where(o => o.Email.Contains(account.Trim())).FirstOrDefault();
+                Employee emp = db.Employees.Where(o => o.Email.Contains(account.Trim()) && o.Password == password).FirstOrDefault();
                 if (emp != null)
                 {
                     System.Web.Script.Serialization.JavaScriptSerializer objSerializer = new System.Web.Script.Serialization.JavaScriptSerializer();
@@ -87,6 +87,33 @@ namespace HoGameEIS.Controllers
             CurrentUser.Info = null;
             return RedirectToAction("Login");          
         }
-       
+
+        public ActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult ChangePassword(FormCollection formCollection)
+        {
+            string password = formCollection["password"];
+
+            Employee emp;
+            using (var db = new HoGameEISContext())
+            {
+                emp = db.Employees.Where(o => o.EmployeeId == CurrentUser.Info.EmployeeId).FirstOrDefault<Employee>();
+
+                if (emp != null)
+                {
+                    emp.Password = password;
+
+                    db.Entry(emp).State = System.Data.Entity.EntityState.Modified;
+
+                    db.SaveChanges();
+                }
+
+            }
+            return RedirectToAction("Logout"); 
+        }
     }
 }
