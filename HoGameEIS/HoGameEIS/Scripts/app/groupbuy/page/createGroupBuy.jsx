@@ -33,7 +33,7 @@
                         {
                             !!rows && rows.map(function(item,i){
                                 return (
-                                    <tr key={item.StoreId} onClick={()=>this.props.onHide(item)}>
+                                    <tr key={item.StoreId} onClick={()=>this.props.onSelect(item)}>
                                         <td>{item.StoreName}</td>
                                         <td>{item.Tel}</td>
                                         <td>{item.Memo}</td>
@@ -106,27 +106,6 @@
         }
     });
 
-
-    var ChooseWindow = React.createClass({
-        render:function(){
-            return(
-                <Modal
-                 {...this.props}
-                 bsSize='large'
-                 bsStyle='primary'
-                 aria-labelledby='contained-modal-title-lg'
-                 animation={false}>
-                    <Modal.Header closeButton>
-                        <Modal.Title>請選擇店家</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <StoreManagement {...this.props}/>
-                    </Modal.Body>               
-                </Modal>
-            );
-        }
-    });
-
     var ChooseStore = React.createClass({
         getInitialState: function () {
             return {
@@ -134,22 +113,37 @@
                 selected: { StoreName:""}
             };
         },
-        handleHide: function (store) {
+        handleSelect: function (store) {
             this.setState({ showChooseWindow: false });
             !!store && !!store.hasOwnProperty("StoreId") &&
             this.setState({ selected: store }, this.props.onChange);
         },
+        renderChooseWindow: function () {
+            if (!!this.state.showChooseWindow){ 
+                return <Modal
+                            onHide={this.handleSelect}
+                            bsSize='large'
+                            bsStyle='primary'
+                            aria-labelledby='contained-modal-title-lg'
+                            animation={false}>
+                           <Modal.Header closeButton>
+                               <Modal.Title>請選擇店家</Modal.Title>
+                           </Modal.Header>
+                           <Modal.Body>
+                               <StoreManagement onSelect={this.handleSelect}/>
+                           </Modal.Body>               
+                       </Modal>
+            }
+        },
         render: function () {
             var selected = this.state.selected;
             var btn =  <Button bsStyle='primary' 
-                              onClick={()=>this.setState({showChooseWindow:true})}>
-                            選擇店家
-                            <ChooseWindow 
-                            show={this.state.showChooseWindow}
-                            onHide={this.handleHide}/>
-                       </Button>
+                               onClick={()=>this.setState({showChooseWindow:true})}>
+                               選擇店家                          
+                       </Button>;
             return (
                 <div>
+                    {this.renderChooseWindow()}
                     <Input type='text' 
                            buttonBefore={btn}
                            style={{cursor: "pointer"}} 
@@ -158,9 +152,7 @@
                            onClick={()=>this.setState({showChooseWindow:true})}
                            bsStyle= {this.props.bsStyle}
                            help= {this.props.help}
-                           onChange={()=>{}}
-                           >
-                       
+                           onChange={()=>{}}>                       
                     </Input>     
                     {!!selected && <input type="hidden" name="StoreId" value={selected.StoreId} />}
                 </div>

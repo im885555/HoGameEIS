@@ -49,13 +49,17 @@
                 }.bind(this)
             });
         },
+        renderPopupImageWindow: function () {
+            if (!!this.state.showPopupImage){
+                return <PopupImageWindow 
+                        imgList={this.state.imgList}
+                        onHide={()=> this.setState({showPopupImage:false})}/>
+            }
+        },
         render: function () {
             return (
             <div>
-                <PopupImageWindow 
-                            imgList={this.state.imgList}
-                            show={this.state.showPopupImage}
-                            onHide={()=> this.setState({showPopupImage:false})}/>
+                {this.renderPopupImageWindow()}
                 <Carousel interval={5000000}>
                     {this.state.imgList.map(function(img,i){
                         return(
