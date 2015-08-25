@@ -15,63 +15,58 @@ App.GroupBuy.StoreManagement = (function () {
         party: "活動"
     };
 
-    var ConfirmDelete = React.createClass({
-        render: function () {
-            return (
-                <Modal
-                {...this.props}
-                 bsSize='small'
-                 bsStyle='primary'
-                 aria-labelledby='contained-modal-title-sm'
-                 animation={false}>
-                     <Modal.Header closeButton>
-                       <Modal.Title>請確認</Modal.Title>
-                     </Modal.Header>
-
-                     <Modal.Body>
-                       刪除店家 "{this.props.selectedData.StoreName}"
-                     </Modal.Body>
-
-                     <Modal.Footer>
-                       <Button onClick={()=>this.props.onHide(true)} bsStyle='primary'>確定</Button>
-                       <Button onClick={()=>this.props.onHide(false)} >取消</Button>
-                     </Modal.Footer>
-                   </Modal>
-            );
-        }
-    });
-
-
     var StoreGrid = React.createClass({
         getInitialState: function () {
             return {
-                confirmShow: false,
-                selectedData: {}
+                confrimDeleteData:null
             };
         },
         confirmDelete: function (item) {
-            this.setState({ confirmShow: true, selectedData: item });
+            this.setState({ confrimDeleteData: item });
         },
         handleDelete: function (result) {
-            this.setState({ confirmShow: false });
+            
             if (result) {
                 $.ajax({
-                    url: "/api/groupbuystoreapi/" + this.state.selectedData.StoreId,
+                    url: "/api/groupbuystoreapi/" + this.state.confrimDeleteData.StoreId,
                     type: "DELETE",
                     success: function (result) {
                         this.props.refresh();
                     }.bind(this)
                 });
             }
+
+            this.setState({ confrimDeleteData: null });
+        },
+        renderConfrimDelete: function () {
+            if (!!this.state.confrimDeleteData) {
+                var data = this.state.confrimDeleteData;
+                return <Modal
+                    onHide={()=>this.handleDelete(false)}
+                    bsSize='small'
+                    bsStyle='primary'
+                    aria-labelledby='contained-modal-title-sm'
+                    animation={false}>
+                    <Modal.Header closeButton>
+                      <Modal.Title>請確認</Modal.Title>
+                    </Modal.Header>
+
+                    <Modal.Body>
+                      刪除店家 "{data.StoreName}"
+                    </Modal.Body>
+
+                    <Modal.Footer>
+                      <Button onClick={()=>this.handleDelete(true)} bsStyle='primary'>確定</Button>
+                      <Button onClick={()=>this.handleDelete(false)} >取消</Button>
+                    </Modal.Footer>
+                  </Modal>
+            }
         },
         render: function () {
             var rows = this.props.data.rows;
             return (
                 <div>
-                    <ConfirmDelete
-                    show={this.state.confirmShow}
-                    onHide={this.handleDelete}
-                    selectedData={this.state.selectedData}/>
+                    {this.renderConfrimDelete()}                
                     <Table  bordered condensed hover>
                         <thead>
                             <tr>

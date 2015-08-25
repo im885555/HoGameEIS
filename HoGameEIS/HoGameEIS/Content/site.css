@@ -111,6 +111,22 @@ footer {
 }
 
 
+.groupbuy-casher-input {
+    display:inline-block;
+}
+.groupbuy-casher-input input{
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    display: inline-block;
+    width:80px;
+    position:absolute;
+}
+    .groupbuy-casher-input button {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+
+
 /*倒數計時*/
 @media screen and (max-width: 18000px) {
 .flip-clock-wrapper { margin-top:3em;}

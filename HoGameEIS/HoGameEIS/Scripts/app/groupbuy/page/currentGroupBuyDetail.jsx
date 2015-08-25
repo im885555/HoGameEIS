@@ -52,12 +52,12 @@
         },
         renderPanel: function () {
             var panelConf = {
-                MenuImg: (<App.GroupBuy.Panel.MenuImg {...this.props}></App.GroupBuy.Panel.MenuImg>),
-                Order: (<App.GroupBuy.Panel.Order  {...this.props}></App.GroupBuy.Panel.Order>),
-                PaidDetail: (<App.GroupBuy.Panel.PaidDetail  {...this.props}></App.GroupBuy.Panel.PaidDetail>),
+                MenuImg: (<App.GroupBuy.Panel.MenuImg {...this.props}/>),
+                Order: (<App.GroupBuy.Panel.Order  {...this.props}/>),
+                PaidDetail: (<App.GroupBuy.Panel.PaidDetail  {...this.props}/>),
                 Memo: (<div>{this.state.data.Memo}</div>),
-                OrderDetail: (<App.GroupBuy.Panel.OrderDetail  {...this.props}></App.GroupBuy.Panel.OrderDetail>),
-                SendNotice: (<div>SendNotice</div>)
+                OrderDetail: (<App.GroupBuy.Panel.OrderDetail  {...this.props}/>),
+                SendNotice: (<div>尚未開放</div>)
             };
             return panelConf[this.state.currentPanel];
         },
@@ -82,16 +82,17 @@
                             <div ref="Clock"></div>
                         </div>
                         <div className="col-md-12 col-sm-12 col-lg-3">
-                            <Button bsStyle="primary">延長</Button>
-                            <Button bsStyle="success">提前結束</Button>
-                            <Button bsStyle="info">委託收費</Button>
-                            <Button bsStyle="warning">訂單列印</Button>
-                            <Button bsStyle="danger">代理點餐</Button>
+                            <Button bsStyle="primary" onClick={()=>alert("尚未開放")}>延長</Button>
+                            <Button bsStyle="success" onClick={()=>alert("尚未開放")}>提前結束</Button>
+                            <Button bsStyle="info" onClick={()=>alert("尚未開放")}>委託收費</Button>
+                            <Button bsStyle="warning" onClick={()=>alert("尚未開放")}>訂單列印</Button>
+                            <Button bsStyle="danger" onClick={()=>alert("尚未開放")}>代理點餐</Button>
                         </div>
 
                     </div>
                     <hr/>
                     <div className="row">
+                         <div className="col-sm-12 col-md-10 col-lg-8">
                          <Nav bsStyle='tabs' justified
                               activeKey={this.state.currentPanel}
                               onSelect={(selectedKey)=>{
@@ -106,6 +107,7 @@
                               <NavItem eventKey={"OrderDetail"}>訂單明細</NavItem>
                               <NavItem eventKey={"SendNotice"}>寄發通知</NavItem>
                          </Nav>
+                         </div>
                     </div>
                     {this.renderPanel()}
 

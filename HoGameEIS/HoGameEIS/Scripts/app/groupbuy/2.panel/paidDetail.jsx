@@ -20,33 +20,35 @@
             str = str.replace(/[^0-9]/g, "");
             str = parseInt(str, 10);
             isNaN(str) && (str = 0);
-            this.props.onChange(str);
+            this.refs.valInput.getDOMNode().value = str;
+            //this.props.onChange(str);
         },
         handleBlur: function () {
             this.setState({ showInput: false });
-            this.props.setPaidMoney(this.props.EmployeeId, this.props.value);
+            this.props.setPaidMoney(this.props.EmployeeId, this.refs.valInput.getDOMNode().value);
         },
         render: function () {
             var btn= <Button bsStyle="info"
-                             onClick={()=>this.setState({showInput:!this.state.showInput})}>
+                             onClick={()=>{
+                                this.setState({showInput:!this.state.showInput},()=> this.refs.valInput.getDOMNode().value=this.props.value )
+                             }}>
                       收銀機</Button>,
                 valInput =<input ref="valInput"
                                  type="text" 
-                             style={{display: "inline-block",width:"68px",position:"absolute"}}
                              className="form-control" 
-                             value={this.props.value}
                              onBlur={this.handleBlur} 
                              onFocus={()=>setTimeout(()=>document.execCommand("selectAll"), 0)}   
                              onChange={this.handleChange}
                              autoFocus/>;
             
             if (this.state.showInput) {
-                return(<div style={{display: "inline-block"}}>{btn}{valInput}</div>)
+                return(<div className="groupbuy-casher-input">{btn}{valInput}</div>)
             } else {
                 return btn;
             }
         }
     });
+
 
 
     var PaidDetail = React.createClass({
@@ -155,12 +157,9 @@
                                                     >取消繳費
                                             </Button> 
                                             }
-                                            <CasherInput setPaidMoney={this.setPaidMoney}
-                                                         onChange={(val) =>
-                                                        {var list = this.state.paidList; console.log(list,i,list[i]); list[i].Paid=val; this.setState({paidList:list});}}
-                                                        EmployeeId={detail.EmployeeId}
-                                                        value={detail.Paid}>
-                                            </CasherInput>
+                                            <CasherInput setPaidMoney={this.setPaidMoney}                                                      
+                                                         EmployeeId={detail.EmployeeId}
+                                                         value={detail.Paid}/>
                                         </td>
                                         <td>{detail.EmployeeName}</td>
                                         <td>{detail.Payable}</td>
