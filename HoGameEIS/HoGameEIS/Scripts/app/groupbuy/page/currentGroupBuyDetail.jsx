@@ -103,7 +103,7 @@
         },
 
         render: function () {
-            var data = this.state;
+            var data = this.state.data;
             return (
                 <div>
                     <div className="row">
