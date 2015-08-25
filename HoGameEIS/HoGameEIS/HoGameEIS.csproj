@@ -420,10 +420,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201508250931191_init.cs" />
-    <Compile Include="Migrations\201508250931191_init.Designer.cs">
-      <DependentUpon>201508250931191_init.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\CurrentUser.cs" />
     <Compile Include="Models\DTO\GroupBuyDto.cs" />
@@ -470,11 +466,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201508250931191_init.resx">
-      <DependentUpon>201508250931191_init.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
