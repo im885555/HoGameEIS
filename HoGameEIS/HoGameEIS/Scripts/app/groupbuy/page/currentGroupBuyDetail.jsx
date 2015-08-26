@@ -64,11 +64,9 @@
                 url: "/api/GroupbuySecurityApi/" + this.props.GroupBuyId,
                 type: "GET",
                 success: function (data) {
-                    if (data.Role.indexOf("GroupBuyCreator") > -1) {
-                        this.setState({ isCreator: true }, function () {
-                            this.getGroupbuyDataFromServer();
-                        });
-                    }
+                    this.setState({ isCreator: data.Role.indexOf("GroupBuyCreator") > -1 }, function () {
+                        this.getGroupbuyDataFromServer();
+                    });
                 }.bind(this)
             });
         },
