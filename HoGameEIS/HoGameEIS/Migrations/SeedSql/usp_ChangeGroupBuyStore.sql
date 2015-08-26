@@ -19,7 +19,7 @@ BEGIN
 
 
 	--刪除原本團購店家數據
-	DELETE [HoGameEIS].[dbo].[GroupBuySubscribers]
+	DELETE [dbo].[GroupBuySubscribers]
 	WHERE SubItemId 
 	in ( 
 		SELECT SubItemId FROM [dbo].[GroupBuySubItems]
