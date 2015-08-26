@@ -44,7 +44,7 @@ namespace HoGameEIS.Controllers
             using (var db = new HoGameEISContext())
             {
                 Boolean isRememberMe = formCollection["RememberMe"].Contains("true");
-                Employee emp = db.Employees.Where(o => o.Email.Contains(account.Trim()) && o.Password == password).FirstOrDefault();
+                Employee emp = db.Employees.Where(o => o.Email.Contains(account.Trim()) && (o.Password==null || o.Password == password)).FirstOrDefault();
                 if (emp != null)
                 {
                     System.Web.Script.Serialization.JavaScriptSerializer objSerializer = new System.Web.Script.Serialization.JavaScriptSerializer();
