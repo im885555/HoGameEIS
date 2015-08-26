@@ -19,14 +19,14 @@
                 isCreator:false, //使用者是否為開團者
                 currentPanel: App.Core.UrlParams.tab ||  "Order",
                 data: {},
-                entendTimeInputVal:5
+                extendTimeInputVal:5
             }
         },
         _countdown:null,
         componentDidMount: function () {
             this.initCountdown();
-            this.getGroupbuyDataFromServer();
-            this.getGroupbuySecurityFromServer();
+            
+            this.getDataFromServer();
         },
         initCountdown: function () {
             this._countdown = $(this.refs.Clock.getDOMNode()).FlipClock(0, {
@@ -59,13 +59,15 @@
                 }.bind(this)
             });
         },
-        getGroupbuySecurityFromServer: function () {
+        getDataFromServer: function () {
             $.ajax({
                 url: "/api/GroupbuySecurityApi/" + this.props.GroupBuyId,
                 type: "GET",
                 success: function (data) {
                     if (data.Role.indexOf("GroupBuyCreator") > -1) {
-                        this.setState({ isCreator: true });
+                        this.setState({ isCreator: true }, function () {
+                            this.getGroupbuyDataFromServer();
+                        });
                     }
                 }.bind(this)
             });
@@ -92,6 +94,11 @@
         },
         renderPanel: function () {
             var info = $.extend({}, {}, this.state);
+            //console.log(this.state);
+            //var info = {
+            //    isOngoing: this.state.isOngoing, //團購是否進行中
+            //    isCreator: this.state.isCreator //使用者是否為開團者
+            //}
             var panelConf = {
                 MenuImg: (<App.GroupBuy.Panel.MenuImg {...this.props}/>),
                 Order: (<App.GroupBuy.Panel.Order  {...this.props} groupBuyInfo={info}/>),
@@ -128,9 +135,9 @@
                             <input type="text"
                                    style={{width:"60px"}} 
                                    className="form-control display-inline-block" 
-                                   value={this.state.entendTimeInputVal}
+                                   value={this.state.extendTimeInputVal}
                                    ref= "entendTimeInput"
-                                   onChange={(e)=>this.setState({entendTimeInputVal: App.Utility.ParseInt(e.target.value)})}/>                           
+                                   onChange={(e)=>this.setState({extendTimeInputVal: App.Utility.ParseInt(e.target.value)})}/>                           
                             <Button bsStyle="primary" 
                                     onClick={this.handleExtendTime}>延長(分)</Button>
                             {!!this.state.isOngoing &&<Button bsStyle="success" onClick={()=>this.updateEndTime(moment().format())}>提前結束</Button>}

@@ -87,3 +87,8 @@ IF EXISTS ( SELECT  *
 DROP  PROCEDURE [dbo].[usp_SetGroupBuyPaid]
 
 
+IF EXISTS ( SELECT  *
+            FROM    sys.objects
+            WHERE   object_id = OBJECT_ID(N'usp_ChangeGroupBuyStore')
+                    AND type IN ( N'P', N'PC' )) 
+DROP  PROCEDURE [dbo].[usp_ChangeGroupBuyStore]

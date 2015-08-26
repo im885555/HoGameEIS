@@ -144,7 +144,7 @@
             executeUspSeed(context, "usp_GetGroupbuyPaid");
             executeUspSeed(context, "usp_GetGroupbuySubscriber");
             executeUspSeed(context, "usp_SetGroupBuyPaid");
-
+            executeUspSeed(context, "usp_ChangeGroupBuyStore");
 
             base.Seed(context);
 

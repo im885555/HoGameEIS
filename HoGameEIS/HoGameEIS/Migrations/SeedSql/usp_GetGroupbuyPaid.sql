@@ -52,16 +52,15 @@ BEGIN
 	   FROM @PayableTable a Left JOIN [dbo].[GroupBuyPaids] p
 	  ON  a.GroupBuyId =p.GroupBuyId AND a.EmployeeId = p.EmployeeId
 	  Union
-	  SELECT 
-	  p.EmployeeId ,
+	   SELECT p.EmployeeId,
 	  e.FullName as 'EmployeeName',
 	  ISNULL(a.Payable,0) as 'Payable',
 	  ISNULL(p.Paid,0) as 'Paid'
-	   FROM @PayableTable a RIGHT JOIN [dbo].[GroupBuyPaids] p
-	  ON  a.GroupBuyId =p.GroupBuyId 
-	  LEFT JOIN [dbo].[Employees] e 
-	  ON e.EmployeeId=p.EmployeeId
-	  WHERE p.GroupBuyId=@GroupBuyId AND a.EmployeeId = p.EmployeeId
+	   FROM [dbo].[GroupBuyPaids] p LEFT JOIN  @PayableTable a 
+	   ON  a.EmployeeId =p.EmployeeId
+	   LEFT JOIN [dbo].[Employees] e 
+	   ON e.EmployeeId=p.EmployeeId
+	   Where p.GroupBuyId = @GroupBuyId 
 
 	  INSERT INTO @ResultTable
 	  SELECT EmployeeId,EmployeeName,Payable,Paid FROM @_ResultTable
@@ -77,5 +76,5 @@ BEGIN
 	  ORDER BY Paid DESC,EmployeeName	  
 
 
-	  SELECT EmployeeId,EmployeeName,Payable,Paid FROM @ResultTable
+	  SELECT EmployeeId,EmployeeName,Payable,Paid FROM @_ResultTable
 END
