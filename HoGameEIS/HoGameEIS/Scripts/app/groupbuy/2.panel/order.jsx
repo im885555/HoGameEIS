@@ -209,13 +209,6 @@
                                     return _items;
                                 }.bind(this))
                             }
-                          {
-                           <tr>
-                            <td colSpan="6" className="text-right">
-                                <span>總個數:{countOrder.sumTotal}  總金額:{countOrder.sumMoney}元</span>
-                            </td>
-                           </tr>
-                          }
                           {!!this.state.isLoading &&
                             <tr>
                             <td colSpan="6" className="text-center">
@@ -223,6 +216,13 @@
                             </td>
                             </tr>
                           }
+                          {
+                           <tr>
+                            <td colSpan="6" className="text-right">
+                                <span>總個數:{countOrder.sumTotal}  總金額:{countOrder.sumMoney}元</span>
+                            </td>
+                           </tr>
+                          }                          
                         </tbody>
                       </Table>
 

@@ -80,8 +80,53 @@
                  },
                  new Models.Employee()
                  {
-                     Email = "lester.yeh@hg-asia.com",
-                     FullName = "Lester Yeh"
+                     Email = "cary.tu@hg-asia.com",
+                     FullName = "Cary Tu"
+                 },
+                 new Models.Employee()
+                 {
+                     Email = "esther.liao@hg-asia.com",
+                     FullName = "Esther Liao"
+                 },
+                 new Models.Employee()
+                 {
+                     Email = "james.chiu@hg-asia.com",
+                     FullName = "James Chiu"
+                 },
+                 new Models.Employee()
+                 {
+                     Email = "jason.chen@hg-asia.com",
+                     FullName = "Jason Chen"
+                 },
+                 new Models.Employee()
+                 {
+                     Email = "ken.lin@hg-asia.com",
+                     FullName = "Ken Lin"
+                 },
+                 new Models.Employee()
+                 {
+                     Email = "nana.li@hg-asia.com",
+                     FullName = "Nana Li"
+                 },
+                 new Models.Employee()
+                 {
+                     Email = "sonic.lu@hg-asia.com",
+                     FullName = "Sonic Lu"
+                 },
+                 new Models.Employee()
+                 {
+                     Email = "ted.wu@hg-asia.com",
+                     FullName = "Ted Wu"
+                 },
+                 new Models.Employee()
+                 {
+                     Email = "neal.huang@hg-asia.com",
+                     FullName = "Neal Huang"
+                 },
+                 new Models.Employee()
+                 {
+                     Email = "test@mail.com",
+                     FullName = "tester"
                  }
                 );
 

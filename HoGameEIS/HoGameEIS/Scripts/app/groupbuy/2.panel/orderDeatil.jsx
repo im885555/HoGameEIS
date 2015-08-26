@@ -20,9 +20,11 @@
             $.ajax({
                 url: "/api/GroupBuyOrderApi/" + this.props.GroupBuyId,
                 type: "GET",
+                data:{action:"orderDetail"},
                 success: function (data) {
                     this.setState({ orderList: data ,isLoading: false});
                     !!callback && callback();
+                    !!this.props.print && print();
                 }.bind(this)
             });
         },
@@ -119,13 +121,6 @@
                                     return _items;
                                 }.bind(this))
                             }
-                          {
-                           <tr>
-                            <td colSpan="6" className="text-right">
-                                <span>總個數:{countOrder.sumTotal}  總金額:{countOrder.sumMoney}元</span>
-                            </td>
-                           </tr>
-                          }
                           {!!this.state.isLoading &&
                             <tr>
                             <td colSpan="6" className="text-center">
@@ -133,6 +128,13 @@
                             </td>
                             </tr>
                           }
+                          {
+                           <tr>
+                            <td colSpan="6" className="text-right">
+                                <span>總個數:{countOrder.sumTotal}  總金額:{countOrder.sumMoney}元</span>
+                            </td>
+                           </tr>
+                          }                          
                         </tbody>
                       </Table>
 

@@ -19,21 +19,30 @@ namespace HoGameEIS.Controllers
 
         // GET: api/GroupBuyOrderApi/5
         [Authorize]
-        public List<GroupBuyItem> Get(int id)
+        public List<GroupBuyItem> Get(int id,string action = "")
         {
             List<GroupBuyItem> order = new List<GroupBuyItem>();
             using (var db = new HoGameEISContext())
             {
                 order = db.GroupBuyItems.Where(o => o.GroupBuyId == id).ToList();
 
-                order.ForEach((m) => {
-                    m.SubItems= db.GroupBuySubItems.Where(s => s.ItemId == m.ItemId).ToList();
+                order.ForEach((m) =>
+                {
+                    m.SubItems = db.GroupBuySubItems.Where(s => s.ItemId == m.ItemId).ToList();
                     List<GroupBuySubItem> subItems = m.SubItems.ToList();
-                    subItems.ForEach((si)=> {
+                    subItems.ForEach((si) =>
+                    {
                         si.GroupBuySubscribers = db.GroupBuySubscribers.Where(gs => gs.SubItemId == si.SubItemId).ToList();
                     });
-                    //m.SubItems = subItems;
                 });
+
+                if (action == "orderDetail") {
+                    //過濾未被選擇的子項目
+                    order.ForEach((m) =>
+                    {
+                        m.SubItems = m.SubItems.Where(o => o.GroupBuySubscribers.Count > 0).ToList();
+                    });
+                }
 
             }
             return order;

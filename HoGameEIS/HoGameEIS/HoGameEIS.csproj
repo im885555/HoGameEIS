@@ -350,6 +350,7 @@
     <Content Include="Scripts\app\groupbuy\2.panel\menuImg.jsx" />
     <Content Include="Scripts\app\groupbuy\2.panel\paidDetail.jsx" />
     <Content Include="Scripts\app\groupbuy\2.panel\orderDeatil.jsx" />
+    <Content Include="Scripts\app\groupbuy\page\print.jsx" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="readme.txt" />
     <Content Include="Scripts\app\app.js" />
@@ -457,6 +458,7 @@
     <Content Include="Scripts\jquery-2.1.4.min.map" />
     <Content Include="Views\GroupBuy\App.cshtml" />
     <Content Include="Views\Account\ChangePassword.cshtml" />
+    <Content Include="Views\GroupBuy\Print.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

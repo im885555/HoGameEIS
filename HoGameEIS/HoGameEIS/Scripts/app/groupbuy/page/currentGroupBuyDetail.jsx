@@ -19,7 +19,7 @@
                 isCreator:false, //使用者是否為開團者
                 currentPanel: App.Core.UrlParams.tab ||  "Order",
                 data: {},
-                entendTimeInputVal:15
+                entendTimeInputVal:5
             }
         },
         _countdown:null,
@@ -71,7 +71,8 @@
             });
         },
         handleExtendTime: function () {
-            this.updateEndTime(moment(this.state.data.EndTime).add(this.refs.entendTimeInput.getDOMNode().value, 'minutes').format());
+            var endTime = !!this.state.isOngoing ? moment(this.state.data.EndTime) : moment();
+            this.updateEndTime(endTime.add(this.refs.entendTimeInput.getDOMNode().value, 'minutes').format());
         },
         updateEndTime: function (endTime) {
             $.ajax({
@@ -125,21 +126,18 @@
                         {!!this.state.isCreator &&
                         <div className="col-md-12 col-sm-12 col-lg-3">
                             <input type="text"
-                                   style={{width:"130px"}} 
-                                   className="form-control display-inline-block group-inputBtn-left" 
+                                   style={{width:"60px"}} 
+                                   className="form-control display-inline-block" 
                                    value={this.state.entendTimeInputVal}
                                    ref= "entendTimeInput"
-                                   onChange={(e)=>{
-                                                this.setState({entendTimeInputVal: App.Utility.ParseInt(e.target.value)});
-                                            }}/>
-                            <Button className="group-inputBtn-right">分鐘</Button>
+                                   onChange={(e)=>this.setState({entendTimeInputVal: App.Utility.ParseInt(e.target.value)})}/>                           
                             <Button bsStyle="primary" 
-                                    onClick={()=>this.updateEndTime(moment(this.state.data.EndTime)
-                                                .add(this.refs.entendTimeInput.getDOMNode().value, 'minutes')
-                                                .format())}>延長</Button>
+                                    onClick={this.handleExtendTime}>延長(分)</Button>
                             {!!this.state.isOngoing &&<Button bsStyle="success" onClick={()=>this.updateEndTime(moment().format())}>提前結束</Button>}
                             <Button bsStyle="info" onClick={()=>alert("尚未開放")}>委託收費</Button>
-                            <Button bsStyle="warning" onClick={()=>alert("尚未開放")}>訂單列印</Button>
+                            <Button bsStyle="warning" 
+                                    onClick={()=>window.open('/GroupBuy/Print/'+this.props.GroupBuyId , '', config='toolbar=no,location=no')}>
+                                        訂單列印</Button>
                             <Button bsStyle="danger" onClick={()=>alert("尚未開放")}>代理點餐</Button>
                         </div>
                         }

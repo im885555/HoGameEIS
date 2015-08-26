@@ -17,6 +17,22 @@ BEGIN
 		 Payable int
 	  ) 
 
+	  DECLARE @_ResultTable Table
+	  (
+		 EmployeeId int,
+		 EmployeeName nvarchar(255),
+		 Payable int,
+		 paid int
+	  ) 
+
+	  DECLARE @ResultTable Table
+	  (
+		 EmployeeId int,
+		 EmployeeName nvarchar(255),
+		 Payable int,
+		 paid int
+	  ) 
+
 	  INSERT INTO @PayableTable
 	  SELECT 
 	  a.EmployeeId ,
@@ -27,6 +43,7 @@ BEGIN
 	  WHERE i.ItemId= s.ItemId AND s.SubItemId=a.SubItemId AND i.GroupBuyId=@GroupBuyId 
 	  GROUP BY a.EmployeeId, a.SubscriberName, i.GroupBuyId
 
+	  INSERT INTO @_ResultTable
 	  SELECT 
 	  a.EmployeeId ,
 	  a.EmployeeName,
@@ -46,4 +63,19 @@ BEGIN
 	  ON e.EmployeeId=p.EmployeeId
 	  WHERE p.GroupBuyId=@GroupBuyId AND a.EmployeeId = p.EmployeeId
 
+	  INSERT INTO @ResultTable
+	  SELECT EmployeeId,EmployeeName,Payable,Paid FROM @_ResultTable
+	  WHERE Paid<Payable
+	  ORDER BY Paid DESC,EmployeeName	  
+	  INSERT INTO @ResultTable
+	  SELECT EmployeeId,EmployeeName,Payable,Paid FROM @_ResultTable
+	  WHERE Paid>Payable
+	  ORDER BY Paid DESC,EmployeeName	  
+	  INSERT INTO @ResultTable
+	  SELECT EmployeeId,EmployeeName,Payable,Paid FROM @_ResultTable
+	  WHERE Paid=Payable
+	  ORDER BY Paid DESC,EmployeeName	  
+
+
+	  SELECT EmployeeId,EmployeeName,Payable,Paid FROM @ResultTable
 END

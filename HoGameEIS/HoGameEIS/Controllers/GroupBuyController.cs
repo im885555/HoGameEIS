@@ -126,5 +126,11 @@ namespace HoGameEIS.Controllers
         {
             return View("App");
         }
+
+        [Authorize]
+        public ActionResult Print(int Id)
+        {
+            return View("Print");
+        }
     }
 }
