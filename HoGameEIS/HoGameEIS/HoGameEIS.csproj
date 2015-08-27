@@ -408,6 +408,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\BaseWebApiController.cs" />
     <Compile Include="Controllers\CurrentUserApiController.cs" />
     <Compile Include="Controllers\GroupBuyApiController.cs" />
@@ -426,7 +427,6 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Models\CurrentUser.cs" />
     <Compile Include="Models\DTO\GroupBuyDto.cs" />
     <Compile Include="Models\DTO\GroupBuyPaidDetailDto.cs" />
     <Compile Include="Models\DTO\GroupbuySecurityDto.cs" />
@@ -472,6 +472,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Base\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

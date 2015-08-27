@@ -35,6 +35,7 @@ namespace HoGameEIS.Controllers
         }
 
         // PUT: api/GroupBuyOrderSubApi/5
+        [Authorize]
         public void Put(int id, [FromBody]GroupBuySubItem item)
         {
             if (String.IsNullOrEmpty(item.Action))

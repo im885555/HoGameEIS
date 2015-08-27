@@ -19,6 +19,7 @@ namespace HoGameEIS.Controllers
         }
 
         // GET: api/GroupBuyPaidDetailApi/5
+        [Authorize]
         public List<GroupBuyPaidDetailDto> Get(int id) 
         {
             List<GroupBuyPaidDetailDto> Details;
@@ -40,6 +41,7 @@ namespace HoGameEIS.Controllers
         }
 
         // POST: api/GroupBuyPaidDetailApi
+        [Authorize]
         public void Post(GroupBuyPaid paid)
         {
             using (var db = new HoGameEISContext())

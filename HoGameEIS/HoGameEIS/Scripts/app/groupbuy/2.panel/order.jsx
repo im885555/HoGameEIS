@@ -113,7 +113,7 @@
             };
         },
         isFullControl: function () {
-            return !!this.props.groupBuyInfo.isOngoing || !!this.props.isCreator;
+            return !!this.props.groupBuyInfo.isOngoing || !!this.props.groupBuyInfo.isCreator;
         },
         render: function () {
             if (!this.isFullControl()) {
@@ -159,7 +159,7 @@
                                            html={sub.Price}
                                            handleChange={this.handleSubItemPriceEdit}>
                                          </TdEditable>,
-                                         DeleteSubItemDom =
+                                         FuncSubItemDom =
                                          <td>
                                              <Button bsStyle="success" onClick={()=>this.handleAddSubscriber(sub.SubItemId)}>
                                              <span className="glyphicon glyphicon-plus"></span>
@@ -191,7 +191,7 @@
                                                   </TdEditable>
                                                   {SubItemNameDom}
                                                   {ItemPriceDom}
-                                                  {DeleteSubItemDom}
+                                                  {FuncSubItemDom}
                                                   {OrderDetail}    
                                                 </tr>
                                             );
@@ -200,7 +200,7 @@
                                                 <tr key={i}>
                                                 {SubItemNameDom}
                                                 {ItemPriceDom}
-                                                {DeleteSubItemDom}
+                                                {FuncSubItemDom}
                                                 {OrderDetail}    
                                                 </tr>
                                             );

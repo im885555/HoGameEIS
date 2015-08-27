@@ -8,7 +8,7 @@ using System.Web.Mvc;
 
 namespace HoGameEIS.Controllers
 {
-    public class GroupBuyController : Controller
+    public class GroupBuyController : BaseController
     {
         //
         // GET: /GroupBuy/
@@ -34,7 +34,7 @@ namespace HoGameEIS.Controllers
                     new SqlParameter("@Description", formData["Description"]),
                     new SqlParameter("@EndTime", formData["EndTime"]),
                     new SqlParameter("@StoreId", Int32.Parse(formData["StoreId"])),
-                    new SqlParameter("@Creator", CurrentUser.Info.EmployeeId)
+                    new SqlParameter("@Creator", CurrentUser().EmployeeId)
                     );
             }
 

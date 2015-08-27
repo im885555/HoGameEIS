@@ -5,15 +5,17 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Security;
 
 namespace HoGameEIS.Controllers
 {
-    public class CurrentUserApiController : ApiController
+    public class CurrentUserApiController : BaseWebApiController
     {
         // GET: api/CurrentUserApi
+        [Authorize]
         public Employee Get()
         {
-            return CurrentUser.Info;
+            return CurrentUser;
         }
 
         // GET: api/CurrentUserApi/5

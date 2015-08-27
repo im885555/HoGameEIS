@@ -5,41 +5,70 @@
     var OverlayTrigger = ReactBootstrap.OverlayTrigger;
     var Popover = ReactBootstrap.Popover;
     var Modal = ReactBootstrap.Modal;
+    var Alert = ReactBootstrap.Alert;
 
     var StoreSelector = App.GroupBuy.Control.StoreSelector;
+
+    /*
+        background-color: yellow;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 10100;
+    min-height: 50px;
+    */
 
     var ChangeStoreWindow = React.createClass({
         getInitialState: function () {
             return {
-                showStoreSelector: false
+                showStoreSelector: false,
+                bsSize: "small",
+                labelledby: "contained-modal-title-sg"
             }
         },
         handleSelect: function (item) {
+            $.ajax({
+                url: "/api/GroupbuyChangeStoreApi/",
+                type: "PUT",
+                data: {
+                    StoreId: item.StoreId,
+                    GroupBuyId: this.props.GroupBuyId
+                },
+                success: function (data) {
+                    location.reload();
+                }.bind(this)
+            });       
         },
         handleShowStoreSelector: function () {
-
+            this.setState({
+                showStoreSelector: true,
+                bsSize: "large",
+                labelledby: "contained-modal-title-lg"
+            })
         },
         render: function () {
+            var showStoreSelector = this.state.showStoreSelector;
             return(
                 <Modal
                 onHide={()=>this.props.onHide()}
-                bsSize='small'
+                bsSize={this.state.bsSize}
                 bsStyle='primary'
-                aria-labelledby='contained-modal-title-sm'
+                aria-labelledby={this.state.labelledby}
                 animation={false}>
                 <Modal.Header closeButton>
                   <Modal.Title>更換店家</Modal.Title>
                 </Modal.Header>
-
+                
                 <Modal.Body>
-                  更換店家後，訂單將會被清空。僅保留已付費明細。
-                    <StoreSelector onSelect={this.handleSelect} />
+                    <Alert bsStyle='warning'>
+                        更換店家後，訂單將會被清空。僅保留已付費明細。
+                    </Alert>
+                 
+                    {!!showStoreSelector &&<StoreSelector onSelect={this.handleSelect} />}
                 </Modal.Body>
-
                 <Modal.Footer>
-                  <Button onClick={()=>this.props.onHide()} bsStyle='primary'>繼續</Button>
-                  <Button onClick={()=>this.props.onHide()} >取消</Button>
-                </Modal.Footer>
+                    {!showStoreSelector && <Button onClick={()=>this.handleShowStoreSelector()} bsStyle='primary'>繼續</Button>}
+                 </Modal.Footer>
               </Modal>
                 );
         }
@@ -74,14 +103,20 @@
                 autoStart: false
             });
         },
+        _timeOut:null,
         startCountdown: function (_endtime) {
             var now = moment(new Date()).unix();
             var endTime = moment(_endtime).unix();
 
+            this._countdown.stop();
             this._countdown.setTime(0);
             if (endTime > now) {
                 this._countdown.setTime(endTime - now);
                 this._countdown.start();
+                !!this._timeOut && clearTimeout(this._timeOut);
+                this._timeOut = setTimeout(function () {
+                    this.getGroupbuyDataFromServer();
+                }.bind(this), (endTime - now) * 1000);
                 return true;
             } else {
                 return false;
@@ -119,7 +154,10 @@
 
         },
         renderPanel: function () {
-            var info = $.extend({}, {}, this.state);
+            var info = {
+                isOngoing: this.state.isOngoing,
+                isCreator: this.state.isCreator,
+            }
             var panelConf = {
                 MenuImg: (<App.GroupBuy.Panel.MenuImg {...this.props}/>),
                 Order: (<App.GroupBuy.Panel.Order  {...this.props} groupBuyInfo={info}/>),
@@ -130,14 +168,14 @@
             };
             return panelConf[this.state.currentPanel];
         },
-        handleHideChangeStoreWindow: function () {
+        handleHideChangeStoreWindow: function (result) {
             this.setState({ showChangeStoreWindow: false });
         },
         renderChangeStoreWindow: function () {
             if (!!this.state.showChangeStoreWindow) {
-                return <ChangeStoreWindow onHide={this.handleHideChangeStoreWindow}/>
-        }
-    },
+                return <ChangeStoreWindow {...this.props} onHide={this.handleHideChangeStoreWindow} />
+            }
+        },
         render: function () {
             var data = this.state.data;
             return (
@@ -175,7 +213,7 @@
                                     onClick={()=>window.open('/GroupBuy/Print/'+this.props.GroupBuyId , '', config='toolbar=no,location=no')}>
                                         訂單列印</Button>
                             <Button bsStyle="danger" onClick={()=>alert("尚未開放")}>代理點餐</Button>
-                            <Button bsStyle="success" onClick={()=>this.setState({showChangeStoreWindow:true})}>更換店家</Button>
+                            <Button onClick={()=>this.setState({showChangeStoreWindow:true})}>更換店家</Button>
                         </div>
                         }
                     </div>

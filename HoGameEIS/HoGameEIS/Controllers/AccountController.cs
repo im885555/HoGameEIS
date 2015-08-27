@@ -8,8 +8,9 @@ using System.Web.Security;
 
 namespace HoGameEIS.Controllers
 {
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
+
         //
         // GET: /Account/
 
@@ -84,7 +85,6 @@ namespace HoGameEIS.Controllers
         public ActionResult Logout()
         {
             FormsAuthentication.SignOut();
-            CurrentUser.Info = null;
             return RedirectToAction("Login");          
         }
 
@@ -94,6 +94,7 @@ namespace HoGameEIS.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public ActionResult ChangePassword(FormCollection formCollection)
         {
             string password = formCollection["password"];
@@ -101,7 +102,8 @@ namespace HoGameEIS.Controllers
             Employee emp;
             using (var db = new HoGameEISContext())
             {
-                emp = db.Employees.Where(o => o.EmployeeId == CurrentUser.Info.EmployeeId).FirstOrDefault<Employee>();
+                int employeeId = CurrentUser().EmployeeId;
+                emp = db.Employees.Where(o => o.EmployeeId == employeeId).FirstOrDefault<Employee>();
 
                 if (emp != null)
                 {

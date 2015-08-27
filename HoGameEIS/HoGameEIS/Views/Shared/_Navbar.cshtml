@@ -13,9 +13,9 @@
             <ul class="nav navbar-nav navbar-right">
                 @*<li><a href="#">Settings</a></li>
                 <li><a href="#">Profile</a></li>*@
-                @if (CurrentUser.Info != null)
+                @if (User.Identity.Name != null)
                 {
-                    <li><a href="/Account/ChangePassword">@CurrentUser.Info.FullName</a></li>
+                    <li><a href="/Account/ChangePassword">@User.Identity.Name</a></li>
                 }                
                 <li><a href="/Account/Logout">Logout</a></li>
             </ul>

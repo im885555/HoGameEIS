@@ -9,7 +9,7 @@ using System.Web.Http;
 
 namespace HoGameEIS.Controllers
 {
-    public class GroupBuySubscriberApiController : ApiController
+    public class GroupBuySubscriberApiController : BaseWebApiController
     {
         // GET: api/GroupBuySubscriberApi
         public IEnumerable<string> Get()
@@ -24,13 +24,14 @@ namespace HoGameEIS.Controllers
         }
 
         // POST: api/GroupBuySubscriberApi
+        [Authorize]
         public void Post(GroupBuySubscriber subscriber)
         {
             using (var db = new HoGameEISContext())
             {
                 var sql = @"exec [dbo].[usp_AddGroupBuySubscriber] @EmployeeId, @SubItemId";
                 db.Database.ExecuteSqlCommand(sql,
-                    new SqlParameter("@EmployeeId", CurrentUser.Info.EmployeeId),
+                    new SqlParameter("@EmployeeId", CurrentUser.EmployeeId),
                     new SqlParameter("@SubItemId", subscriber.SubItemId));
             }
         }
@@ -41,13 +42,14 @@ namespace HoGameEIS.Controllers
         }
 
         // DELETE: api/GroupBuySubscriberApi/5
+        [Authorize]
         public void Delete(int id)
         {
             using (var db = new HoGameEISContext())
             {
                 var sql = @"exec [dbo].[usp_CancelGroupBuySubscriber] @EmployeeId, @SubItemId";
                 db.Database.ExecuteSqlCommand(sql, 
-                    new SqlParameter("@EmployeeId", CurrentUser.Info.EmployeeId),
+                    new SqlParameter("@EmployeeId", CurrentUser.EmployeeId),
                     new SqlParameter("@SubItemId", id));
             }
         }
