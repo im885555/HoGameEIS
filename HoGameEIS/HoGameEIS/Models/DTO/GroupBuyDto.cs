@@ -20,5 +20,6 @@ namespace HoGameEIS.Models.DTO
         public string Tel { get; set; }
         public string Memo { get; set; }
         public string Status { get; set; }
+        public bool IsCreator { get; set; }
     }
 }

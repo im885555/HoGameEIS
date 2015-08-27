@@ -35,8 +35,10 @@ namespace HoGameEIS.Controllers
             GroupBuyDto gb;
             using (var db = new HoGameEISContext())
             {
-                var sql = @"[dbo].[usp_GetGroupbuyDetail] @GroupBuyId";
-                gb = db.Database.SqlQuery<GroupBuyDto>(sql, new SqlParameter("@GroupBuyId", id)).FirstOrDefault();
+                var sql = @"[dbo].[usp_GetGroupbuyDetail] @GroupBuyId, @EmployeeId";
+                gb = db.Database.SqlQuery<GroupBuyDto>(sql,
+                    new SqlParameter("@GroupBuyId", id),
+                    new SqlParameter("@EmployeeId", CurrentUser.Info.EmployeeId)).FirstOrDefault();
             }
 
             return gb;

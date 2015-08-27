@@ -11,10 +11,10 @@ CREATE PROCEDURE [dbo].[usp_ChangeGroupBuyStore]
 AS
 BEGIN
 	DECLARE 
-	@StoreName nvarchar,
-	@Address nvarchar,
-	@Tel nvarchar,
-	@Memo nvarchar
+	@StoreName nvarchar(255),
+	@Address nvarchar(255),
+	@Tel nvarchar(255),
+	@Memo nvarchar(255)
 
 
 

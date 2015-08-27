@@ -6,7 +6,8 @@
 -- 輸入團購編號 取得團購細目
 -- =============================================
 CREATE PROCEDURE [dbo].[usp_GetGroupbuyDetail]
-  @GroupBuyId int
+  @GroupBuyId int,
+  @EmployeeId int
 AS
 BEGIN	
 	SELECT 
@@ -21,7 +22,8 @@ BEGIN
 	a.[Tel],
 	a.[Address],
 	a.[Memo],
-	CAST(CASE WHEN a.[EndTime]>GETDATE() THEN 'ongoing' ELSE 'closed' END as char(10)) as [Status]
+	CAST(CASE WHEN a.[EndTime]>GETDATE() THEN 'ongoing' ELSE 'closed' END as char(10)) as [Status],
+	CAST(CASE WHEN @EmployeeId= a.[Creator] THEN 1 ELSE 0 END as bit ) as [IsCreator]
 	FROM [dbo].[GroupBuys] a, [dbo].[Employees] e
 	WHERE e.EmployeeId=a.Creator
 	AND a.[GroupBuyId]=@GroupBuyId
