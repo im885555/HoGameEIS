@@ -14,7 +14,7 @@ namespace HoGameEIS.Controllers
         // GET: /GroupBuy/
         public ActionResult Index()
         {
-            return RedirectToAction("CreateGroupBuy", "GroupBuy");
+            return RedirectToAction("CurrentGroupBuy", "GroupBuy");
         }
 
         [Authorize]

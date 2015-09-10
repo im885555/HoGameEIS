@@ -6,6 +6,7 @@
 
     var LoadingIcon = App.Component.Loading;
 
+    var REFRESH_ACTION = "GroupbuyOrderListRefresh";
 
     var CasherInput = React.createClass({
         getInitialState: function () {
@@ -53,8 +54,19 @@
                 isLoading:true
             };
         },
+        _webSocket: null,
         componentDidMount: function () {
             this.getPaidDetailFromServer();
+
+            this._webSocket = new App.WebSocket();
+            this._webSocket.onmessage = function (msg) {
+                msg.id == this.props.GroupBuyId
+                && msg.action == REFRESH_ACTION
+                && this.getPaidDetailFromServer();
+            }.bind(this);
+        },
+        componentWillUnmount: function () {
+            this._webSocket.close();
         },
         getPaidDetailFromServer: function () {
             $.ajax({

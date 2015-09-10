@@ -237,8 +237,6 @@ namespace HoGameEIS.Controllers
 
         public static void deleteLocalFile(string fileName)
         {
-  
-
             try
             {
                 using (var db = new HoGameEISContext())
@@ -246,9 +244,6 @@ namespace HoGameEIS.Controllers
                     //檢查菜單圖片已存在團購，就不刪除實體圖片。
                     if (!db.GroupBuyMenuImages.ToList().Exists(o => o.ImageUrl == fileName))
                     {
-                        // Retrieve reference to a blob named "myblob".
-                        CloudBlockBlob blockBlob = ImageContainer.GetBlockBlobReference(fileName);
-
                         string filepath = Path.Combine(ConfigurationManager.AppSettings["ImageLocalPath"], fileName);
                         if (File.Exists(filepath))
                             File.Delete(filepath);

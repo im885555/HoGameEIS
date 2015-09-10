@@ -9,6 +9,7 @@
 
     var StoreSelector = App.GroupBuy.Control.StoreSelector;
 
+    var REFRESH_ACTION = "GroupbuyOrderDetailRefresh";
     /*
         background-color: yellow;
     position: fixed;
@@ -91,10 +92,24 @@
                 showChangeStoreWindow:false
             }
         },
-        _countdown:null,
+        _countdown: null,
+        _webSocket: null,
         componentDidMount: function () {
             this.initCountdown();
             this.getGroupbuyDataFromServer();
+
+            this._webSocket = new App.WebSocket();
+            this._webSocket.onmessage = function (msg) {
+                msg.id == this.props.GroupBuyId
+                && msg.action == REFRESH_ACTION
+                && this.getGroupbuyDataFromServer();
+            }.bind(this);
+        },
+        componentWillUnmount: function () {
+            this._webSocket.close();
+        },
+        sendWsRefresh: function () {
+            this._webSocket.send({ id: this.props.GroupBuyId, action: REFRESH_ACTION });
         },
         initCountdown: function () {
             this._countdown = $(this.refs.Clock.getDOMNode()).FlipClock(0, {
@@ -145,12 +160,10 @@
                     EndTime: endTime
                 },
                 success: function (data) {
-                    this.getGroupbuyDataFromServer();
+                    this.sendWsRefresh();
+                    //this.getGroupbuyDataFromServer();
                 }.bind(this)
             });
-
-        },
-        componentWillUnmount: function () {
 
         },
         renderPanel: function () {
@@ -213,7 +226,8 @@
                                     onClick={()=>window.open('/GroupBuy/Print/'+this.props.GroupBuyId , '', config='toolbar=no,location=no')}>
                                         訂單列印</Button>
                             <Button bsStyle="danger" onClick={()=>alert("尚未開放")}>代理點餐</Button>
-                            <Button onClick={()=>this.setState({showChangeStoreWindow:true})}>更換店家</Button>
+                            {/*<Button onClick={()=>this.setState({showChangeStoreWindow:true})}>更換店家</Button>*/}
+                            <Button onClick={()=>alert("尚未開放")}>更換店家</Button>
                         </div>
                         }
                     </div>

@@ -15,7 +15,29 @@ App.GroupBuy = App.GroupBuy || {};
 App.GroupBuy.Control = App.GroupBuy.Control || {};
 App.GroupBuy.Panel = App.GroupBuy.Panel || {};
 
+App.Conf = {
+    WS: "ws://192.168.6.113:8888"
+};
 
+App.WebSocket = function () {
+    function IsJsonString(str) {
+        try {
+            JSON.parse(str);
+        } catch (e) {
+            return false;
+        }
+        return true;
+    }
+
+    this.ws = new WebSocket(App.Conf.WS);
+    this.ws.onmessage = function (evt) {
+        //console.log(evt);
+        if (!IsJsonString(evt.data)) return;
+        !!this.onmessage && this.onmessage(JSON.parse(evt.data));
+    }.bind(this);
+    this.send = function (msg) { this.ws.send(JSON.stringify(msg)); }.bind(this);
+    this.close = function () { this.ws.close(); }.bind(this);
+};
 
 (window.onpopstate = function () {
     function getParams() {

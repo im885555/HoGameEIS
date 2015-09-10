@@ -7,6 +7,8 @@
 
     var TdEditable = App.GroupBuy.Control.TdEditable;
 
+    var REFRESH_ACTION = "GroupbuyOrderListRefresh";
+
     var OrderList = React.createClass({
         getInitialState: function () {
             return {
@@ -14,8 +16,19 @@
                 isLoading:true
             };
         },
+        _webSocket:null,
         componentDidMount: function () {
             this.getOrderFromServer();
+
+            this._webSocket = new App.WebSocket();
+            this._webSocket.onmessage = function (msg) {
+                msg.id == this.props.GroupBuyId
+                && msg.action == REFRESH_ACTION
+                && this.getOrderFromServer();
+            }.bind(this);
+        },
+        componentWillUnmount: function () {
+            this._webSocket.close();
         },
         getOrderFromServer: function (callback) {
             $.ajax({
@@ -27,13 +40,17 @@
                 }.bind(this)
             });
         },
+        sendWsRefresh: function () {
+            this._webSocket.send({ id: this.props.GroupBuyId, action: REFRESH_ACTION });
+        },
         handleNewItem: function () {
             $.ajax({
                 url: "/api/GroupBuyOrderApi",
                 type: "POST",
                 data: { GroupBuyId: this.props.GroupBuyId },
                 success: function (data) {
-                    this.getOrderFromServer();
+                    this.sendWsRefresh();
+                    //this.getOrderFromServer();
                 }.bind(this)
             });
         },
@@ -43,7 +60,8 @@
                 type: "POST",
                 data: {ItemId: itemId},
                 success: function (data) {
-                    this.getOrderFromServer();
+                    this.sendWsRefresh();
+                    //this.getOrderFromServer();
                 }.bind(this)
             });
         },
@@ -53,7 +71,8 @@
                type: "PUT",
                data:{ ItemName: itemName},
                success: function (data) {
-                   this.getOrderFromServer();
+                   this.sendWsRefresh();
+                  // this.getOrderFromServer();
                }.bind(this)
            });
         },
@@ -63,7 +82,8 @@
                 type: "PUT",
                 data: { Action: "Price", Price: price },
                 success: function (data) {
-                    this.getOrderFromServer();
+                    this.sendWsRefresh();
+                   // this.getOrderFromServer();
                 }.bind(this)
             });
         },
@@ -73,7 +93,8 @@
                 type: "PUT",
                 data: { Action: "SubItemName", SubItemName: subItemName },
                 success: function (data) {
-                    this.getOrderFromServer();
+                    this.sendWsRefresh();
+                   // this.getOrderFromServer();
                 }.bind(this)
             });
         },
@@ -83,7 +104,8 @@
                 type: "POST",
                 data: { SubItemId: subItemId },
                 success: function (data) {
-                    this.getOrderFromServer();
+                    this.sendWsRefresh();
+                    //this.getOrderFromServer();
                 }.bind(this)
             });
         },
@@ -92,7 +114,8 @@
                 url: "/api/GroupBuySubscriberApi/" + subItemId,
                 type: "DELETE",
                 success: function (data) {
-                    this.getOrderFromServer();
+                    this.sendWsRefresh();
+                   // this.getOrderFromServer();
                 }.bind(this)
             });
         },
