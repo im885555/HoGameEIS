@@ -105,7 +105,8 @@ namespace HoGameEIS.Controllers
             await Request.Content.ReadAsMultipartAsync(provider);
             foreach (MultipartFileData file in provider.FileData)
             {
-                string fileName = blobSaveFile(file);
+                //string fileName = blobSaveFile(file);
+                string fileName = localSaveFile(file);
                 GroupBuyStoreMenuImage image = new GroupBuyStoreMenuImage()
                 {
                     StoreId = id,
@@ -180,7 +181,8 @@ namespace HoGameEIS.Controllers
 
         public static void deleteblobFile(string fileName)
         {
-            try
+            deleteLocalFile(fileName);
+            /*try
             {
                 using (var db = new HoGameEISContext())
                 {
@@ -198,47 +200,69 @@ namespace HoGameEIS.Controllers
             catch (Exception ex)
             {
 
-            }
+            }*/
         }
 
-        /* private string localSaveFile(MultipartFileData file)
-         {
-             string fileName = file.Headers.ContentDisposition.FileName;
-             if (fileName.StartsWith("\"") && fileName.EndsWith("\""))
-             {
-                 fileName = fileName.Trim('"');
-             }
-             if (fileName.Contains(@"/") || fileName.Contains(@"\"))
-             {
-                 fileName = Path.GetFileName(fileName);
-             }
+        public static string localSaveFile(MultipartFileData file)
+        {
+            string fileName = file.Headers.ContentDisposition.FileName;
+            if (fileName.StartsWith("\"") && fileName.EndsWith("\""))
+            {
+                fileName = fileName.Trim('"');
+            }
+            if (fileName.Contains(@"/") || fileName.Contains(@"\"))
+            {
+                fileName = Path.GetFileName(fileName);
+            }
 
-             //檔名加上時間戳記
+            //檔名加上時間戳記
 
-             fileName = String.Format("{0}_{1}", Convert.ToInt32(DateTime.UtcNow.AddHours(8).Subtract(new DateTime(1970, 1, 1)).TotalSeconds), fileName);
+            fileName = String.Format("{0}_{1}", Convert.ToInt32(DateTime.UtcNow.AddHours(8).Subtract(new DateTime(1970, 1, 1)).TotalSeconds), fileName);
 
-             string newPath = Path.Combine(ServerUploadFolder, fileName);
+            string newPath = Path.Combine(ConfigurationManager.AppSettings["ImageLocalPath"], fileName);
 
-             // Ensure that the target does not exist.
-             if (File.Exists(newPath))
-                 File.Delete(newPath);
+            // Ensure that the target does not exist.
+            if (File.Exists(newPath))
+                File.Delete(newPath);
 
-             File.Move(file.LocalFileName, newPath);
+            File.Move(file.LocalFileName, newPath);
 
-             fileName = String.Format("/Content/uploads/{1}", ServerUploadFolder, fileName);
+            if (File.Exists(file.LocalFileName))
+                File.Delete(file.LocalFileName);
 
-             return fileName;
-         }
+            //fileName = String.Format("/Content/uploads/{1}", ServerUploadFolder, fileName);
 
-         private void deleteLocalFile(string url)
-         {
-             //string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, image.ImageUrl);
-             string path = AppDomain.CurrentDomain.BaseDirectory + url;
+            return fileName;
+        }
 
-             // Ensure that the target does not exist.
-             if (File.Exists(path))
-                 File.Delete(path);
-         }*/
+        public static void deleteLocalFile(string fileName)
+        {
+  
+
+            try
+            {
+                using (var db = new HoGameEISContext())
+                {
+                    //檢查菜單圖片已存在團購，就不刪除實體圖片。
+                    if (!db.GroupBuyMenuImages.ToList().Exists(o => o.ImageUrl == fileName))
+                    {
+                        // Retrieve reference to a blob named "myblob".
+                        CloudBlockBlob blockBlob = ImageContainer.GetBlockBlobReference(fileName);
+
+                        string filepath = Path.Combine(ConfigurationManager.AppSettings["ImageLocalPath"], fileName);
+                        if (File.Exists(filepath))
+                            File.Delete(filepath);
+                    }
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+        } 
+        /**/
         //// GET: api/MenuImageApi/GetImage/5
         //[Route("getImage/{id}")]
         //[HttpGet]
