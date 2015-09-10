@@ -54,11 +54,31 @@
                 }.bind(this)
             });
         },
+        handleDeleteItem: function (itemId) {
+            $.ajax({
+                url: "/api/GroupBuyOrderApi/" + itemId,
+                type: "Delete",
+                success: function (data) {
+                    this.sendWsRefresh();
+                    //this.getOrderFromServer();
+                }.bind(this)
+            });
+        },
         handleNewSubItem: function (itemId) {
             $.ajax({
                 url: "/api/GroupBuyOrderSubApi",
                 type: "POST",
                 data: {ItemId: itemId},
+                success: function (data) {
+                    this.sendWsRefresh();
+                    //this.getOrderFromServer();
+                }.bind(this)
+            });
+        },
+        handleDeleteSubItem: function (subItemId) {
+            $.ajax({
+                url: "/api/GroupBuyOrderSubApi/" + subItemId,
+                type: "Delete",
                 success: function (data) {
                     this.sendWsRefresh();
                     //this.getOrderFromServer();
@@ -149,7 +169,7 @@
                       <Table bordered condensed>
                         <thead>
                           <tr>
-                            <th colSpan="6">
+                            <th colSpan="7">
                                 <div className="text-danger">
                                     點擊名稱、價錢可直接修改內容
                                     <Button className="pull-right" onClick={()=>this.handleNewItem()}>新增項目</Button>
@@ -161,8 +181,9 @@
                             <th>名稱</th>
                             <th>子項</th>
                             <th>價錢</th>
-                            <th>功能</th>
+                            <th>訂購/取消</th>
                             <th>明細</th>
+                            <th>功能</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -182,7 +203,7 @@
                                            html={sub.Price}
                                            handleChange={this.handleSubItemPriceEdit}>
                                          </TdEditable>,
-                                         FuncSubItemDom =
+                                         SubscriberDom =
                                          <td>
                                              <Button bsStyle="success" onClick={()=>this.handleAddSubscriber(sub.SubItemId)}>
                                              <span className="glyphicon glyphicon-plus"></span>
@@ -198,12 +219,17 @@
                                                 return (<span key={i}>{subscriber.SubscriberName}({subscriber.Amount}) </span>);
                                              })
                                              }
+                                         </td>,
+                                         FuncSubItemDom =
+                                         <td>
+                                             <Button onClick={()=>this.handleDeleteSubItem(sub.SubItemId)}>刪除子項</Button>
                                          </td>
                                         ; 
                                         if(i==0){
                                             _items.push(
                                                 <tr key={i}>
                                                   <td rowSpan={item.SubItems.length}>
+                                                      <Button onClick={()=>this.handleDeleteItem(item.ItemId)}>刪除</Button>
                                                       <Button onClick={()=>this.handleNewSubItem(item.ItemId)}>新增子項</Button>
                                                   </td>
                                                   <TdEditable
@@ -214,8 +240,9 @@
                                                   </TdEditable>
                                                   {SubItemNameDom}
                                                   {ItemPriceDom}
-                                                  {FuncSubItemDom}
-                                                  {OrderDetail}    
+                                                  {SubscriberDom}
+                                                  {OrderDetail}
+                                                  {FuncSubItemDom}        
                                                 </tr>
                                             );
                                         }else{
@@ -223,8 +250,9 @@
                                                 <tr key={i}>
                                                 {SubItemNameDom}
                                                 {ItemPriceDom}
-                                                {FuncSubItemDom}
-                                                {OrderDetail}    
+                                                {SubscriberDom}
+                                                {OrderDetail} 
+                                                {FuncSubItemDom}       
                                                 </tr>
                                             );
                                         }
@@ -234,14 +262,14 @@
                             }
                           {!!this.state.isLoading &&
                             <tr>
-                            <td colSpan="6" className="text-center">
+                            <td colSpan="7" className="text-center">
                                 <LoadingIcon />
                             </td>
                             </tr>
                           }
                           {
                            <tr>
-                            <td colSpan="6" className="text-right">
+                            <td colSpan="7" className="text-right">
                                 <span>總個數:{countOrder.sumTotal}  總金額:{countOrder.sumMoney}元</span>
                             </td>
                            </tr>

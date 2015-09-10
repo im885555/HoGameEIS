@@ -65,6 +65,11 @@
                  },
                  new Models.Employee()
                  {
+                     Email = "jack.yang@hg-asia.com",
+                     FullName = "Jack Yang"
+                 },
+                 new Models.Employee()
+                 {
                      Email = "joe.wu@hg-asia.com",
                      FullName = "Joe Wu"
                  },

@@ -76,10 +76,28 @@ namespace HoGameEIS.Controllers
 
         // DELETE: api/GroupBuyOrderApi/5
         [Authorize]
-        public Boolean Delete(int id)
+        public void Delete(int id)
         {
-            int result = 0;
-            return result != 0;
+            using (var db = new HoGameEISContext())
+            {
+                GroupBuyItem _item = db.GroupBuyItems.Where(o => o.ItemId == id).FirstOrDefault();
+                db.Entry(_item).State = System.Data.Entity.EntityState.Deleted;
+                List<GroupBuySubItem> _subItems = db.GroupBuySubItems.Where(o => o.ItemId == id).ToList();
+                List<int> _subItemIds = _subItems.Select(o => o.SubItemId).ToList();
+                List < GroupBuySubscriber> _subscribers = db.GroupBuySubscribers.Where(s => _subItemIds.Contains(s.SubItemId)).ToList();
+
+                foreach (GroupBuySubItem subItem in _subItems)
+                {
+                    db.Entry(subItem).State = System.Data.Entity.EntityState.Deleted;
+                }
+                foreach (GroupBuySubscriber subscriber in _subscribers)
+                {
+                    db.Entry(subscriber).State = System.Data.Entity.EntityState.Deleted;
+                }
+
+              
+                db.SaveChanges();
+            }
         }
     }
 }
