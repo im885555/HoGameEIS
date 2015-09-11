@@ -12,11 +12,23 @@ namespace BasicWebSocket
 
         static void Main(string[] args)
         {
-            _server = new WebSocketServer(1104);
-            _server.OnConnected += new ClientConnectedHandler(DoConnectedWork);
-            Console.WriteLine("WebSocket Server Start");
-            _server.Start();
-            while (Console.ReadLine().Equals("EXIT", StringComparison.OrdinalIgnoreCase)) { }
+            try {
+                _server = new WebSocketServer(5585);
+                _server.OnConnected += new ClientConnectedHandler(DoConnectedWork);
+                Console.WriteLine("WebSocket Server Start");
+                _server.Start();
+                while (Console.ReadLine().Equals("EXIT", StringComparison.OrdinalIgnoreCase)) { }
+            }
+            catch (Exception ex)
+            {
+                using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"error_log.txt"))
+                {
+                    file.WriteLine(string.Format("{0}{1}",DateTime.Now,ex.Message));
+                }
+            }
+
+
+
         }
 
         static void DoConnectedWork(WebSocketConnection sender, EventArgs ev)

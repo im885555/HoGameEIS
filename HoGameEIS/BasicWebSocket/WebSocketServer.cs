@@ -81,8 +81,14 @@ namespace BasicWebSocket
             var data = Encoding.UTF8.GetString(buffer, 0, length);
             Console.WriteLine(data);
 
+
             // 將資料字串中的空白位元移除
             var dataArray = data.Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+
+            if (dataArray.Count() == 0) {
+                return;
+            }
+
             // 從Client傳來的Request Header訊息中取
             var key = dataArray.Where(s => s.Contains("Sec-WebSocket-Key: ")).Single().Replace("Sec-WebSocket-Key: ", String.Empty).Trim();
             var acceptKey = CreateAcceptKey(key);

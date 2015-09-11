@@ -20,15 +20,13 @@
         componentDidMount: function () {
             this.getOrderFromServer();
 
-            this._webSocket = new App.WebSocket({
-                key: "OrderList_" + this.props.GroupBuyId,
-                onmessage: function (msg) {
-                    msg.id == this.props.GroupBuyId
-                    && msg.action == REFRESH_ACTION
-                    && this.getOrderFromServer();
-                }.bind(this)
-            });
-
+            this._webSocket
+                = new App.WebSocket("OrderList_" + this.props.GroupBuyId,
+                function (msg) {
+                msg.id == this.props.GroupBuyId
+                && msg.action == REFRESH_ACTION
+                && this.getOrderFromServer();
+            }.bind(this));
         },
         componentWillUnmount: function () {
             this._webSocket.close();

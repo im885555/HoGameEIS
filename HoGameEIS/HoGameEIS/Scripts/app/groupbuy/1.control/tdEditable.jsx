@@ -10,13 +10,11 @@
         _webSocket: null,
         componentDidMount: function () {
             if (!!this.props.lockId) {
-                this._webSocket = new App.WebSocket({
-                    key: "TdEditable_" + this.props.lockId,
-                    onmessage: function (msg) {
-                        msg.id == this.props.lockId && msg.user != App.Context.GetCurrentUser().EmployeeId && this.setState({ locked: true });
-                        msg.id == this.props.lockId && !!msg.done && this.setState({ locked: false });
-                    }.bind(this)
-                });
+                this._webSocket = new App.WebSocket("TdEditable_" + this.props.lockId,
+                  function (msg) {
+                      msg.id == this.props.lockId && msg.user != App.Context.GetCurrentUser().EmployeeId && this.setState({ locked: true });
+                      msg.id == this.props.lockId && !!msg.done && this.setState({ locked: false });
+                  }.bind(this));
             }
         },
         componentWillUnmount: function () {

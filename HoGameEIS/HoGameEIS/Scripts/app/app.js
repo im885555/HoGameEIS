@@ -15,10 +15,8 @@ App.GroupBuy = App.GroupBuy || {};
 App.GroupBuy.Control = App.GroupBuy.Control || {};
 App.GroupBuy.Panel = App.GroupBuy.Panel || {};
 
-
-//App._WebSocket = new WebSocket("ws://" + location.hostname + ":8888");
 App.WebSocket = (function () {
-    var wsUrl = "ws://" + location.hostname + ":8888";
+    var wsUrl = "ws://" + location.hostname + ":5585";
     var _WebSocket = null;
     var _callbacks = {};
     var IsJsonString =function(str) {
@@ -29,20 +27,30 @@ App.WebSocket = (function () {
         }
         return true;
     };
-    var wsFunc = function (opts) {
-        if (!_WebSocket) {
-            _WebSocket = new WebSocket(wsUrl);
-            _WebSocket.onmessage = function (evt) {
-                if (!IsJsonString(evt.data)) return;
-                var msg = JSON.parse(evt.data);
-                for (var key in _callbacks) {
-                    _callbacks[key](msg);
-                }
-            }.bind(this);
+    var wsInit = function () {
+        _WebSocket = new WebSocket(wsUrl);
+        _WebSocket.onmessage = function (evt) {
+            if (!IsJsonString(evt.data)) return;
+            var msg = JSON.parse(evt.data);
+            for (var key in _callbacks) {
+                _callbacks[key](msg);
+            }
         };
-        !!opts.onmessage && !!opts.key && (_callbacks[opts.key] = opts.onmessage);
-        this.send = function (msg) { _WebSocket.send(JSON.stringify(msg)); }.bind(this);
-        this.close = function () { delete _callbacks[opts.key]; }.bind(this);
+        _WebSocket.onclose = function (evt) {
+            console.log("WebSocket closed...retry in 10 sec.");
+            setTimeout(wsInit, 10000);
+            //websocket中斷後每隔十秒重新連線
+        };
+    };
+    var wsFunc = function (key, onmessage) {
+        if (!_WebSocket) {
+            wsInit();
+        };
+        !!onmessage && !!key && (_callbacks[key] = onmessage);
+        this.send = function (msg) {
+            _WebSocket.send(JSON.stringify(msg));
+        }.bind(this);
+        this.close = function () { delete _callbacks[key]; }.bind(this);
     };
     return wsFunc;
 })();
