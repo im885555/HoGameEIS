@@ -20,12 +20,15 @@
         componentDidMount: function () {
             this.getOrderFromServer();
 
-            this._webSocket = new App.WebSocket();
-            this._webSocket.onmessage = function (msg) {
-                msg.id == this.props.GroupBuyId
-                && msg.action == REFRESH_ACTION
-                && this.getOrderFromServer();
-            }.bind(this);
+            this._webSocket = new App.WebSocket({
+                key: "OrderList_" + this.props.GroupBuyId,
+                onmessage: function (msg) {
+                    msg.id == this.props.GroupBuyId
+                    && msg.action == REFRESH_ACTION
+                    && this.getOrderFromServer();
+                }.bind(this)
+            });
+
         },
         componentWillUnmount: function () {
             this._webSocket.close();
@@ -195,11 +198,13 @@
                                      var SubItemNameDom = <TdEditable
                                            uid={sub.SubItemId}
                                            html={sub.SubItemName||""}
+                                           lockId={ "SubItemName" + this.props.GroupBuyId + "_" + sub.SubItemId}
                                            handleChange={this.handleSubItemNameEdit}>
                                          </TdEditable>,
                                          ItemPriceDom=<TdEditable
                                            uid={sub.SubItemId}
                                            number={true}
+                                           lockId={ "ItemPriceDom" + this.props.GroupBuyId + "_" + sub.SubItemId}
                                            html={sub.Price}
                                            handleChange={this.handleSubItemPriceEdit}>
                                          </TdEditable>,
@@ -235,6 +240,7 @@
                                                   <TdEditable
                                                     rowSpan={item.SubItems.length}
                                                     html={item.ItemName||""}
+                                                    lockId={ "ItemName" + this.props.GroupBuyId + "_" + sub.SubItemId}
                                                     handleChange={this.handleItemNameEdit}
                                                     uid={item.ItemId}>
                                                   </TdEditable>

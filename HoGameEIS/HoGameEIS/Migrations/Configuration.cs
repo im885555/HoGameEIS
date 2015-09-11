@@ -128,6 +128,22 @@
                      Email = "neal.huang@hg-asia.com",
                      FullName = "Neal Huang"
                  },
+                new Models.Employee()
+                {
+                    Email = "robin.huang@hg-asia.com",
+                    FullName = "Robin Huang"
+                },
+                new Models.Employee()
+                {
+                    Email = "rax.lee@hg-asia.com",
+                    FullName = "Rax Lee"
+                },
+                 new Models.Employee()
+                 {
+                     Email = "cathy.chang@hg-asia.com",
+                     FullName = "Cathy Chang"
+                 },
+               
                  new Models.Employee()
                  {
                      Email = "test@mail.com",

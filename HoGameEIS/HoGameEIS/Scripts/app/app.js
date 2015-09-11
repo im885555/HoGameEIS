@@ -15,29 +15,37 @@ App.GroupBuy = App.GroupBuy || {};
 App.GroupBuy.Control = App.GroupBuy.Control || {};
 App.GroupBuy.Panel = App.GroupBuy.Panel || {};
 
-App.Conf = {
-    WS: "ws://192.168.6.113:8888"
-};
 
-App.WebSocket = function () {
-    function IsJsonString(str) {
+//App._WebSocket = new WebSocket("ws://" + location.hostname + ":8888");
+App.WebSocket = (function () {
+    var wsUrl = "ws://" + location.hostname + ":8888";
+    var _WebSocket = null;
+    var _callbacks = {};
+    var IsJsonString =function(str) {
         try {
             JSON.parse(str);
         } catch (e) {
             return false;
         }
         return true;
-    }
-
-    this.ws = new WebSocket(App.Conf.WS);
-    this.ws.onmessage = function (evt) {
-        //console.log(evt);
-        if (!IsJsonString(evt.data)) return;
-        !!this.onmessage && this.onmessage(JSON.parse(evt.data));
-    }.bind(this);
-    this.send = function (msg) { this.ws.send(JSON.stringify(msg)); }.bind(this);
-    this.close = function () { this.ws.close(); }.bind(this);
-};
+    };
+    var wsFunc = function (opts) {
+        if (!_WebSocket) {
+            _WebSocket = new WebSocket(wsUrl);
+            _WebSocket.onmessage = function (evt) {
+                if (!IsJsonString(evt.data)) return;
+                var msg = JSON.parse(evt.data);
+                for (var key in _callbacks) {
+                    _callbacks[key](msg);
+                }
+            }.bind(this);
+        };
+        !!opts.onmessage && !!opts.key && (_callbacks[opts.key] = opts.onmessage);
+        this.send = function (msg) { _WebSocket.send(JSON.stringify(msg)); }.bind(this);
+        this.close = function () { delete _callbacks[opts.key]; }.bind(this);
+    };
+    return wsFunc;
+})();
 
 (window.onpopstate = function () {
     function getParams() {

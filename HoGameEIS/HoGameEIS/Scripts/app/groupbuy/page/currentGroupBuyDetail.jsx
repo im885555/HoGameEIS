@@ -98,12 +98,21 @@
             this.initCountdown();
             this.getGroupbuyDataFromServer();
 
-            this._webSocket = new App.WebSocket();
-            this._webSocket.onmessage = function (msg) {
-                msg.id == this.props.GroupBuyId
-                && msg.action == REFRESH_ACTION
-                && this.getGroupbuyDataFromServer();
-            }.bind(this);
+            this._webSocket = new App.WebSocket({
+                key: "CurrentGroupBuyDetail_" + this.props.GroupBuyId,
+                onmessage: function (msg) {
+                    msg.id == this.props.GroupBuyId
+                    && msg.action == REFRESH_ACTION
+                    && this.getGroupbuyDataFromServer();
+                }.bind(this)
+            });
+
+            //this._webSocket = new App.WebSocket();
+            //this._webSocket.onmessage = function (msg) {
+            //    msg.id == this.props.GroupBuyId
+            //    && msg.action == REFRESH_ACTION
+            //    && this.getGroupbuyDataFromServer();
+            //}.bind(this);
         },
         componentWillUnmount: function () {
             this._webSocket.close();
