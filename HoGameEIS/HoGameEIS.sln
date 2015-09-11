@@ -13,6 +13,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebsocketNodeJsServer", "We
 		WebsocketNodeJsServer\server.js = WebsocketNodeJsServer\server.js
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web", "Web\Web.csproj", "{52F7C8DC-52D1-4F79-8FAE-CB05D8B7B81D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{0C4B95DD-43EC-4325-B125-E01542057973}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0C4B95DD-43EC-4325-B125-E01542057973}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0C4B95DD-43EC-4325-B125-E01542057973}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52F7C8DC-52D1-4F79-8FAE-CB05D8B7B81D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52F7C8DC-52D1-4F79-8FAE-CB05D8B7B81D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52F7C8DC-52D1-4F79-8FAE-CB05D8B7B81D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52F7C8DC-52D1-4F79-8FAE-CB05D8B7B81D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
